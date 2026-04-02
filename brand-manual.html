@@ -1,0 +1,1389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1440">
+<title>Forma — Brand Manual</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  :root{
+    --bg:#0c0c0e;--bg-alt:#0e0e10;--surface:#141414;--surface-light:#1a1a1a;
+    --border:#1e1e1e;--text:#f0eee8;--text-dim:#8a8a8a;--text-muted:#6b6b6b;
+    --text-ghost:#3a3a3a;--gold:#8b7355;--gold-dim:rgba(139,115,85,0.15);
+    --steel:#A1AAC8;--steel-dim:#7a8199;--steel-ghost:#3d4155;
+  }
+  body{background:#080808;font-family:'Space Grotesk',sans-serif;-webkit-font-smoothing:antialiased}
+
+  /* Page sections */
+  .page{
+    width:1440px;min-height:100vh;margin:0 auto;position:relative;
+    padding:72px 80px;color:var(--text);overflow:hidden;
+    display:flex;flex-direction:column;page-break-after:always;
+  }
+  .page:nth-child(odd){background:var(--bg)}
+  .page:nth-child(even){background:var(--bg-alt)}
+
+  /* Section number */
+  .sec-num{
+    font-family:'Space Mono',monospace;font-size:12px;color:var(--gold);
+    letter-spacing:0.2em;text-transform:uppercase;margin-bottom:16px;
+  }
+  /* Section title */
+  .sec-title{
+    font-size:48px;font-weight:700;line-height:56px;letter-spacing:-0.02em;
+    color:var(--text);margin-bottom:48px;
+  }
+  .sec-title-sm{
+    font-size:36px;font-weight:700;line-height:44px;letter-spacing:-0.02em;
+    color:var(--text);margin-bottom:40px;
+  }
+  /* Slide number bottom right */
+  .slide-num{
+    position:absolute;bottom:36px;right:80px;
+    font-family:'Space Mono',monospace;font-size:11px;color:var(--text-ghost);
+    display:flex;align-items:center;gap:12px;
+  }
+  .slide-num::before{content:'';display:block;width:40px;height:1px;background:var(--gold);opacity:.3}
+
+  /* Subsection title */
+  .sub-title{
+    font-size:18px;font-weight:600;color:var(--text);margin-bottom:12px;
+    text-transform:uppercase;letter-spacing:0.06em;
+  }
+  /* Body text */
+  .body{font-size:15px;font-weight:300;color:var(--text-dim);line-height:24px}
+  .body-sm{font-size:13px;font-weight:300;color:var(--text-dim);line-height:20px}
+  /* Mono */
+  .mono{font-family:'Space Mono',monospace}
+  /* Gold rule */
+  .gold-rule{width:60px;height:2px;background:var(--gold);margin:24px 0}
+  .gold-rule-full{width:100%;height:1px;background:var(--gold);opacity:.15;margin:32px 0}
+  /* Label */
+  .label{
+    font-family:'Space Mono',monospace;font-size:11px;color:var(--text-muted);
+    letter-spacing:0.12em;text-transform:uppercase;
+  }
+  /* Flex utilities */
+  .row{display:flex;gap:40px}
+  .col{flex:1}
+
+  /* Spec table */
+  .spec-table{width:100%;border-collapse:collapse;margin-top:16px}
+  .spec-table th{
+    font-family:'Space Mono',monospace;font-size:11px;color:var(--gold);
+    letter-spacing:0.1em;text-transform:uppercase;text-align:left;
+    padding:12px 16px;border-bottom:1px solid var(--border);
+  }
+  .spec-table td{
+    font-size:14px;font-weight:300;color:var(--text-dim);
+    padding:12px 16px;border-bottom:1px solid var(--border);
+  }
+  .spec-table td:first-child{color:var(--text);font-weight:400}
+
+  /* Swatch */
+  .swatch{
+    width:100%;aspect-ratio:1;border-radius:4px;margin-bottom:10px;
+    border:1px solid rgba(255,255,255,0.04);
+  }
+  .swatch-row{display:flex;gap:16px;flex-wrap:wrap}
+  .swatch-item{width:120px}
+  .swatch-label{font-family:'Space Mono',monospace;font-size:11px;color:var(--text-dim)}
+  .swatch-hex{font-family:'Space Mono',monospace;font-size:11px;color:var(--text-ghost);margin-top:2px}
+  .swatch-name{font-size:13px;font-weight:500;color:var(--text);margin-bottom:2px}
+
+  /* Do/Don't */
+  .do-card,.dont-card{
+    flex:1;border-radius:6px;overflow:hidden;
+  }
+  .do-card .card-header{background:rgba(139,115,85,0.12);padding:14px 20px;display:flex;align-items:center;gap:10px}
+  .dont-card .card-header{background:rgba(255,60,60,0.08);padding:14px 20px;display:flex;align-items:center;gap:10px}
+  .do-card .card-header span{font-size:14px;font-weight:600;color:var(--gold)}
+  .dont-card .card-header span{font-size:14px;font-weight:600;color:#8a4444}
+  .card-body{background:var(--surface);padding:20px;min-height:180px;display:flex;align-items:center;justify-content:center}
+  .card-list{list-style:none;padding:20px}
+  .card-list li{font-size:14px;font-weight:300;color:var(--text-dim);padding:6px 0;padding-left:20px;position:relative}
+  .card-list li::before{content:'';position:absolute;left:0;top:12px;width:8px;height:8px;border-radius:50%}
+  .do-card .card-list li::before{background:var(--gold)}
+  .dont-card .card-list li::before{background:#8a4444}
+
+  /* Print styles */
+  @media print{
+    body{background:white}
+    .page{page-break-after:always;margin:0;box-shadow:none}
+  }
+</style>
+</head>
+<body>
+
+<!-- ============================================ -->
+<!-- 01 — BRAND OVERVIEW                          -->
+<!-- ============================================ -->
+<div class="page" style="justify-content:center">
+  <!-- Background decoration: large ghost flag -->
+  <svg style="position:absolute;top:50%;left:55%;transform:translate(-50%,-50%)" viewBox="0 0 300 180" width="900" height="540" opacity="0.025">
+    <polygon points="0,0 300,0 253,87 0,87" fill="#f0eee8"/>
+    <polygon points="0,93 253,93 300,180 0,180" fill="#f0eee8"/>
+  </svg>
+
+  <div style="position:relative;z-index:1">
+    <div class="sec-num">01 — Brand Overview</div>
+    <div class="gold-rule"></div>
+
+    <div style="display:flex;align-items:flex-start;gap:40px;margin-top:40px">
+      <svg viewBox="0 0 300 180" width="64" height="38">
+        <polygon points="0,0 300,0 253,87 0,87" fill="#8b7355"/>
+        <polygon points="0,93 253,93 300,180 0,180" fill="#8b7355"/>
+      </svg>
+      <svg viewBox="0 0 4550 882" width="320" height="55" fill="#f0eee8">
+        <g transform="scale(1,-1) translate(0,-881.89)">
+          <path d="M14 606.3H592.74V881.89H14ZM289.59 0V303.15H895.89V578.74H14V0Z"/>
+          <path d="M14 578.74V0H289.59V.19H620.3V0H895.89V578.74ZM289.59 275.78V303.15H620.3V275.78Z" transform="translate(910,0)"/>
+          <path d="M895.89 578.74H14V0H289.59V303.15H895.89Z" transform="translate(1820,0)"/>
+          <path d="M14 578.74V0H289.59V303.15H317.15V0H592.74V303.15H620.3V0H895.89V578.74Z" transform="translate(2730,0)"/>
+          <path d="M14 578.74V0H592.74V275.59H289.59V303.15H620.3V0H895.89V578.74Z" transform="translate(3640,0)"/>
+        </g>
+      </svg>
+    </div>
+
+    <div style="margin-top:64px;max-width:800px">
+      <div class="sec-title" style="font-size:64px;line-height:72px;margin-bottom:32px">We shape sound.</div>
+
+      <div class="gold-rule-full"></div>
+
+      <div class="row" style="margin-top:32px">
+        <div class="col">
+          <div class="label" style="margin-bottom:8px">Name</div>
+          <div style="font-size:20px;font-weight:500;color:var(--text)">Forma</div>
+        </div>
+        <div class="col">
+          <div class="label" style="margin-bottom:8px">Domain</div>
+          <div style="font-size:20px;font-weight:500;color:var(--text)">forma.audio</div>
+        </div>
+        <div class="col">
+          <div class="label" style="margin-bottom:8px">Type</div>
+          <div style="font-size:20px;font-weight:500;color:var(--text)">Audio Solutions Studio</div>
+        </div>
+      </div>
+
+      <div style="margin-top:48px">
+        <div class="label" style="margin-bottom:12px">Services</div>
+        <div style="display:flex;gap:32px;flex-wrap:wrap">
+          <div style="border-left:2px solid var(--gold);padding-left:16px">
+            <div style="font-size:16px;font-weight:500;color:var(--text)">Sound Design</div>
+            <div class="body-sm" style="margin-top:4px">Textures, foley, ambiences, sonic identity</div>
+          </div>
+          <div style="border-left:2px solid var(--gold);padding-left:16px">
+            <div style="font-size:16px;font-weight:500;color:var(--text)">Composition</div>
+            <div class="body-sm" style="margin-top:4px">Original score, adaptive music, themes</div>
+          </div>
+          <div style="border-left:2px solid var(--gold);padding-left:16px">
+            <div style="font-size:16px;font-weight:500;color:var(--text)">Mixing</div>
+            <div class="body-sm" style="margin-top:4px">Spatial audio, stem mixing, dialogue</div>
+          </div>
+          <div style="border-left:2px solid var(--gold);padding-left:16px">
+            <div style="font-size:16px;font-weight:500;color:var(--text)">Mastering</div>
+            <div class="body-sm" style="margin-top:4px">Final polish, loudness, format delivery</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide-num">01 / 12</div>
+</div>
+
+
+<!-- ============================================ -->
+<!-- 02 — LOGO (WORDMARK)                         -->
+<!-- ============================================ -->
+<div class="page">
+  <div class="sec-num">02 — Logo</div>
+  <div class="sec-title">Wordmark</div>
+
+  <!-- Wordmark large on dark -->
+  <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:64px;display:flex;align-items:center;justify-content:center;margin-bottom:32px">
+    <svg viewBox="0 0 4550 882" width="640" height="124" fill="#f0eee8">
+      <g transform="scale(1,-1) translate(0,-881.89)">
+        <path d="M14 606.3H592.74V881.89H14ZM289.59 0V303.15H895.89V578.74H14V0Z"/>
+        <path d="M14 578.74V0H289.59V.19H620.3V0H895.89V578.74ZM289.59 275.78V303.15H620.3V275.78Z" transform="translate(910,0)"/>
+        <path d="M895.89 578.74H14V0H289.59V303.15H895.89Z" transform="translate(1820,0)"/>
+        <path d="M14 578.74V0H289.59V303.15H317.15V0H592.74V303.15H620.3V0H895.89V578.74Z" transform="translate(2730,0)"/>
+        <path d="M14 578.74V0H592.74V275.59H289.59V303.15H620.3V0H895.89V578.74Z" transform="translate(3640,0)"/>
+      </g>
+    </svg>
+  </div>
+  <div class="label" style="text-align:center;margin-bottom:48px">Primary wordmark on dark background</div>
+
+  <!-- Wordmark on light -->
+  <div style="background:#f5f3ef;border-radius:8px;padding:64px;display:flex;align-items:center;justify-content:center;margin-bottom:32px">
+    <svg viewBox="0 0 4550 882" width="640" height="124" fill="#1a1714">
+      <g transform="scale(1,-1) translate(0,-881.89)">
+        <path d="M14 606.3H592.74V881.89H14ZM289.59 0V303.15H895.89V578.74H14V0Z"/>
+        <path d="M14 578.74V0H289.59V.19H620.3V0H895.89V578.74ZM289.59 275.78V303.15H620.3V275.78Z" transform="translate(910,0)"/>
+        <path d="M895.89 578.74H14V0H289.59V303.15H895.89Z" transform="translate(1820,0)"/>
+        <path d="M14 578.74V0H289.59V303.15H317.15V0H592.74V303.15H620.3V0H895.89V578.74Z" transform="translate(2730,0)"/>
+        <path d="M14 578.74V0H592.74V275.59H289.59V303.15H620.3V0H895.89V578.74Z" transform="translate(3640,0)"/>
+      </g>
+    </svg>
+  </div>
+  <div class="label" style="text-align:center;margin-bottom:48px">Wordmark on light background</div>
+
+  <div class="gold-rule-full"></div>
+
+  <div class="row" style="margin-top:24px">
+    <div class="col">
+      <div class="sub-title">Construction</div>
+      <div class="body">The Forma wordmark is set in Crude, a custom display typeface with a blocky, architectural character. It is always used as SVG outlines, never typed in a font. The letterforms are monospaced with even visual weight and carry a utilitarian, structural quality that mirrors the brand's precision-oriented identity.</div>
+    </div>
+    <div class="col">
+      <div class="sub-title">Minimum Sizes</div>
+      <table class="spec-table">
+        <tr><th>Context</th><th>Minimum Width</th></tr>
+        <tr><td>Digital (screen)</td><td class="mono">120px</td></tr>
+        <tr><td>Print</td><td class="mono">30mm</td></tr>
+      </table>
+      <div class="body-sm" style="margin-top:16px;color:var(--text-ghost)">Below these sizes, use the symbol mark only.</div>
+    </div>
+  </div>
+
+  <div class="slide-num">02 / 12</div>
+</div>
+
+
+<!-- ============================================ -->
+<!-- 03 — SYMBOL (FLAG V3)                        -->
+<!-- ============================================ -->
+<div class="page">
+  <div class="sec-num">03 — Symbol</div>
+  <div class="sec-title">Flag V3</div>
+
+  <div class="row">
+    <!-- Symbol large on dark -->
+    <div class="col">
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:64px;display:flex;align-items:center;justify-content:center;margin-bottom:16px">
+        <svg viewBox="0 0 300 180" width="240" height="144">
+          <polygon points="0,0 300,0 253,87 0,87" fill="#f0eee8"/>
+          <polygon points="0,93 253,93 300,180 0,180" fill="#f0eee8"/>
+        </svg>
+      </div>
+      <div class="label" style="text-align:center">White on dark</div>
+    </div>
+    <!-- Symbol gold on dark -->
+    <div class="col">
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:64px;display:flex;align-items:center;justify-content:center;margin-bottom:16px">
+        <svg viewBox="0 0 300 180" width="240" height="144">
+          <polygon points="0,0 300,0 253,87 0,87" fill="#8b7355"/>
+          <polygon points="0,93 253,93 300,180 0,180" fill="#8b7355"/>
+        </svg>
+      </div>
+      <div class="label" style="text-align:center">Gold accent on dark</div>
+    </div>
+    <!-- Symbol on light -->
+    <div class="col">
+      <div style="background:#f5f3ef;border-radius:8px;padding:64px;display:flex;align-items:center;justify-content:center;margin-bottom:16px">
+        <svg viewBox="0 0 300 180" width="240" height="144">
+          <polygon points="0,0 300,0 253,87 0,87" fill="#1a1714"/>
+          <polygon points="0,93 253,93 300,180 0,180" fill="#1a1714"/>
+        </svg>
+      </div>
+      <div class="label" style="text-align:center">Dark on light</div>
+    </div>
+  </div>
+
+  <div class="gold-rule-full"></div>
+
+  <!-- Construction diagram -->
+  <div class="row" style="margin-top:24px">
+    <div class="col" style="flex:1.5">
+      <div class="sub-title">Construction</div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:40px;margin-top:16px">
+        <svg viewBox="0 0 340 220" width="340" height="220">
+          <!-- Construction lines -->
+          <rect x="20" y="20" width="300" height="180" fill="none" stroke="var(--text-ghost)" stroke-width="0.5" stroke-dasharray="4,4"/>
+          <!-- Top half -->
+          <polygon points="20,20 320,20 273,107 20,107" fill="none" stroke="var(--gold)" stroke-width="1.5"/>
+          <!-- Bottom half -->
+          <polygon points="20,113 273,113 320,200 20,200" fill="none" stroke="var(--gold)" stroke-width="1.5"/>
+          <!-- Dimension annotations -->
+          <!-- Width -->
+          <line x1="20" y1="210" x2="320" y2="210" stroke="var(--text-ghost)" stroke-width="0.5"/>
+          <text x="170" y="218" font-family="Space Mono,monospace" font-size="9" fill="var(--text-muted)" text-anchor="middle">300</text>
+          <!-- Height -->
+          <line x1="332" y1="20" x2="332" y2="200" stroke="var(--text-ghost)" stroke-width="0.5"/>
+          <text x="332" y="115" font-family="Space Mono,monospace" font-size="9" fill="var(--text-muted)" text-anchor="middle" transform="rotate(-90,332,115)">180</text>
+          <!-- Gap annotation -->
+          <line x1="10" y1="107" x2="10" y2="113" stroke="var(--gold)" stroke-width="1" opacity="0.6"/>
+          <text x="5" y="112" font-family="Space Mono,monospace" font-size="7" fill="var(--gold)" text-anchor="end">6</text>
+          <!-- Notch depth -->
+          <line x1="273" y1="107" x2="320" y2="107" stroke="var(--text-ghost)" stroke-width="0.5" stroke-dasharray="2,2"/>
+          <text x="296" y="103" font-family="Space Mono,monospace" font-size="7" fill="var(--text-muted)" text-anchor="middle">47</text>
+        </svg>
+      </div>
+    </div>
+    <div class="col">
+      <div class="sub-title">Specifications</div>
+      <table class="spec-table" style="margin-top:16px">
+        <tr><th>Property</th><th>Value</th></tr>
+        <tr><td>Aspect ratio</td><td class="mono">5:3 (300:180)</td></tr>
+        <tr><td>Horizontal gap</td><td class="mono">6 units</td></tr>
+        <tr><td>Notch depth</td><td class="mono">47 units</td></tr>
+        <tr><td>Form</td><td>Rectangle with inward V-notch</td></tr>
+        <tr><td>Divider</td><td>Horizontal, centered</td></tr>
+      </table>
+      <div class="body-sm" style="margin-top:20px">The symbol is a rectangle split into two horizontal halves by a narrow gap. The right edge of each half angles inward to create a V-shaped notch pointing toward the center. This creates a sense of tension and convergence, reflecting the act of shaping raw material into defined form.</div>
+    </div>
+  </div>
+
+  <div class="slide-num">03 / 12</div>
+</div>
+
+
+<!-- ============================================ -->
+<!-- 04 — LOCKUPS                                 -->
+<!-- ============================================ -->
+<div class="page">
+  <div class="sec-num">04 — Lockups</div>
+  <div class="sec-title">Logo Combinations</div>
+
+  <!-- Horizontal lockup -->
+  <div class="sub-title" style="margin-bottom:16px">Horizontal Lockup</div>
+  <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:56px 64px;display:flex;align-items:center;justify-content:center;gap:24px;margin-bottom:16px">
+    <svg viewBox="0 0 300 180" width="52" height="31">
+      <polygon points="0,0 300,0 253,87 0,87" fill="#8b7355"/>
+      <polygon points="0,93 253,93 300,180 0,180" fill="#8b7355"/>
+    </svg>
+    <div style="width:1px;height:36px;background:var(--border)"></div>
+    <svg viewBox="0 0 4550 882" width="300" height="58" fill="#f0eee8">
+      <g transform="scale(1,-1) translate(0,-881.89)">
+        <path d="M14 606.3H592.74V881.89H14ZM289.59 0V303.15H895.89V578.74H14V0Z"/>
+        <path d="M14 578.74V0H289.59V.19H620.3V0H895.89V578.74ZM289.59 275.78V303.15H620.3V275.78Z" transform="translate(910,0)"/>
+        <path d="M895.89 578.74H14V0H289.59V303.15H895.89Z" transform="translate(1820,0)"/>
+        <path d="M14 578.74V0H289.59V303.15H317.15V0H592.74V303.15H620.3V0H895.89V578.74Z" transform="translate(2730,0)"/>
+        <path d="M14 578.74V0H592.74V275.59H289.59V303.15H620.3V0H895.89V578.74Z" transform="translate(3640,0)"/>
+      </g>
+    </svg>
+  </div>
+  <div class="label" style="text-align:center;margin-bottom:48px">Symbol + divider + wordmark. Gap: 24px at standard size.</div>
+
+  <!-- Vertical lockup -->
+  <div class="sub-title" style="margin-bottom:16px">Vertical Lockup</div>
+  <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:64px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;margin-bottom:16px">
+    <svg viewBox="0 0 300 180" width="80" height="48">
+      <polygon points="0,0 300,0 253,87 0,87" fill="#8b7355"/>
+      <polygon points="0,93 253,93 300,180 0,180" fill="#8b7355"/>
+    </svg>
+    <svg viewBox="0 0 4550 882" width="260" height="50" fill="#f0eee8">
+      <g transform="scale(1,-1) translate(0,-881.89)">
+        <path d="M14 606.3H592.74V881.89H14ZM289.59 0V303.15H895.89V578.74H14V0Z"/>
+        <path d="M14 578.74V0H289.59V.19H620.3V0H895.89V578.74ZM289.59 275.78V303.15H620.3V275.78Z" transform="translate(910,0)"/>
+        <path d="M895.89 578.74H14V0H289.59V303.15H895.89Z" transform="translate(1820,0)"/>
+        <path d="M14 578.74V0H289.59V303.15H317.15V0H592.74V303.15H620.3V0H895.89V578.74Z" transform="translate(2730,0)"/>
+        <path d="M14 578.74V0H592.74V275.59H289.59V303.15H620.3V0H895.89V578.74Z" transform="translate(3640,0)"/>
+      </g>
+    </svg>
+  </div>
+  <div class="label" style="text-align:center;margin-bottom:48px">Symbol centered above wordmark. Gap: 24px at standard size.</div>
+
+  <div class="gold-rule-full"></div>
+
+  <!-- Light background variants -->
+  <div class="sub-title" style="margin-top:16px;margin-bottom:16px">Light Background Variants</div>
+  <div class="row">
+    <div class="col">
+      <div style="background:#f5f3ef;border-radius:8px;padding:48px;display:flex;align-items:center;justify-content:center;gap:20px">
+        <svg viewBox="0 0 300 180" width="44" height="26">
+          <polygon points="0,0 300,0 253,87 0,87" fill="#8b7355"/>
+          <polygon points="0,93 253,93 300,180 0,180" fill="#8b7355"/>
+        </svg>
+        <div style="width:1px;height:28px;background:#d4d0c8"></div>
+        <svg viewBox="0 0 4550 882" width="200" height="39" fill="#1a1714">
+          <g transform="scale(1,-1) translate(0,-881.89)">
+            <path d="M14 606.3H592.74V881.89H14ZM289.59 0V303.15H895.89V578.74H14V0Z"/>
+            <path d="M14 578.74V0H289.59V.19H620.3V0H895.89V578.74ZM289.59 275.78V303.15H620.3V275.78Z" transform="translate(910,0)"/>
+            <path d="M895.89 578.74H14V0H289.59V303.15H895.89Z" transform="translate(1820,0)"/>
+            <path d="M14 578.74V0H289.59V303.15H317.15V0H592.74V303.15H620.3V0H895.89V578.74Z" transform="translate(2730,0)"/>
+            <path d="M14 578.74V0H592.74V275.59H289.59V303.15H620.3V0H895.89V578.74Z" transform="translate(3640,0)"/>
+          </g>
+        </svg>
+      </div>
+    </div>
+    <div class="col">
+      <div style="background:#f5f3ef;border-radius:8px;padding:48px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px">
+        <svg viewBox="0 0 300 180" width="56" height="34">
+          <polygon points="0,0 300,0 253,87 0,87" fill="#8b7355"/>
+          <polygon points="0,93 253,93 300,180 0,180" fill="#8b7355"/>
+        </svg>
+        <svg viewBox="0 0 4550 882" width="180" height="35" fill="#1a1714">
+          <g transform="scale(1,-1) translate(0,-881.89)">
+            <path d="M14 606.3H592.74V881.89H14ZM289.59 0V303.15H895.89V578.74H14V0Z"/>
+            <path d="M14 578.74V0H289.59V.19H620.3V0H895.89V578.74ZM289.59 275.78V303.15H620.3V275.78Z" transform="translate(910,0)"/>
+            <path d="M895.89 578.74H14V0H289.59V303.15H895.89Z" transform="translate(1820,0)"/>
+            <path d="M14 578.74V0H289.59V303.15H317.15V0H592.74V303.15H620.3V0H895.89V578.74Z" transform="translate(2730,0)"/>
+            <path d="M14 578.74V0H592.74V275.59H289.59V303.15H620.3V0H895.89V578.74Z" transform="translate(3640,0)"/>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:24px">
+    <div class="sub-title">Gap Rules</div>
+    <table class="spec-table">
+      <tr><th>Lockup</th><th>Gap</th><th>Notes</th></tr>
+      <tr><td>Horizontal</td><td class="mono">symbol height &times; 0.5</td><td>Optical divider bar centered vertically</td></tr>
+      <tr><td>Vertical</td><td class="mono">symbol height &times; 0.5</td><td>No divider bar; whitespace only</td></tr>
+    </table>
+  </div>
+
+  <div class="slide-num">04 / 12</div>
+</div>
+
+
+<!-- ============================================ -->
+<!-- 05 — COLOR SYSTEM                            -->
+<!-- ============================================ -->
+<div class="page">
+  <div class="sec-num">05 — Color System</div>
+  <div class="sec-title">Palette A — Gold <span style="font-size:20px;font-weight:300;color:var(--text-muted);margin-left:8px">Default</span></div>
+
+  <!-- Primary swatches row -->
+  <div class="swatch-row" style="margin-bottom:40px">
+    <div class="swatch-item">
+      <div class="swatch" style="background:#0c0c0e"></div>
+      <div class="swatch-name">Black</div>
+      <div class="swatch-label">Primary BG</div>
+      <div class="swatch-hex">#0c0c0e</div>
+    </div>
+    <div class="swatch-item">
+      <div class="swatch" style="background:#f0eee8;border-color:rgba(0,0,0,0.1)"></div>
+      <div class="swatch-name">White</div>
+      <div class="swatch-label">Primary Text</div>
+      <div class="swatch-hex">#f0eee8</div>
+    </div>
+    <div class="swatch-item">
+      <div class="swatch" style="background:#8b7355"></div>
+      <div class="swatch-name">Gold</div>
+      <div class="swatch-label">Accent</div>
+      <div class="swatch-hex">#8b7355</div>
+    </div>
+    <div class="swatch-item">
+      <div class="swatch" style="background:#141414"></div>
+      <div class="swatch-name">Surface</div>
+      <div class="swatch-label">Cards, panels</div>
+      <div class="swatch-hex">#141414</div>
+    </div>
+    <div class="swatch-item">
+      <div class="swatch" style="background:#1a1a1a"></div>
+      <div class="swatch-name">Surface Light</div>
+      <div class="swatch-label">Elevated surface</div>
+      <div class="swatch-hex">#1a1a1a</div>
+    </div>
+  </div>
+
+  <!-- Secondary swatches -->
+  <div class="swatch-row" style="margin-bottom:40px">
+    <div class="swatch-item">
+      <div class="swatch" style="background:#1e1e1e"></div>
+      <div class="swatch-name">Border</div>
+      <div class="swatch-hex">#1e1e1e</div>
+    </div>
+    <div class="swatch-item">
+      <div class="swatch" style="background:#8a8a8a"></div>
+      <div class="swatch-name">Text Dim</div>
+      <div class="swatch-hex">#8a8a8a</div>
+    </div>
+    <div class="swatch-item">
+      <div class="swatch" style="background:#6b6b6b"></div>
+      <div class="swatch-name">Text Muted</div>
+      <div class="swatch-hex">#6b6b6b</div>
+    </div>
+    <div class="swatch-item">
+      <div class="swatch" style="background:#3a3a3a"></div>
+      <div class="swatch-name">Text Ghost</div>
+      <div class="swatch-hex">#3a3a3a</div>
+    </div>
+    <div class="swatch-item">
+      <div class="swatch" style="background:rgba(139,115,85,0.15);border-color:rgba(139,115,85,0.2)"></div>
+      <div class="swatch-name">Gold Dim</div>
+      <div class="swatch-hex">rgba(139,115,85,0.15)</div>
+    </div>
+  </div>
+
+  <div class="gold-rule-full"></div>
+
+  <!-- Palette B -->
+  <div class="sec-title-sm" style="margin-top:24px">Palette B — Steel <span style="font-size:18px;font-weight:300;color:var(--text-muted);margin-left:8px">Alternative</span></div>
+
+  <div class="swatch-row" style="margin-bottom:32px">
+    <div class="swatch-item">
+      <div class="swatch" style="background:#A1AAC8"></div>
+      <div class="swatch-name">Steel Blue</div>
+      <div class="swatch-label">Replaces Gold</div>
+      <div class="swatch-hex">#A1AAC8</div>
+    </div>
+    <div class="swatch-item">
+      <div class="swatch" style="background:#7a8199"></div>
+      <div class="swatch-name">Steel Dim</div>
+      <div class="swatch-hex">#7a8199</div>
+    </div>
+    <div class="swatch-item">
+      <div class="swatch" style="background:#3d4155"></div>
+      <div class="swatch-name">Steel Ghost</div>
+      <div class="swatch-hex">#3d4155</div>
+    </div>
+  </div>
+
+  <!-- Rules -->
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:24px 32px;display:flex;gap:32px;align-items:center">
+    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="var(--gold)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    <div class="body" style="color:var(--text)">Never mix Palette A (Gold) and Palette B (Steel) in the same material. Choose one palette per deliverable and apply it consistently throughout.</div>
+  </div>
+
+  <div class="gold-rule-full"></div>
+
+  <!-- Light mode -->
+  <div class="sub-title" style="margin-bottom:16px">Light Mode <span style="font-size:12px;font-weight:300;color:var(--text-muted);text-transform:none;letter-spacing:0">Minimal use</span></div>
+  <div class="row">
+    <div class="swatch-item">
+      <div class="swatch" style="background:#f5f3ef;border-color:rgba(0,0,0,0.08)"></div>
+      <div class="swatch-name">Light BG</div>
+      <div class="swatch-hex">#f5f3ef</div>
+    </div>
+    <div class="swatch-item">
+      <div class="swatch" style="background:#1a1714"></div>
+      <div class="swatch-name">Light Text</div>
+      <div class="swatch-hex">#1a1714</div>
+    </div>
+    <div class="swatch-item">
+      <div class="swatch" style="background:#8b7355"></div>
+      <div class="swatch-name">Gold</div>
+      <div class="swatch-label">Unchanged</div>
+      <div class="swatch-hex">#8b7355</div>
+    </div>
+  </div>
+
+  <div class="slide-num">05 / 12</div>
+</div>
+
+
+<!-- ============================================ -->
+<!-- 06 — TYPOGRAPHY                              -->
+<!-- ============================================ -->
+<div class="page">
+  <div class="sec-num">06 — Typography</div>
+  <div class="sec-title">Type System</div>
+
+  <!-- Space Grotesk -->
+  <div class="row" style="margin-bottom:48px">
+    <div class="col" style="flex:1.2">
+      <div class="label" style="margin-bottom:24px">Space Grotesk</div>
+
+      <div style="font-size:52px;font-weight:700;line-height:56px;letter-spacing:-0.02em;margin-bottom:8px">Heading Bold</div>
+      <div class="body-sm" style="margin-bottom:32px">700 weight / -0.02em tracking / Headings, titles</div>
+
+      <div style="font-size:28px;font-weight:600;line-height:36px;letter-spacing:-0.01em;margin-bottom:8px">Subheading Semibold</div>
+      <div class="body-sm" style="margin-bottom:32px">600 weight / -0.01em tracking / Section titles, callouts</div>
+
+      <div style="font-size:16px;font-weight:300;line-height:26px;color:var(--text-dim);margin-bottom:8px">Body text uses a light weight that keeps paragraphs airy and readable. It creates a measured, calm reading experience across longer passages.</div>
+      <div class="body-sm">300 weight / 0 tracking / Body copy, descriptions</div>
+    </div>
+
+    <div class="col" style="flex:0.8">
+      <div class="label" style="margin-bottom:24px">Type Scale</div>
+      <table class="spec-table">
+        <tr><th>Role</th><th>Size</th><th>Weight</th></tr>
+        <tr><td>Display</td><td class="mono">52-64px</td><td class="mono">700</td></tr>
+        <tr><td>H1</td><td class="mono">48px</td><td class="mono">700</td></tr>
+        <tr><td>H2</td><td class="mono">36px</td><td class="mono">700</td></tr>
+        <tr><td>H3</td><td class="mono">28px</td><td class="mono">600</td></tr>
+        <tr><td>H4</td><td class="mono">20px</td><td class="mono">600</td></tr>
+        <tr><td>Body</td><td class="mono">15-16px</td><td class="mono">300</td></tr>
+        <tr><td>Small</td><td class="mono">13px</td><td class="mono">300</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="gold-rule-full"></div>
+
+  <!-- Space Mono -->
+  <div class="row" style="margin-top:32px;margin-bottom:40px">
+    <div class="col">
+      <div class="label" style="margin-bottom:24px">Space Mono</div>
+      <div style="font-family:'Space Mono',monospace;font-size:32px;font-weight:700;margin-bottom:8px">DATA & NUMBERS</div>
+      <div class="body-sm" style="margin-bottom:24px">700 weight / Labels, data displays, section numbers</div>
+      <div style="font-family:'Space Mono',monospace;font-size:14px;font-weight:400;color:var(--text-dim);line-height:22px;margin-bottom:8px">01 — Brand Overview &nbsp;&nbsp; 48kHz / 24bit &nbsp;&nbsp; 05 / 12</div>
+      <div class="body-sm">400 weight / Metadata, timestamps, counters, slide numbers</div>
+    </div>
+    <div class="col">
+      <div class="label" style="margin-bottom:24px">Crude <span style="font-size:10px;color:var(--text-ghost);text-transform:none;letter-spacing:0">(Display only)</span></div>
+      <div style="margin-top:8px">
+        <svg viewBox="0 0 4550 882" width="280" height="54" fill="var(--text)">
+          <g transform="scale(1,-1) translate(0,-881.89)">
+            <path d="M14 606.3H592.74V881.89H14ZM289.59 0V303.15H895.89V578.74H14V0Z"/>
+            <path d="M14 578.74V0H289.59V.19H620.3V0H895.89V578.74ZM289.59 275.78V303.15H620.3V275.78Z" transform="translate(910,0)"/>
+            <path d="M895.89 578.74H14V0H289.59V303.15H895.89Z" transform="translate(1820,0)"/>
+            <path d="M14 578.74V0H289.59V303.15H317.15V0H592.74V303.15H620.3V0H895.89V578.74Z" transform="translate(2730,0)"/>
+            <path d="M14 578.74V0H592.74V275.59H289.59V303.15H620.3V0H895.89V578.74Z" transform="translate(3640,0)"/>
+          </g>
+        </svg>
+      </div>
+      <div class="body-sm" style="margin-top:16px">Crude is used exclusively for the Forma wordmark. It is not a text font and must never be used for body copy, headings, or UI elements. Always render as SVG outlines.</div>
+    </div>
+  </div>
+
+  <div class="gold-rule-full"></div>
+
+  <div style="display:flex;gap:32px;margin-top:24px">
+    <div style="flex:1;border-left:2px solid var(--gold);padding-left:20px">
+      <div style="font-size:14px;font-weight:600;color:var(--text);margin-bottom:8px">Hierarchy Principle</div>
+      <div class="body-sm">Size and weight do the heavy lifting. Bold for primary, semibold for secondary, light for body. Color variations (dim, muted, ghost) add depth without requiring additional weights.</div>
+    </div>
+    <div style="flex:1;border-left:2px solid var(--gold);padding-left:20px">
+      <div style="font-size:14px;font-weight:600;color:var(--text);margin-bottom:8px">Tracking</div>
+      <div class="body-sm">Large display text uses negative tracking (-0.02em to -0.03em) for visual density. Labels and small caps use positive tracking (0.06em to 0.12em) for readability.</div>
+    </div>
+    <div style="flex:1;border-left:2px solid var(--gold);padding-left:20px">
+      <div style="font-size:14px;font-weight:600;color:var(--text);margin-bottom:8px">Mixing Fonts</div>
+      <div class="body-sm">Space Grotesk and Space Mono share the same x-height and overall rhythm, making them natural companions. Crude stands apart and should never be combined inline with either.</div>
+    </div>
+  </div>
+
+  <div class="slide-num">06 / 12</div>
+</div>
+
+
+<!-- ============================================ -->
+<!-- 07 — CLEAR SPACE & SIZING                    -->
+<!-- ============================================ -->
+<div class="page">
+  <div class="sec-num">07 — Clear Space & Sizing</div>
+  <div class="sec-title">Protection Zone</div>
+
+  <div class="row">
+    <div class="col" style="flex:1.4">
+      <!-- Clear space diagram: Symbol -->
+      <div class="sub-title" style="margin-bottom:16px">Symbol Clear Space</div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:40px;display:flex;align-items:center;justify-content:center">
+        <svg viewBox="0 0 440 360" width="400" height="327">
+          <!-- Outer zone -->
+          <rect x="20" y="20" width="400" height="320" fill="none" stroke="var(--text-ghost)" stroke-width="0.5" stroke-dasharray="4,4"/>
+          <!-- Inner zone showing clear space -->
+          <rect x="90" y="90" width="260" height="180" fill="none" stroke="var(--gold)" stroke-width="1" stroke-dasharray="6,3" opacity="0.4"/>
+          <!-- Symbol -->
+          <g transform="translate(110,100)">
+            <polygon points="0,0 220,0 185.5,64 0,64" fill="var(--gold)" opacity="0.8"/>
+            <polygon points="0,68 185.5,68 220,132 0,132" fill="var(--gold)" opacity="0.8"/>
+          </g>
+          <!-- Clear space annotations: top -->
+          <line x1="220" y1="30" x2="220" y2="90" stroke="var(--gold)" stroke-width="0.5" opacity="0.5"/>
+          <text x="228" y="65" font-family="Space Mono,monospace" font-size="9" fill="var(--gold)">H</text>
+          <!-- Clear space annotations: left -->
+          <line x1="30" y1="166" x2="90" y2="166" stroke="var(--gold)" stroke-width="0.5" opacity="0.5"/>
+          <text x="50" y="160" font-family="Space Mono,monospace" font-size="9" fill="var(--gold)">H</text>
+          <!-- Clear space annotations: right -->
+          <line x1="350" y1="166" x2="410" y2="166" stroke="var(--gold)" stroke-width="0.5" opacity="0.5"/>
+          <text x="370" y="160" font-family="Space Mono,monospace" font-size="9" fill="var(--gold)">H</text>
+          <!-- Clear space annotations: bottom -->
+          <line x1="220" y1="270" x2="220" y2="330" stroke="var(--gold)" stroke-width="0.5" opacity="0.5"/>
+          <text x="228" y="305" font-family="Space Mono,monospace" font-size="9" fill="var(--gold)">H</text>
+          <!-- H = symbol height label -->
+          <text x="220" y="350" font-family="Space Mono,monospace" font-size="10" fill="var(--text-muted)" text-anchor="middle">H = symbol height</text>
+        </svg>
+      </div>
+    </div>
+
+    <div class="col" style="flex:1.4">
+      <!-- Clear space diagram: Horizontal lockup -->
+      <div class="sub-title" style="margin-bottom:16px">Lockup Clear Space</div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:40px;display:flex;align-items:center;justify-content:center">
+        <svg viewBox="0 0 500 260" width="400" height="208">
+          <!-- Outer zone -->
+          <rect x="10" y="10" width="480" height="240" fill="none" stroke="var(--text-ghost)" stroke-width="0.5" stroke-dasharray="4,4"/>
+          <!-- Inner zone -->
+          <rect x="50" y="55" width="400" height="150" fill="none" stroke="var(--gold)" stroke-width="1" stroke-dasharray="6,3" opacity="0.4"/>
+          <!-- Symbol small -->
+          <g transform="translate(70,95)">
+            <polygon points="0,0 52,0 44,18 0,18" fill="var(--gold)" opacity="0.8"/>
+            <polygon points="0,20 44,20 52,38 0,38" fill="var(--gold)" opacity="0.8"/>
+          </g>
+          <!-- Divider -->
+          <line x1="138" y1="100" x2="138" y2="130" stroke="var(--border)" stroke-width="1"/>
+          <!-- Wordmark placeholder rect -->
+          <rect x="155" y="104" width="260" height="22" rx="2" fill="var(--text)" opacity="0.15"/>
+          <!-- Clear space annotations -->
+          <line x1="250" y1="18" x2="250" y2="55" stroke="var(--gold)" stroke-width="0.5" opacity="0.5"/>
+          <text x="260" y="42" font-family="Space Mono,monospace" font-size="9" fill="var(--gold)">H</text>
+          <text x="250" y="248" font-family="Space Mono,monospace" font-size="10" fill="var(--text-muted)" text-anchor="middle">H = symbol height within lockup</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="gold-rule-full"></div>
+
+  <div class="sub-title" style="margin-top:16px;margin-bottom:16px">Minimum Sizes</div>
+
+  <div class="row">
+    <div class="col" style="flex:2">
+      <table class="spec-table">
+        <tr><th>Asset</th><th>Digital (min width)</th><th>Print (min width)</th><th>Notes</th></tr>
+        <tr><td>Wordmark</td><td class="mono">120px</td><td class="mono">30mm</td><td>Below this, use symbol only</td></tr>
+        <tr><td>Symbol</td><td class="mono">24px</td><td class="mono">6mm</td><td>Favicons, app icons</td></tr>
+        <tr><td>Horizontal lockup</td><td class="mono">200px</td><td class="mono">50mm</td><td>Full lockup</td></tr>
+        <tr><td>Vertical lockup</td><td class="mono">140px</td><td class="mono">35mm</td><td>Full lockup</td></tr>
+      </table>
+    </div>
+    <div class="col">
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:24px;display:flex;flex-direction:column;gap:20px;align-items:flex-start">
+        <div class="label" style="margin-bottom:4px">Size comparison</div>
+        <!-- Tiny -->
+        <div style="display:flex;align-items:center;gap:12px">
+          <svg viewBox="0 0 300 180" width="24" height="14"><polygon points="0,0 300,0 253,87 0,87" fill="var(--gold)"/><polygon points="0,93 253,93 300,180 0,180" fill="var(--gold)"/></svg>
+          <span class="mono" style="font-size:10px;color:var(--text-ghost)">24px — minimum</span>
+        </div>
+        <!-- Small -->
+        <div style="display:flex;align-items:center;gap:12px">
+          <svg viewBox="0 0 300 180" width="40" height="24"><polygon points="0,0 300,0 253,87 0,87" fill="var(--gold)"/><polygon points="0,93 253,93 300,180 0,180" fill="var(--gold)"/></svg>
+          <span class="mono" style="font-size:10px;color:var(--text-ghost)">40px — small UI</span>
+        </div>
+        <!-- Medium -->
+        <div style="display:flex;align-items:center;gap:12px">
+          <svg viewBox="0 0 300 180" width="64" height="38"><polygon points="0,0 300,0 253,87 0,87" fill="var(--gold)"/><polygon points="0,93 253,93 300,180 0,180" fill="var(--gold)"/></svg>
+          <span class="mono" style="font-size:10px;color:var(--text-ghost)">64px — standard</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide-num">07 / 12</div>
+</div>
+
+
+<!-- ============================================ -->
+<!-- 08 — GRAPHIC PATTERNS                        -->
+<!-- ============================================ -->
+<div class="page">
+  <div class="sec-num">08 — Graphic Patterns</div>
+  <div class="sec-title">Texture Library</div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;margin-bottom:40px">
+
+    <!-- Square Wave Pattern -->
+    <div>
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;height:280px;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative">
+        <svg viewBox="0 0 400 280" width="400" height="280">
+          <!-- Square wave 1 -->
+          <path d="M0,100 L40,100 L40,70 L80,70 L80,100 L120,100 L120,70 L160,70 L160,100 L200,100 L200,70 L240,70 L240,100 L280,100 L280,70 L320,70 L320,100 L360,100 L360,70 L400,70" fill="none" stroke="#8b7355" stroke-width="2" opacity="0.5"/>
+          <!-- Square wave 2 -->
+          <path d="M20,140 L60,140 L60,110 L100,110 L100,140 L140,140 L140,110 L180,110 L180,140 L220,140 L220,110 L260,110 L260,140 L300,140 L300,110 L340,110 L340,140 L380,140 L380,110" fill="none" stroke="#8b7355" stroke-width="1.5" opacity="0.35"/>
+          <!-- Square wave 3 -->
+          <path d="M10,180 L50,180 L50,150 L90,150 L90,180 L130,180 L130,150 L170,150 L170,180 L210,180 L210,150 L250,150 L250,180 L290,180 L290,150 L330,150 L330,180 L370,180 L370,150" fill="none" stroke="#8b7355" stroke-width="1" opacity="0.2"/>
+          <!-- Square wave 4 (faint) -->
+          <path d="M30,220 L70,220 L70,190 L110,190 L110,220 L150,220 L150,190 L190,190 L190,220 L230,220 L230,190 L270,190 L270,220 L310,220 L310,190 L350,190 L350,220 L390,220" fill="none" stroke="#8b7355" stroke-width="0.75" opacity="0.1"/>
+        </svg>
+      </div>
+      <div class="sub-title" style="margin-top:16px;font-size:14px">Square Wave</div>
+      <div class="body-sm">Stacked horizontal square waves with decreasing opacity. Represents digital audio signals. Use for backgrounds, section dividers, and presentation decks.</div>
+    </div>
+
+    <!-- Dot Grid Pattern -->
+    <div>
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;height:280px;overflow:hidden;position:relative">
+        <div style="position:absolute;inset:0;background-image:radial-gradient(circle,#8b7355 1.2px,transparent 1.2px);background-size:24px 24px;opacity:0.25"></div>
+      </div>
+      <div class="sub-title" style="margin-top:16px;font-size:14px">Dot Grid</div>
+      <div class="body-sm">Regular dot grid pattern using gold accent at low opacity. Suggests precision, measurement, and studio craft. Use for subtle background texture.</div>
+    </div>
+
+    <!-- Crude Blocks Pattern -->
+    <div>
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;height:280px;display:flex;align-items:center;justify-content:center;overflow:hidden">
+        <svg viewBox="0 0 400 280" width="400" height="280">
+          <!-- Row 1 -->
+          <rect x="20" y="30" width="60" height="40" fill="#8b7355" opacity="0.12"/>
+          <rect x="90" y="30" width="100" height="40" fill="#8b7355" opacity="0.08"/>
+          <rect x="200" y="30" width="40" height="40" fill="#8b7355" opacity="0.15"/>
+          <rect x="250" y="30" width="130" height="40" fill="#8b7355" opacity="0.06"/>
+          <!-- Row 2 -->
+          <rect x="20" y="80" width="120" height="40" fill="#8b7355" opacity="0.06"/>
+          <rect x="150" y="80" width="80" height="40" fill="#8b7355" opacity="0.12"/>
+          <rect x="240" y="80" width="60" height="40" fill="#8b7355" opacity="0.1"/>
+          <rect x="310" y="80" width="70" height="40" fill="#8b7355" opacity="0.04"/>
+          <!-- Row 3 -->
+          <rect x="20" y="130" width="40" height="40" fill="#8b7355" opacity="0.1"/>
+          <rect x="70" y="130" width="140" height="40" fill="#8b7355" opacity="0.06"/>
+          <rect x="220" y="130" width="90" height="40" fill="#8b7355" opacity="0.14"/>
+          <rect x="320" y="130" width="60" height="40" fill="#8b7355" opacity="0.08"/>
+          <!-- Row 4 -->
+          <rect x="20" y="180" width="90" height="40" fill="#8b7355" opacity="0.08"/>
+          <rect x="120" y="180" width="50" height="40" fill="#8b7355" opacity="0.12"/>
+          <rect x="180" y="180" width="120" height="40" fill="#8b7355" opacity="0.05"/>
+          <rect x="310" y="180" width="70" height="40" fill="#8b7355" opacity="0.1"/>
+          <!-- Row 5 -->
+          <rect x="20" y="230" width="150" height="40" fill="#8b7355" opacity="0.04"/>
+          <rect x="180" y="230" width="70" height="40" fill="#8b7355" opacity="0.1"/>
+          <rect x="260" y="230" width="40" height="40" fill="#8b7355" opacity="0.12"/>
+          <rect x="310" y="230" width="70" height="40" fill="#8b7355" opacity="0.06"/>
+        </svg>
+      </div>
+      <div class="sub-title" style="margin-top:16px;font-size:14px">Crude Blocks</div>
+      <div class="body-sm">Irregular rectangular blocks at varying opacities. Echoes the Crude typeface geometry. Use for print collateral backgrounds, business cards, and packaging.</div>
+    </div>
+  </div>
+
+  <div class="gold-rule-full"></div>
+
+  <div class="row" style="margin-top:24px">
+    <div class="col">
+      <div class="sub-title" style="font-size:14px">Pattern Usage Rules</div>
+      <div class="body-sm" style="margin-top:8px">Patterns serve as secondary visual texture. They should never compete with the logo, wordmark, or primary content. Keep opacity below 25% when used as background fills. Patterns can be used at higher contrast in isolated decorative moments (edges, corners, section breaks).</div>
+    </div>
+    <div class="col">
+      <div class="sub-title" style="font-size:14px">Color Application</div>
+      <div class="body-sm" style="margin-top:8px">In Palette A materials, patterns use gold (#8b7355) or white (#f0eee8) at reduced opacity. In Palette B materials, substitute steel (#A1AAC8). On light backgrounds, patterns use the dark text color (#1a1714) at reduced opacity.</div>
+    </div>
+  </div>
+
+  <div class="slide-num">08 / 12</div>
+</div>
+
+
+<!-- ============================================ -->
+<!-- 09 — APPLICATIONS                            -->
+<!-- ============================================ -->
+<div class="page">
+  <div class="sec-num">09 — Applications</div>
+  <div class="sec-title">Brand in Use</div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-bottom:40px">
+
+    <!-- Business Card Front -->
+    <div>
+      <div class="label" style="margin-bottom:12px">Business Card — Front</div>
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:6px;width:100%;aspect-ratio:1.75;position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px">
+        <svg viewBox="0 0 300 180" width="40" height="24">
+          <polygon points="0,0 300,0 253,87 0,87" fill="#8b7355"/>
+          <polygon points="0,93 253,93 300,180 0,180" fill="#8b7355"/>
+        </svg>
+        <div style="font-family:'Space Mono',monospace;font-size:11px;color:var(--text-dim);letter-spacing:0.15em">forma.audio</div>
+      </div>
+    </div>
+
+    <!-- Business Card Back -->
+    <div>
+      <div class="label" style="margin-bottom:12px">Business Card — Back</div>
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:6px;width:100%;aspect-ratio:1.75;position:relative;overflow:hidden;display:flex;align-items:flex-end;padding:28px">
+        <!-- Crude blocks background -->
+        <svg viewBox="0 0 600 340" style="position:absolute;top:0;left:0;width:100%;height:100%">
+          <rect x="0" y="0" width="120" height="60" fill="#8b7355" opacity="0.04"/>
+          <rect x="130" y="0" width="200" height="60" fill="#8b7355" opacity="0.06"/>
+          <rect x="340" y="0" width="80" height="60" fill="#8b7355" opacity="0.03"/>
+          <rect x="430" y="0" width="170" height="60" fill="#8b7355" opacity="0.05"/>
+          <rect x="0" y="70" width="180" height="60" fill="#8b7355" opacity="0.03"/>
+          <rect x="190" y="70" width="100" height="60" fill="#8b7355" opacity="0.06"/>
+          <rect x="300" y="70" width="150" height="60" fill="#8b7355" opacity="0.04"/>
+          <rect x="460" y="70" width="140" height="60" fill="#8b7355" opacity="0.03"/>
+          <rect x="0" y="140" width="80" height="60" fill="#8b7355" opacity="0.05"/>
+          <rect x="90" y="140" width="250" height="60" fill="#8b7355" opacity="0.03"/>
+          <rect x="350" y="140" width="120" height="60" fill="#8b7355" opacity="0.06"/>
+          <rect x="480" y="140" width="120" height="60" fill="#8b7355" opacity="0.04"/>
+        </svg>
+        <div style="position:relative;z-index:1">
+          <div style="font-size:14px;font-weight:500;color:var(--text);margin-bottom:4px">Marco Raza</div>
+          <div style="font-family:'Space Mono',monospace;font-size:10px;color:var(--text-muted);letter-spacing:0.05em">Sound Designer</div>
+          <div style="font-family:'Space Mono',monospace;font-size:10px;color:var(--text-ghost);margin-top:8px">hello@forma.audio</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Social Avatar -->
+    <div>
+      <div class="label" style="margin-bottom:12px">Social Avatar — 400 &times; 400</div>
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:6px;width:200px;height:200px;display:flex;align-items:center;justify-content:center">
+        <svg viewBox="0 0 300 180" width="80" height="48">
+          <polygon points="0,0 300,0 253,87 0,87" fill="#f0eee8"/>
+          <polygon points="0,93 253,93 300,180 0,180" fill="#f0eee8"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Social Cover -->
+    <div>
+      <div class="label" style="margin-bottom:12px">Social Cover — 1500 &times; 500</div>
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:6px;width:100%;aspect-ratio:3;display:flex;align-items:center;padding:0 40px;position:relative;overflow:hidden">
+        <!-- Background pattern -->
+        <svg viewBox="0 0 800 260" style="position:absolute;right:0;top:0;width:50%;height:100%;opacity:0.06">
+          <path d="M0,80 L40,80 L40,50 L80,50 L80,80 L120,80 L120,50 L160,50 L160,80 L200,80 L200,50 L240,50 L240,80 L280,80 L280,50 L320,50 L320,80 L360,80 L360,50 L400,50 L400,80 L440,80 L440,50 L480,50 L480,80 L520,80 L520,50 L560,50 L560,80 L600,80 L600,50 L640,50 L640,80 L680,80 L680,50 L720,50 L720,80 L760,80 L760,50 L800,50" fill="none" stroke="#8b7355" stroke-width="3"/>
+          <path d="M20,140 L60,140 L60,110 L100,110 L100,140 L140,140 L140,110 L180,110 L180,140 L220,140 L220,110 L260,110 L260,140 L300,140 L300,110 L340,110 L340,140 L380,140 L380,110 L420,110 L420,140 L460,140 L460,110 L500,110 L500,140 L540,140 L540,110 L580,110 L580,140 L620,140 L620,110 L660,110 L660,140 L700,140 L700,110 L740,110 L740,140 L780,140" fill="none" stroke="#8b7355" stroke-width="2"/>
+          <path d="M10,200 L50,200 L50,170 L90,170 L90,200 L130,200 L130,170 L170,170 L170,200 L210,200 L210,170 L250,170 L250,200 L290,200 L290,170 L330,170 L330,200 L370,200 L370,170 L410,170 L410,200 L450,200 L450,170 L490,170 L490,200 L530,200 L530,170 L570,170 L570,200 L610,200 L610,170 L650,170 L650,200 L690,200 L690,170 L730,170 L730,200 L770,200" fill="none" stroke="#8b7355" stroke-width="1.5"/>
+        </svg>
+        <div style="display:flex;align-items:center;gap:16px;position:relative;z-index:1">
+          <svg viewBox="0 0 300 180" width="36" height="22">
+            <polygon points="0,0 300,0 253,87 0,87" fill="#8b7355"/>
+            <polygon points="0,93 253,93 300,180 0,180" fill="#8b7355"/>
+          </svg>
+          <svg viewBox="0 0 4550 882" width="180" height="35" fill="#f0eee8">
+            <g transform="scale(1,-1) translate(0,-881.89)">
+              <path d="M14 606.3H592.74V881.89H14ZM289.59 0V303.15H895.89V578.74H14V0Z"/>
+              <path d="M14 578.74V0H289.59V.19H620.3V0H895.89V578.74ZM289.59 275.78V303.15H620.3V275.78Z" transform="translate(910,0)"/>
+              <path d="M895.89 578.74H14V0H289.59V303.15H895.89Z" transform="translate(1820,0)"/>
+              <path d="M14 578.74V0H289.59V303.15H317.15V0H592.74V303.15H620.3V0H895.89V578.74Z" transform="translate(2730,0)"/>
+              <path d="M14 578.74V0H592.74V275.59H289.59V303.15H620.3V0H895.89V578.74Z" transform="translate(3640,0)"/>
+            </g>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="gold-rule-full"></div>
+
+  <!-- Email Signature -->
+  <div class="sub-title" style="margin-top:16px;margin-bottom:16px">Email Signature</div>
+  <div style="background:white;border-radius:8px;padding:32px 40px;max-width:480px">
+    <table cellpadding="0" cellspacing="0" style="font-family:Arial,Helvetica,sans-serif">
+      <tr>
+        <td style="padding-right:20px;border-right:2px solid #8b7355;vertical-align:top">
+          <svg viewBox="0 0 300 180" width="36" height="22">
+            <polygon points="0,0 300,0 253,87 0,87" fill="#8b7355"/>
+            <polygon points="0,93 253,93 300,180 0,180" fill="#8b7355"/>
+          </svg>
+        </td>
+        <td style="padding-left:20px;vertical-align:top">
+          <div style="font-size:14px;font-weight:600;color:#1a1714;margin-bottom:2px">Marco Raza</div>
+          <div style="font-size:11px;color:#8b7355;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px">Sound Designer</div>
+          <div style="font-size:12px;color:#6b6b6b;line-height:18px">
+            hello@forma.audio<br>
+            forma.audio
+          </div>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <div class="body-sm" style="margin-top:12px;color:var(--text-ghost)">Inline HTML email signature. Uses system fonts (Arial/Helvetica) for email client compatibility.</div>
+
+  <div class="slide-num">09 / 12</div>
+</div>
+
+
+<!-- ============================================ -->
+<!-- 10 — DO'S AND DON'TS                         -->
+<!-- ============================================ -->
+<div class="page">
+  <div class="sec-num">10 — Usage Guidelines</div>
+  <div class="sec-title">Do's and Don'ts</div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:24px">
+
+    <!-- DO: Correct usage -->
+    <div class="do-card">
+      <div class="card-header">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="8" stroke="#8b7355" stroke-width="1.5"/><polyline points="5.5,9 8,11.5 12.5,6.5" fill="none" stroke="#8b7355" stroke-width="1.5"/></svg>
+        <span>Use provided files</span>
+      </div>
+      <div class="card-body">
+        <svg viewBox="0 0 300 180" width="80" height="48">
+          <polygon points="0,0 300,0 253,87 0,87" fill="#f0eee8"/>
+          <polygon points="0,93 253,93 300,180 0,180" fill="#f0eee8"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- DON'T: Recreate in other fonts -->
+    <div class="dont-card">
+      <div class="card-header">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="8" stroke="#8a4444" stroke-width="1.5"/><line x1="6" y1="6" x2="12" y2="12" stroke="#8a4444" stroke-width="1.5"/><line x1="12" y1="6" x2="6" y2="12" stroke="#8a4444" stroke-width="1.5"/></svg>
+        <span>Don't recreate in other fonts</span>
+      </div>
+      <div class="card-body">
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:36px;font-weight:700;color:var(--text);opacity:0.5;text-decoration:line-through">forma</div>
+      </div>
+    </div>
+
+    <!-- DO: Maintain clear space -->
+    <div class="do-card">
+      <div class="card-header">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="8" stroke="#8b7355" stroke-width="1.5"/><polyline points="5.5,9 8,11.5 12.5,6.5" fill="none" stroke="#8b7355" stroke-width="1.5"/></svg>
+        <span>Maintain clear space</span>
+      </div>
+      <div class="card-body">
+        <div style="border:1px dashed rgba(139,115,85,0.3);padding:24px;border-radius:4px">
+          <svg viewBox="0 0 300 180" width="64" height="38">
+            <polygon points="0,0 300,0 253,87 0,87" fill="#8b7355"/>
+            <polygon points="0,93 253,93 300,180 0,180" fill="#8b7355"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- DON'T: Stretch or distort -->
+    <div class="dont-card">
+      <div class="card-header">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="8" stroke="#8a4444" stroke-width="1.5"/><line x1="6" y1="6" x2="12" y2="12" stroke="#8a4444" stroke-width="1.5"/><line x1="12" y1="6" x2="6" y2="12" stroke="#8a4444" stroke-width="1.5"/></svg>
+        <span>Don't stretch or distort</span>
+      </div>
+      <div class="card-body">
+        <svg viewBox="0 0 300 180" width="120" height="38" style="opacity:0.5">
+          <polygon points="0,0 300,0 253,87 0,87" fill="#8a4444"/>
+          <polygon points="0,93 253,93 300,180 0,180" fill="#8a4444"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- DO: Use on approved backgrounds -->
+    <div class="do-card">
+      <div class="card-header">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="8" stroke="#8b7355" stroke-width="1.5"/><polyline points="5.5,9 8,11.5 12.5,6.5" fill="none" stroke="#8b7355" stroke-width="1.5"/></svg>
+        <span>Use on solid backgrounds</span>
+      </div>
+      <div class="card-body" style="background:var(--bg)">
+        <svg viewBox="0 0 300 180" width="64" height="38">
+          <polygon points="0,0 300,0 253,87 0,87" fill="#f0eee8"/>
+          <polygon points="0,93 253,93 300,180 0,180" fill="#f0eee8"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- DON'T: Place on busy backgrounds -->
+    <div class="dont-card">
+      <div class="card-header">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="8" stroke="#8a4444" stroke-width="1.5"/><line x1="6" y1="6" x2="12" y2="12" stroke="#8a4444" stroke-width="1.5"/><line x1="12" y1="6" x2="6" y2="12" stroke="#8a4444" stroke-width="1.5"/></svg>
+        <span>Don't place on busy backgrounds</span>
+      </div>
+      <div class="card-body" style="background:repeating-linear-gradient(45deg,#1a1a1a,#1a1a1a 10px,#222 10px,#222 20px)">
+        <svg viewBox="0 0 300 180" width="64" height="38" style="opacity:0.5">
+          <polygon points="0,0 300,0 253,87 0,87" fill="#8a4444"/>
+          <polygon points="0,93 253,93 300,180 0,180" fill="#8a4444"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- DON'T: Change colors -->
+    <div class="dont-card">
+      <div class="card-header">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="8" stroke="#8a4444" stroke-width="1.5"/><line x1="6" y1="6" x2="12" y2="12" stroke="#8a4444" stroke-width="1.5"/><line x1="12" y1="6" x2="6" y2="12" stroke="#8a4444" stroke-width="1.5"/></svg>
+        <span>Don't use unapproved colors</span>
+      </div>
+      <div class="card-body">
+        <div style="display:flex;gap:16px">
+          <svg viewBox="0 0 300 180" width="48" height="29" style="opacity:0.5">
+            <polygon points="0,0 300,0 253,87 0,87" fill="#ff4444"/>
+            <polygon points="0,93 253,93 300,180 0,180" fill="#ff4444"/>
+          </svg>
+          <svg viewBox="0 0 300 180" width="48" height="29" style="opacity:0.5">
+            <polygon points="0,0 300,0 253,87 0,87" fill="#44aaff"/>
+            <polygon points="0,93 253,93 300,180 0,180" fill="#44aaff"/>
+          </svg>
+          <svg viewBox="0 0 300 180" width="48" height="29" style="opacity:0.5">
+            <polygon points="0,0 300,0 253,87 0,87" fill="#44ff88"/>
+            <polygon points="0,93 253,93 300,180 0,180" fill="#44ff88"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- DON'T: Rotate symbol -->
+    <div class="dont-card">
+      <div class="card-header">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="8" stroke="#8a4444" stroke-width="1.5"/><line x1="6" y1="6" x2="12" y2="12" stroke="#8a4444" stroke-width="1.5"/><line x1="12" y1="6" x2="6" y2="12" stroke="#8a4444" stroke-width="1.5"/></svg>
+        <span>Don't rotate the symbol</span>
+      </div>
+      <div class="card-body">
+        <svg viewBox="0 0 300 180" width="64" height="38" style="opacity:0.5;transform:rotate(45deg)">
+          <polygon points="0,0 300,0 253,87 0,87" fill="#8a4444"/>
+          <polygon points="0,93 253,93 300,180 0,180" fill="#8a4444"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="gold-rule-full"></div>
+
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:24px 32px;display:flex;gap:32px;align-items:center;margin-top:16px">
+    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="var(--gold)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    <div class="body" style="color:var(--text)">Never mix Palette A and Palette B in the same material. If a project uses Steel, all accent elements must be Steel throughout. The same applies to Gold.</div>
+  </div>
+
+  <div class="slide-num">10 / 12</div>
+</div>
+
+
+<!-- ============================================ -->
+<!-- 11 — MOTION GUIDELINES                       -->
+<!-- ============================================ -->
+<div class="page">
+  <div class="sec-num">11 — Motion Guidelines</div>
+  <div class="sec-title">Animation Language</div>
+
+  <!-- Main easing curve visualization -->
+  <div class="row" style="margin-bottom:48px">
+    <div class="col" style="flex:1.3">
+      <div class="sub-title" style="margin-bottom:16px">Primary Easing Curve</div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:40px">
+        <svg viewBox="0 0 300 300" width="280" height="280">
+          <!-- Grid -->
+          <line x1="40" y1="260" x2="280" y2="260" stroke="var(--border)" stroke-width="1"/>
+          <line x1="40" y1="260" x2="40" y2="20" stroke="var(--border)" stroke-width="1"/>
+          <!-- Grid lines -->
+          <line x1="40" y1="140" x2="280" y2="140" stroke="var(--border)" stroke-width="0.5" stroke-dasharray="4,4"/>
+          <line x1="160" y1="260" x2="160" y2="20" stroke="var(--border)" stroke-width="0.5" stroke-dasharray="4,4"/>
+          <!-- Cubic bezier curve -->
+          <path d="M40,260 C100,150 148,34 280,20" fill="none" stroke="var(--gold)" stroke-width="2.5"/>
+          <!-- Control points -->
+          <line x1="40" y1="260" x2="100" y2="150" stroke="var(--gold)" stroke-width="0.5" opacity="0.4" stroke-dasharray="4,4"/>
+          <circle cx="100" cy="150" r="4" fill="var(--gold)" opacity="0.6"/>
+          <line x1="280" y1="20" x2="148" y2="34" stroke="var(--gold)" stroke-width="0.5" opacity="0.4" stroke-dasharray="4,4"/>
+          <circle cx="148" cy="34" r="4" fill="var(--gold)" opacity="0.6"/>
+          <!-- Labels -->
+          <text x="35" y="278" font-family="Space Mono,monospace" font-size="9" fill="var(--text-ghost)">0</text>
+          <text x="270" y="278" font-family="Space Mono,monospace" font-size="9" fill="var(--text-ghost)">1</text>
+          <text x="25" y="24" font-family="Space Mono,monospace" font-size="9" fill="var(--text-ghost)">1</text>
+          <text x="120" y="295" font-family="Space Mono,monospace" font-size="10" fill="var(--text-muted)">time &rarr;</text>
+        </svg>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="sub-title" style="margin-bottom:16px">Specifications</div>
+      <table class="spec-table">
+        <tr><th>Property</th><th>Value</th></tr>
+        <tr><td>Duration</td><td class="mono">250ms</td></tr>
+        <tr><td>Easing</td><td class="mono" style="font-size:12px">cubic-bezier(0.25, 0.46, 0.45, 0.94)</td></tr>
+        <tr><td>Opacity</td><td class="mono">0 &rarr; 1</td></tr>
+        <tr><td>Transform Y</td><td class="mono">12px &rarr; 0</td></tr>
+      </table>
+
+      <div style="margin-top:32px;padding:20px;background:var(--surface);border:1px solid var(--border);border-radius:8px">
+        <div class="label" style="margin-bottom:12px">CSS Implementation</div>
+        <div style="font-family:'Space Mono',monospace;font-size:12px;color:var(--text-dim);line-height:20px;white-space:pre">.forma-enter {
+  opacity: 0;
+  transform: translateY(12px);
+}
+.forma-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: all 250ms
+    cubic-bezier(0.25, 0.46,
+                 0.45, 0.94);
+}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="gold-rule-full"></div>
+
+  <!-- Symbol reveal -->
+  <div class="row" style="margin-top:24px;margin-bottom:40px">
+    <div class="col">
+      <div class="sub-title" style="margin-bottom:16px">Symbol Reveal</div>
+      <div class="body" style="margin-bottom:16px">The two halves of the flag symbol slide in from opposite directions and settle into position. The top half enters from the left, the bottom half from the right.</div>
+      <div style="display:flex;gap:16px;align-items:center;margin-top:16px">
+        <!-- Frame 1 -->
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:6px;width:100px;height:72px;position:relative;overflow:hidden">
+          <svg viewBox="0 0 300 180" width="56" height="34" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)">
+            <polygon points="0,0 300,0 253,87 0,87" fill="var(--gold)" opacity="0.2" transform="translate(-80,0)"/>
+            <polygon points="0,93 253,93 300,180 0,180" fill="var(--gold)" opacity="0.2" transform="translate(80,0)"/>
+          </svg>
+          <div class="mono" style="position:absolute;bottom:4px;right:6px;font-size:8px;color:var(--text-ghost)">0ms</div>
+        </div>
+        <!-- Arrow -->
+        <svg width="20" height="12" viewBox="0 0 20 12" fill="none"><path d="M0,6 L16,6 M12,2 L16,6 L12,10" stroke="var(--text-ghost)" stroke-width="1"/></svg>
+        <!-- Frame 2 -->
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:6px;width:100px;height:72px;position:relative;overflow:hidden">
+          <svg viewBox="0 0 300 180" width="56" height="34" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)">
+            <polygon points="0,0 300,0 253,87 0,87" fill="var(--gold)" opacity="0.5" transform="translate(-24,0)"/>
+            <polygon points="0,93 253,93 300,180 0,180" fill="var(--gold)" opacity="0.5" transform="translate(24,0)"/>
+          </svg>
+          <div class="mono" style="position:absolute;bottom:4px;right:6px;font-size:8px;color:var(--text-ghost)">125ms</div>
+        </div>
+        <!-- Arrow -->
+        <svg width="20" height="12" viewBox="0 0 20 12" fill="none"><path d="M0,6 L16,6 M12,2 L16,6 L12,10" stroke="var(--text-ghost)" stroke-width="1"/></svg>
+        <!-- Frame 3 -->
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:6px;width:100px;height:72px;position:relative;overflow:hidden">
+          <svg viewBox="0 0 300 180" width="56" height="34" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)">
+            <polygon points="0,0 300,0 253,87 0,87" fill="var(--gold)"/>
+            <polygon points="0,93 253,93 300,180 0,180" fill="var(--gold)"/>
+          </svg>
+          <div class="mono" style="position:absolute;bottom:4px;right:6px;font-size:8px;color:var(--text-ghost)">250ms</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="sub-title" style="margin-bottom:16px">Motion Principles</div>
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <div style="border-left:2px solid var(--gold);padding-left:16px">
+          <div style="font-size:14px;font-weight:500;color:var(--text);margin-bottom:4px">Preferred</div>
+          <div class="body-sm">Cut, fade, slide. Clean, decisive transitions. Movement should feel intentional and controlled.</div>
+        </div>
+        <div style="border-left:2px solid #8a4444;padding-left:16px">
+          <div style="font-size:14px;font-weight:500;color:var(--text);margin-bottom:4px">Forbidden</div>
+          <div class="body-sm">No bounce. No spring. No elastic. No overshoot. These undermine the precision and gravity of the brand.</div>
+        </div>
+      </div>
+
+      <div style="margin-top:24px">
+        <div class="sub-title" style="font-size:13px;margin-bottom:8px">Timing Hierarchy</div>
+        <table class="spec-table">
+          <tr><th>Element</th><th>Duration</th></tr>
+          <tr><td>Micro (hover, focus)</td><td class="mono">120ms</td></tr>
+          <tr><td>Standard (enter/exit)</td><td class="mono">250ms</td></tr>
+          <tr><td>Emphasis (reveals)</td><td class="mono">400ms</td></tr>
+          <tr><td>Scene (page transitions)</td><td class="mono">600ms</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide-num">11 / 12</div>
+</div>
+
+
+<!-- ============================================ -->
+<!-- 12 — AUDIO BRANDING                          -->
+<!-- ============================================ -->
+<div class="page">
+  <!-- Background decoration: square waves -->
+  <svg style="position:absolute;top:0;left:0;width:1440px;height:100%" viewBox="0 0 1440 900" preserveAspectRatio="none">
+    <path d="M0,600 L60,600 L60,560 L120,560 L120,600 L180,600 L180,560 L240,560 L240,600 L300,600 L300,560 L360,560 L360,600 L420,600 L420,560 L480,560 L480,600 L540,600 L540,560 L600,560 L600,600 L660,600 L660,560 L720,560 L720,600 L780,600 L780,560 L840,560 L840,600 L900,600 L900,560 L960,560 L960,600 L1020,600 L1020,560 L1080,560 L1080,600 L1140,600 L1140,560 L1200,560 L1200,600 L1260,600 L1260,560 L1320,560 L1320,600 L1380,600 L1380,560 L1440,560" fill="none" stroke="#8b7355" stroke-width="1" opacity="0.06"/>
+    <path d="M0,680 L80,680 L80,640 L160,640 L160,680 L240,680 L240,640 L320,640 L320,680 L400,680 L400,640 L480,640 L480,680 L560,680 L560,640 L640,640 L640,680 L720,680 L720,640 L800,640 L800,680 L880,680 L880,640 L960,640 L960,680 L1040,680 L1040,640 L1120,640 L1120,680 L1200,680 L1200,640 L1280,640 L1280,680 L1360,680 L1360,640 L1440,640" fill="none" stroke="#8b7355" stroke-width="0.75" opacity="0.04"/>
+    <path d="M0,760 L100,760 L100,720 L200,720 L200,760 L300,760 L300,720 L400,720 L400,760 L500,760 L500,720 L600,720 L600,760 L700,760 L700,720 L800,720 L800,760 L900,760 L900,720 L1000,720 L1000,760 L1100,760 L1100,720 L1200,720 L1200,760 L1300,760 L1300,720 L1400,720 L1400,760" fill="none" stroke="#8b7355" stroke-width="0.5" opacity="0.03"/>
+  </svg>
+
+  <div style="position:relative;z-index:1">
+    <div class="sec-num">12 — Audio Branding</div>
+    <div class="sec-title">Sonic Identity</div>
+
+    <div class="row" style="margin-bottom:48px">
+      <div class="col" style="flex:1.2">
+        <div class="sub-title" style="margin-bottom:16px">Sonic Logo</div>
+
+        <!-- Waveform visualization -->
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:32px;margin-bottom:24px">
+          <svg viewBox="0 0 500 120" width="100%" height="120">
+            <!-- Timeline -->
+            <line x1="40" y1="100" x2="460" y2="100" stroke="var(--border)" stroke-width="1"/>
+            <!-- Time markers -->
+            <text x="40" y="115" font-family="Space Mono,monospace" font-size="9" fill="var(--text-ghost)">0s</text>
+            <text x="145" y="115" font-family="Space Mono,monospace" font-size="9" fill="var(--text-ghost)">1s</text>
+            <text x="250" y="115" font-family="Space Mono,monospace" font-size="9" fill="var(--text-ghost)">2s</text>
+            <text x="355" y="115" font-family="Space Mono,monospace" font-size="9" fill="var(--text-ghost)">3s</text>
+            <text x="445" y="115" font-family="Space Mono,monospace" font-size="9" fill="var(--text-ghost)">4s</text>
+            <!-- Waveform shape: starts near silence, single gesture, dissolves -->
+            <path d="M40,60 Q60,60 80,58 Q100,54 120,44 Q140,30 160,20 Q180,14 200,22 Q220,32 240,40 Q260,46 280,50 Q300,53 320,55 Q340,56 360,57 Q380,58 400,59 Q420,59.5 440,60 Q455,60 460,60" fill="none" stroke="var(--gold)" stroke-width="2"/>
+            <!-- Mirror waveform -->
+            <path d="M40,60 Q60,60 80,62 Q100,66 120,76 Q140,90 160,100 Q180,106 200,98 Q220,88 240,80 Q260,74 280,70 Q300,67 320,65 Q340,64 360,63 Q380,62 400,61 Q420,60.5 440,60 Q455,60 460,60" fill="none" stroke="var(--gold)" stroke-width="2" opacity="0.4"/>
+            <!-- Fill area -->
+            <path d="M40,60 Q60,60 80,58 Q100,54 120,44 Q140,30 160,20 Q180,14 200,22 Q220,32 240,40 Q260,46 280,50 Q300,53 320,55 Q340,56 360,57 Q380,58 400,59 Q420,59.5 440,60 Q455,60 460,60 Q455,60 440,60 Q420,60.5 400,61 Q380,62 360,63 Q340,64 320,65 Q300,67 280,70 Q260,74 240,80 Q220,88 200,98 Q180,106 160,100 Q140,90 120,76 Q100,66 80,62 Q60,60 40,60 Z" fill="var(--gold)" opacity="0.08"/>
+            <!-- Label -->
+            <text x="250" y="12" font-family="Space Mono,monospace" font-size="10" fill="var(--text-muted)" text-anchor="middle">SONIC LOGO ENVELOPE</text>
+          </svg>
+        </div>
+
+        <div class="body" style="max-width:520px">A 2-4 second audio mark. Begins near silence, rises through a single deliberate gesture, then dissolves back into quiet. The shape mirrors the flag symbol: two converging forces creating a moment of clarity before releasing.</div>
+      </div>
+
+      <div class="col">
+        <div class="sub-title" style="margin-bottom:16px">Parameters</div>
+        <table class="spec-table">
+          <tr><th>Property</th><th>Specification</th></tr>
+          <tr><td>Duration</td><td class="mono">2-4 seconds</td></tr>
+          <tr><td>Tonal Center</td><td class="mono">Dm or Am</td></tr>
+          <tr><td>Warmth Zone</td><td class="mono">200-800 Hz</td></tr>
+          <tr><td>Shimmer</td><td class="mono">&gt; 4 kHz</td></tr>
+          <tr><td>Dynamic</td><td>Near-silence &rarr; gesture &rarr; dissolve</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="gold-rule-full"></div>
+
+    <div class="row" style="margin-top:24px">
+      <div class="col">
+        <div class="sub-title" style="margin-bottom:16px">Texture Palette</div>
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <div style="border-left:2px solid var(--gold);padding-left:16px">
+            <div style="font-size:14px;font-weight:500;color:var(--text);margin-bottom:4px">Nylon Guitar (Classical)</div>
+            <div class="body-sm">Warm, intimate plucked tones. Provides the organic anchor. Finger-picked, close-miked. The human element.</div>
+          </div>
+          <div style="border-left:2px solid var(--gold);padding-left:16px">
+            <div style="font-size:14px;font-weight:500;color:var(--text);margin-bottom:4px">Analog Pad Swell</div>
+            <div class="body-sm">Slow-attack synthesizer pad. Provides the ethereal counterweight. Warmth rising underneath the guitar, filling the frequency spectrum without competing.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="sub-title" style="margin-bottom:16px">Character</div>
+        <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:24px">
+          <div style="padding:8px 16px;border:1px solid var(--border);border-radius:4px;font-family:'Space Mono',monospace;font-size:12px;color:var(--text-dim)">Organic</div>
+          <div style="padding:8px 16px;border:1px solid var(--border);border-radius:4px;font-family:'Space Mono',monospace;font-size:12px;color:var(--text-dim)">Warm</div>
+          <div style="padding:8px 16px;border:1px solid var(--border);border-radius:4px;font-family:'Space Mono',monospace;font-size:12px;color:var(--text-dim)">Intimate</div>
+        </div>
+
+        <div class="sub-title" style="margin-bottom:16px">Mood</div>
+        <div style="display:flex;flex-wrap:wrap;gap:10px">
+          <div style="padding:8px 16px;background:var(--gold-dim);border-radius:4px;font-family:'Space Mono',monospace;font-size:12px;color:var(--gold)">Liminal</div>
+          <div style="padding:8px 16px;background:var(--gold-dim);border-radius:4px;font-family:'Space Mono',monospace;font-size:12px;color:var(--gold)">Tactile</div>
+          <div style="padding:8px 16px;background:var(--gold-dim);border-radius:4px;font-family:'Space Mono',monospace;font-size:12px;color:var(--gold)">Grounded</div>
+          <div style="padding:8px 16px;background:var(--gold-dim);border-radius:4px;font-family:'Space Mono',monospace;font-size:12px;color:var(--gold)">Ethereal</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="gold-rule-full"></div>
+
+    <!-- Frequency spectrum bar -->
+    <div style="margin-top:24px">
+      <div class="sub-title" style="margin-bottom:16px">Frequency Focus</div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:24px 32px">
+        <svg viewBox="0 0 900 60" width="100%" height="60">
+          <!-- Full spectrum background -->
+          <rect x="0" y="10" width="900" height="30" rx="4" fill="var(--border)"/>
+          <!-- Warmth zone (200-800Hz) mapped to spectrum -->
+          <rect x="100" y="10" width="300" height="30" rx="4" fill="var(--gold)" opacity="0.3"/>
+          <!-- Shimmer zone (>4kHz) -->
+          <rect x="600" y="10" width="300" height="30" rx="4" fill="var(--gold)" opacity="0.15"/>
+          <!-- Labels -->
+          <text x="0" y="55" font-family="Space Mono,monospace" font-size="9" fill="var(--text-ghost)">20Hz</text>
+          <text x="100" y="55" font-family="Space Mono,monospace" font-size="9" fill="var(--gold)">200Hz</text>
+          <text x="380" y="55" font-family="Space Mono,monospace" font-size="9" fill="var(--gold)">800Hz</text>
+          <text x="600" y="55" font-family="Space Mono,monospace" font-size="9" fill="var(--gold)" opacity="0.7">4kHz</text>
+          <text x="860" y="55" font-family="Space Mono,monospace" font-size="9" fill="var(--text-ghost)">20kHz</text>
+          <!-- Zone labels -->
+          <text x="250" y="30" font-family="Space Mono,monospace" font-size="10" fill="var(--gold)" text-anchor="middle">WARMTH</text>
+          <text x="750" y="30" font-family="Space Mono,monospace" font-size="10" fill="var(--gold)" text-anchor="middle" opacity="0.7">SHIMMER</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide-num">12 / 12</div>
+</div>
+
+
+<!-- ============================================ -->
+<!-- COLOPHON (back cover)                        -->
+<!-- ============================================ -->
+<div class="page" style="justify-content:center;align-items:center;text-align:center">
+  <svg viewBox="0 0 300 180" width="80" height="48" style="margin-bottom:32px">
+    <polygon points="0,0 300,0 253,87 0,87" fill="#8b7355"/>
+    <polygon points="0,93 253,93 300,180 0,180" fill="#8b7355"/>
+  </svg>
+  <svg viewBox="0 0 4550 882" width="280" height="54" fill="#f0eee8" style="margin-bottom:48px">
+    <g transform="scale(1,-1) translate(0,-881.89)">
+      <path d="M14 606.3H592.74V881.89H14ZM289.59 0V303.15H895.89V578.74H14V0Z"/>
+      <path d="M14 578.74V0H289.59V.19H620.3V0H895.89V578.74ZM289.59 275.78V303.15H620.3V275.78Z" transform="translate(910,0)"/>
+      <path d="M895.89 578.74H14V0H289.59V303.15H895.89Z" transform="translate(1820,0)"/>
+      <path d="M14 578.74V0H289.59V303.15H317.15V0H592.74V303.15H620.3V0H895.89V578.74Z" transform="translate(2730,0)"/>
+      <path d="M14 578.74V0H592.74V275.59H289.59V303.15H620.3V0H895.89V578.74Z" transform="translate(3640,0)"/>
+    </g>
+  </svg>
+  <div class="gold-rule" style="margin:0 auto 32px"></div>
+  <div class="body" style="color:var(--text-muted);max-width:400px;margin:0 auto">Brand Manual v1.0<br>forma.audio</div>
+  <div class="mono" style="font-size:11px;color:var(--text-ghost);margin-top:16px">2026</div>
+</div>
+
+</body>
+</html>

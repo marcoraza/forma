@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Forma — Invoice</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:#0c0c0e;color:#f0eee8;font-family:'Space Grotesk',sans-serif;padding:60px 80px;max-width:900px;margin:0 auto}
+  .mn{font-family:'Space Mono',monospace}
+  .gold{color:#8b7355}
+  .dim{color:#8a8a8a}
+  .muted{color:#6b6b6b}
+  .ghost{color:#3a3a3a}
+  table{width:100%;border-collapse:collapse}
+  th{text-align:left;font-size:10px;font-weight:600;color:#8b7355;letter-spacing:.15em;text-transform:uppercase;padding:12px 0;border-bottom:1px solid #1e1e1e}
+  td{padding:14px 0;border-bottom:1px solid #1e1e1e;font-size:14px;font-weight:300;color:#8a8a8a}
+  td:last-child{text-align:right;font-family:'Space Mono',monospace;color:#f0eee8}
+  @media print{body{background:#fff;color:#1a1714}th{color:#8b7355;border-color:#ddd}td{color:#555;border-color:#eee}td:last-child{color:#1a1714}.gold{color:#8b7355}}
+</style>
+</head>
+<body>
+  <!-- Header -->
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:60px">
+    <div>
+      <svg viewBox="0 0 300 180" width="48" height="29"><polygon points="0,0 300,0 253,87 0,87" fill="#f0eee8"/><polygon points="0,93 253,93 300,180 0,180" fill="#f0eee8"/></svg>
+      <div style="font-size:11px;color:#8b7355;letter-spacing:.2em;text-transform:uppercase;margin-top:12px">Forma Audio</div>
+    </div>
+    <div style="text-align:right">
+      <div class="mn" style="font-size:32px;font-weight:700;letter-spacing:-.02em">INVOICE</div>
+      <div class="mn dim" style="font-size:12px;margin-top:8px">#INV-001</div>
+      <div class="dim" style="font-size:12px;margin-top:4px">April 2, 2026</div>
+    </div>
+  </div>
+
+  <!-- Client info -->
+  <div style="display:flex;justify-content:space-between;margin-bottom:48px">
+    <div>
+      <div style="font-size:10px;color:#8b7355;letter-spacing:.15em;text-transform:uppercase;margin-bottom:8px">Bill To</div>
+      <div style="font-size:15px;font-weight:600">Client Name</div>
+      <div class="dim" style="font-size:13px;line-height:20px;margin-top:4px">Company Name<br>Address Line 1<br>City, Country</div>
+    </div>
+    <div style="text-align:right">
+      <div style="font-size:10px;color:#8b7355;letter-spacing:.15em;text-transform:uppercase;margin-bottom:8px">From</div>
+      <div style="font-size:15px;font-weight:600">Forma Audio</div>
+      <div class="dim" style="font-size:13px;line-height:20px;margin-top:4px">forma.audio<br>hello@forma.audio</div>
+    </div>
+  </div>
+
+  <!-- Items -->
+  <table>
+    <thead>
+      <tr><th>Description</th><th style="text-align:right">Amount</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Sound Design & Composition — Flora Oasis Campaign (45s)</td><td>$X,XXX.00</td></tr>
+      <tr><td>Mixing & Mastering</td><td>$X,XXX.00</td></tr>
+      <tr><td>Revisions (2 rounds included)</td><td>Included</td></tr>
+    </tbody>
+  </table>
+
+  <!-- Total -->
+  <div style="display:flex;justify-content:flex-end;margin-top:32px;padding-top:20px;border-top:2px solid #8b7355">
+    <div style="text-align:right">
+      <div style="font-size:10px;color:#8b7355;letter-spacing:.15em;text-transform:uppercase;margin-bottom:6px">Total Due</div>
+      <div class="mn" style="font-size:28px;font-weight:700">$XX,XXX.00</div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div style="margin-top:80px;padding-top:20px;border-top:1px solid #1e1e1e;display:flex;justify-content:space-between">
+    <div class="ghost" style="font-size:10px;letter-spacing:.08em">Audio Solutions / Sound Design / Composition / Mixing / Mastering</div>
+    <div class="ghost" style="font-size:10px">forma.audio</div>
+  </div>
+</body>
+</html>

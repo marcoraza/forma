@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Forma — Proposal</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:#0c0c0e;color:#f0eee8;font-family:'Space Grotesk',sans-serif}
+  .page{width:900px;margin:0 auto;padding:60px 80px;min-height:100vh;position:relative}
+  .page+.page{border-top:1px solid #1e1e1e}
+  .mn{font-family:'Space Mono',monospace}
+  .gold{color:#8b7355}
+  .dim{color:#8a8a8a}
+  .muted{color:#6b6b6b}
+  .ghost{color:#3a3a3a}
+  h1{font-size:42px;font-weight:700;line-height:48px;letter-spacing:-.02em}
+  h2{font-size:24px;font-weight:700;letter-spacing:-.01em;margin-bottom:20px}
+  p{font-size:15px;font-weight:300;color:#8a8a8a;line-height:24px;margin-bottom:16px}
+  @media print{.page{page-break-after:always;min-height:auto}}
+</style>
+</head>
+<body>
+
+<!-- PAGE 1: Cover -->
+<div class="page" style="display:flex;flex-direction:column;justify-content:flex-end">
+  <div style="position:absolute;top:60px;left:80px;display:flex;align-items:center;gap:12px">
+    <svg viewBox="0 0 300 180" width="40" height="24"><polygon points="0,0 300,0 253,87 0,87" fill="#8b7355"/><polygon points="0,93 253,93 300,180 0,180" fill="#8b7355"/></svg>
+    <span class="mn gold" style="font-size:11px;letter-spacing:.2em;text-transform:uppercase">Forma Audio</span>
+  </div>
+  <div>
+    <svg viewBox="0 0 4550 882" width="380" height="48" fill="#f0eee8"><g transform="scale(1,-1) translate(0,-881.89)"><path d="M14 606.3H592.74V881.89H14ZM289.59 0V303.15H895.89V578.74H14V0Z"/><path d="M14 578.74V0H289.59V.19H620.3V0H895.89V578.74ZM289.59 275.78V303.15H620.3V275.78Z" transform="translate(910,0)"/><path d="M895.89 578.74H14V0H289.59V303.15H895.89Z" transform="translate(1820,0)"/><path d="M14 578.74V0H289.59V303.15H317.15V0H592.74V303.15H620.3V0H895.89V578.74Z" transform="translate(2730,0)"/><path d="M14 578.74V0H592.74V275.59H289.59V303.15H620.3V0H895.89V578.74Z" transform="translate(3640,0)"/></g></svg>
+    <div style="width:60px;height:2px;background:#8b7355;margin:24px 0 20px"></div>
+    <h1>[Project Title]</h1>
+    <p style="color:#6b6b6b;margin-top:16px">Proposal for [Client Name]<br>Prepared [Date]</p>
+  </div>
+  <div style="position:absolute;bottom:40px;right:80px" class="mn ghost" style="font-size:11px">01</div>
+</div>
+
+<!-- PAGE 2: Overview -->
+<div class="page">
+  <div class="mn gold" style="font-size:11px;letter-spacing:.2em;text-transform:uppercase;margin-bottom:16px">Overview</div>
+  <h2>Project Summary</h2>
+  <p>[Describe the project scope, objectives, and deliverables. What are we creating, why, and for whom?]</p>
+  <p>[Additional context about the creative direction, references, or constraints.]</p>
+
+  <div style="margin-top:40px">
+    <div class="mn gold" style="font-size:11px;letter-spacing:.2em;text-transform:uppercase;margin-bottom:16px">Deliverables</div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div style="border-left:2px solid #8b7355;padding-left:16px">
+        <div style="font-size:15px;font-weight:600;margin-bottom:4px">[Deliverable 1]</div>
+        <p style="margin:0;font-size:13px">[Description]</p>
+      </div>
+      <div style="border-left:2px solid #8b7355;padding-left:16px">
+        <div style="font-size:15px;font-weight:600;margin-bottom:4px">[Deliverable 2]</div>
+        <p style="margin:0;font-size:13px">[Description]</p>
+      </div>
+      <div style="border-left:2px solid #8b7355;padding-left:16px">
+        <div style="font-size:15px;font-weight:600;margin-bottom:4px">[Deliverable 3]</div>
+        <p style="margin:0;font-size:13px">[Description]</p>
+      </div>
+    </div>
+  </div>
+  <div style="position:absolute;bottom:40px;right:80px" class="mn ghost" style="font-size:11px">02</div>
+</div>
+
+<!-- PAGE 3: Timeline & Investment -->
+<div class="page">
+  <div class="mn gold" style="font-size:11px;letter-spacing:.2em;text-transform:uppercase;margin-bottom:16px">Timeline & Investment</div>
+  <h2>Project Timeline</h2>
+
+  <div style="display:flex;gap:24px;margin-bottom:48px">
+    <div style="flex:1;padding:24px;border:1px solid #1e1e1e">
+      <span class="mn gold" style="font-size:10px;letter-spacing:.15em">PHASE 01</span>
+      <div style="font-size:16px;font-weight:600;margin:8px 0">[Phase Name]</div>
+      <div style="width:30px;height:2px;background:#8b7355;margin-bottom:12px"></div>
+      <p style="font-size:13px;margin:0">[Duration and scope]</p>
+    </div>
+    <div style="flex:1;padding:24px;border:1px solid #1e1e1e">
+      <span class="mn gold" style="font-size:10px;letter-spacing:.15em">PHASE 02</span>
+      <div style="font-size:16px;font-weight:600;margin:8px 0">[Phase Name]</div>
+      <div style="width:30px;height:2px;background:#8b7355;margin-bottom:12px"></div>
+      <p style="font-size:13px;margin:0">[Duration and scope]</p>
+    </div>
+    <div style="flex:1;padding:24px;border:1px solid #1e1e1e">
+      <span class="mn gold" style="font-size:10px;letter-spacing:.15em">PHASE 03</span>
+      <div style="font-size:16px;font-weight:600;margin:8px 0">[Phase Name]</div>
+      <div style="width:30px;height:2px;background:#8b7355;margin-bottom:12px"></div>
+      <p style="font-size:13px;margin:0">[Duration and scope]</p>
+    </div>
+  </div>
+
+  <div class="mn gold" style="font-size:11px;letter-spacing:.2em;text-transform:uppercase;margin-bottom:16px">Investment</div>
+  <div style="display:flex;justify-content:space-between;padding:20px 0;border-bottom:1px solid #1e1e1e">
+    <span style="font-size:15px;font-weight:300;color:#8a8a8a">[Service description]</span>
+    <span class="mn" style="font-size:15px;font-weight:700">$X,XXX</span>
+  </div>
+  <div style="display:flex;justify-content:space-between;padding:20px 0;border-bottom:1px solid #1e1e1e">
+    <span style="font-size:15px;font-weight:300;color:#8a8a8a">[Service description]</span>
+    <span class="mn" style="font-size:15px;font-weight:700">$X,XXX</span>
+  </div>
+  <div style="display:flex;justify-content:flex-end;padding-top:20px;border-top:2px solid #8b7355;margin-top:-1px">
+    <div style="text-align:right">
+      <div class="mn gold" style="font-size:10px;letter-spacing:.15em;margin-bottom:6px">TOTAL</div>
+      <div class="mn" style="font-size:28px;font-weight:700">$XX,XXX</div>
+    </div>
+  </div>
+
+  <div style="position:absolute;bottom:40px;right:80px" class="mn ghost" style="font-size:11px">03</div>
+</div>
+
+<!-- PAGE 4: Close -->
+<div class="page" style="display:flex;flex-direction:column;align-items:center;justify-content:center">
+  <svg viewBox="0 0 300 180" width="80" height="48"><polygon points="0,0 300,0 253,87 0,87" fill="#f0eee8"/><polygon points="0,93 253,93 300,180 0,180" fill="#f0eee8"/></svg>
+  <div style="width:50px;height:2px;background:#8b7355;margin:28px 0 24px"></div>
+  <div class="mn" style="font-size:18px;letter-spacing:.1em">forma.audio</div>
+  <div class="ghost" style="font-size:11px;margin-top:24px;letter-spacing:.08em">Audio Solutions / Sound Design / Composition / Mixing / Mastering</div>
+</div>
+
+</body>
+</html>

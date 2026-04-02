@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 100">
+  <g transform="translate(0,15) scale(0.47)"><polygon points="0,0 300,0 253,87 0,87" fill="#f0eee8"/><polygon points="0,93 253,93 300,180 0,180" fill="#f0eee8"/></g>
+  <g transform="translate(170,14)" fill="#f0eee8"><svg viewBox="0 0 4550 882" width="520" height="72"><g transform="scale(1,-1) translate(0,-881.89)"><path d="M14 606.3H592.74V881.89H14ZM289.59 0V303.15H895.89V578.74H14V0Z"/><path d="M14 578.74V0H289.59V.19H620.3V0H895.89V578.74ZM289.59 275.78V303.15H620.3V275.78Z" transform="translate(910,0)"/><path d="M895.89 578.74H14V0H289.59V303.15H895.89Z" transform="translate(1820,0)"/><path d="M14 578.74V0H289.59V303.15H317.15V0H592.74V303.15H620.3V0H895.89V578.74Z" transform="translate(2730,0)"/><path d="M14 578.74V0H592.74V275.59H289.59V303.15H620.3V0H895.89V578.74Z" transform="translate(3640,0)"/></g></svg></g>
+</svg>
