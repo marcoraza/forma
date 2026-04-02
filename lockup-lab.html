@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Forma — Lockup Lab</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:#080808;color:#f0eee8;font-family:'Space Grotesk',sans-serif;padding:40px}
+  .card{background:#0c0c0e;border:1px solid #1e1e1e;padding:60px;margin:24px auto;max-width:1200px;position:relative}
+  .card-dark{background:#0c0c0e}
+  .card-light{background:#f5f3ef}
+  .label{font-family:'Space Mono',monospace;font-size:10px;color:#8b7355;letter-spacing:.2em;text-transform:uppercase;margin-bottom:32px}
+  .label-dim{font-family:'Space Mono',monospace;font-size:10px;color:#3a3a3a;letter-spacing:.15em;position:absolute;top:20px;right:24px}
+  h2{font-size:32px;font-weight:700;margin-bottom:12px;color:#f0eee8}
+  .desc{font-size:14px;color:#6b6b6b;margin-bottom:40px;max-width:600px;line-height:20px}
+  .row{display:flex;align-items:center;gap:60px;flex-wrap:wrap}
+  .lockup{display:flex;align-items:center;gap:24px}
+  .lockup-v{display:flex;flex-direction:column;align-items:center;gap:16px}
+  .sep{width:1px;height:80px;background:#1e1e1e}
+</style>
+</head>
+<body>
+
+<div style="max-width:1200px;margin:0 auto 40px;padding:0 20px">
+  <div style="font-family:'Space Mono',monospace;font-size:11px;color:#8b7355;letter-spacing:.2em;text-transform:uppercase;margin-bottom:8px">Lockup Lab</div>
+  <h2 style="font-size:40px;margin-bottom:8px">Symbol Redesign + Lockup Tests</h2>
+  <div class="desc">Flag V3 rebuilt using Crude font grammar. All monocromatic. Testing uppercase vs lowercase.</div>
+</div>
+
+<!-- ════════════════════════════════════════════════ -->
+<!-- SECTION 1: NEW SYMBOL — Crude Grammar -->
+<!-- ════════════════════════════════════════════════ -->
+<div class="card">
+  <div class="label">01 — New Symbol: Flag V3 in Crude Blocks</div>
+  <span class="label-dim">Crude grammar: 31% stroke, 3% gap, orthogonal only</span>
+  <div class="desc">The inward notch is now built with stepped blocks. Same proportions (5:3), same conceptual shape, but constructed from the same visual DNA as the Crude letterforms.</div>
+
+  <div class="row">
+    <!-- Original V3 for reference -->
+    <div style="text-align:center">
+      <svg viewBox="0 0 300 180" width="150" height="90">
+        <polygon points="0,0 300,0 253,87 0,87" fill="#f0eee8"/>
+        <polygon points="0,93 253,93 300,180 0,180" fill="#f0eee8"/>
+      </svg>
+      <div style="font-size:10px;color:#3a3a3a;margin-top:12px;font-family:'Space Mono',monospace">CURRENT (flag V3)</div>
+    </div>
+
+    <div class="sep"></div>
+
+    <!-- NEW A: "The Mold" — Two L-blocks facing each other, negative space = the form -->
+    <div style="text-align:center">
+      <svg viewBox="0 0 300 180" width="150" height="90">
+        <!-- Top-left L block -->
+        <rect x="0" y="0" width="180" height="56" fill="#f0eee8"/>
+        <rect x="0" y="0" width="56" height="180" fill="#f0eee8"/>
+        <!-- Bottom-right L block -->
+        <rect x="120" y="124" width="180" height="56" fill="#f0eee8"/>
+        <rect x="244" y="0" width="56" height="180" fill="#f0eee8"/>
+      </svg>
+      <div style="font-size:10px;color:#8b7355;margin-top:12px;font-family:'Space Mono',monospace">A — THE MOLD</div>
+      <div style="font-size:9px;color:#3a3a3a;margin-top:4px">negative space = the shape</div>
+    </div>
+
+    <div class="sep"></div>
+
+    <!-- NEW B: "Stacked Shift" — 3 bars progressively offset, suggesting transformation -->
+    <div style="text-align:center">
+      <svg viewBox="0 0 300 180" width="150" height="90">
+        <rect x="0" y="0" width="220" height="50" fill="#f0eee8"/>
+        <rect x="40" y="65" width="220" height="50" fill="#f0eee8"/>
+        <rect x="80" y="130" width="220" height="50" fill="#f0eee8"/>
+      </svg>
+      <div style="font-size:10px;color:#8b7355;margin-top:12px;font-family:'Space Mono',monospace">B — STACKED SHIFT</div>
+      <div style="font-size:9px;color:#3a3a3a;margin-top:4px">layers being shaped</div>
+    </div>
+
+    <div class="sep"></div>
+
+    <!-- NEW C: "The Frame" — Open rectangle (mold/boundary), one corner broken -->
+    <div style="text-align:center">
+      <svg viewBox="0 0 300 180" width="150" height="90">
+        <!-- Top bar (full) -->
+        <rect x="0" y="0" width="300" height="46" fill="#f0eee8"/>
+        <!-- Left bar -->
+        <rect x="0" y="0" width="46" height="180" fill="#f0eee8"/>
+        <!-- Bottom bar (shorter, gap at right = open) -->
+        <rect x="0" y="134" width="230" height="46" fill="#f0eee8"/>
+        <!-- Right bar (shorter, gap at bottom = open) -->
+        <rect x="254" y="0" width="46" height="110" fill="#f0eee8"/>
+      </svg>
+      <div style="font-size:10px;color:#8b7355;margin-top:12px;font-family:'Space Mono',monospace">C — THE FRAME</div>
+      <div style="font-size:9px;color:#3a3a3a;margin-top:4px">open corner = unfinished form</div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════ -->
+<!-- SECTION 2: LOCKUP — Forma (proper F, no scaling) + New Symbols -->
+<!-- ════════════════════════════════════════════════ -->
+<div class="card">
+  <div class="label">02 — Forma (custom F at lowercase height, same stroke weight) + New Symbols</div>
+  <div class="desc">The F is redrawn at 578.74 units (same as lowercase). Two bars + gap = exact fit. Same stroke width as all other letters. No scaling, no deformation. Symbols sized to match the wordmark height.</div>
+
+  <!-- Lockup A: Mold + Forma proper -->
+  <div style="margin-bottom:56px">
+    <span class="label-dim" style="position:static;display:block;margin-bottom:16px">The Mold + Forma</span>
+    <div class="lockup" style="gap:28px">
+      <svg viewBox="0 0 300 180" width="100" height="60">
+        <rect x="0" y="0" width="180" height="56" fill="#f0eee8"/><rect x="0" y="0" width="56" height="180" fill="#f0eee8"/>
+        <rect x="120" y="124" width="180" height="56" fill="#f0eee8"/><rect x="244" y="0" width="56" height="180" fill="#f0eee8"/>
+      </svg>
+      <svg viewBox="0 0 4550 579" width="480" height="61" fill="#f0eee8"><g transform="scale(1,-1) translate(0,-578.74)"><path d="M14 0H895.89V275.59H289.59V303.15H895.89V578.74H14Z"/><path d="M14 578.74V0H289.59V.19H620.3V0H895.89V578.74ZM289.59 275.78V303.15H620.3V275.78Z" transform="translate(910,0)"/><path d="M895.89 578.74H14V0H289.59V303.15H895.89Z" transform="translate(1820,0)"/><path d="M14 578.74V0H289.59V303.15H317.15V0H592.74V303.15H620.3V0H895.89V578.74Z" transform="translate(2730,0)"/><path d="M14 578.74V0H592.74V275.59H289.59V303.15H620.3V0H895.89V578.74Z" transform="translate(3640,0)"/></g></svg>
+    </div>
+  </div>
+
+  <!-- Lockup B: Stacked Shift + Forma proper -->
+  <div style="margin-bottom:56px">
+    <span class="label-dim" style="position:static;display:block;margin-bottom:16px">Stacked Shift + Forma</span>
+    <div class="lockup" style="gap:28px">
+      <svg viewBox="0 0 300 180" width="100" height="60">
+        <rect x="0" y="0" width="220" height="50" fill="#f0eee8"/>
+        <rect x="40" y="65" width="220" height="50" fill="#f0eee8"/>
+        <rect x="80" y="130" width="220" height="50" fill="#f0eee8"/>
+      </svg>
+      <svg viewBox="0 0 4550 579" width="480" height="61" fill="#f0eee8"><g transform="scale(1,-1) translate(0,-578.74)"><path d="M14 0H895.89V275.59H289.59V303.15H895.89V578.74H14Z"/><path d="M14 578.74V0H289.59V.19H620.3V0H895.89V578.74ZM289.59 275.78V303.15H620.3V275.78Z" transform="translate(910,0)"/><path d="M895.89 578.74H14V0H289.59V303.15H895.89Z" transform="translate(1820,0)"/><path d="M14 578.74V0H289.59V303.15H317.15V0H592.74V303.15H620.3V0H895.89V578.74Z" transform="translate(2730,0)"/><path d="M14 578.74V0H592.74V275.59H289.59V303.15H620.3V0H895.89V578.74Z" transform="translate(3640,0)"/></g></svg>
+    </div>
+  </div>
+
+  <!-- Lockup C: Frame + Forma proper -->
+  <div style="margin-bottom:56px">
+    <span class="label-dim" style="position:static;display:block;margin-bottom:16px">The Frame + Forma</span>
+    <div class="lockup" style="gap:28px">
+      <svg viewBox="0 0 300 180" width="100" height="60">
+        <rect x="0" y="0" width="300" height="46" fill="#f0eee8"/><rect x="0" y="0" width="46" height="180" fill="#f0eee8"/>
+        <rect x="0" y="134" width="230" height="46" fill="#f0eee8"/><rect x="254" y="0" width="46" height="110" fill="#f0eee8"/>
+      </svg>
+      <svg viewBox="0 0 4550 579" width="480" height="61" fill="#f0eee8"><g transform="scale(1,-1) translate(0,-578.74)"><path d="M14 0H895.89V275.59H289.59V303.15H895.89V578.74H14Z"/><path d="M14 578.74V0H289.59V.19H620.3V0H895.89V578.74ZM289.59 275.78V303.15H620.3V275.78Z" transform="translate(910,0)"/><path d="M895.89 578.74H14V0H289.59V303.15H895.89Z" transform="translate(1820,0)"/><path d="M14 578.74V0H289.59V303.15H317.15V0H592.74V303.15H620.3V0H895.89V578.74Z" transform="translate(2730,0)"/><path d="M14 578.74V0H592.74V275.59H289.59V303.15H620.3V0H895.89V578.74Z" transform="translate(3640,0)"/></g></svg>
+    </div>
+  </div>
+
+  <!-- Also with Original V3 for comparison -->
+  <div>
+    <span class="label-dim" style="position:static;display:block;margin-bottom:16px">Original V3 + Forma (for comparison)</span>
+    <div class="lockup" style="gap:28px">
+      <svg viewBox="0 0 300 180" width="100" height="60">
+        <polygon points="0,0 300,0 253,87 0,87" fill="#f0eee8"/>
+        <polygon points="0,93 253,93 300,180 0,180" fill="#f0eee8"/>
+      </svg>
+      <svg viewBox="0 0 4550 579" width="480" height="61" fill="#f0eee8"><g transform="scale(1,-1) translate(0,-578.74)"><path d="M14 0H895.89V275.59H289.59V303.15H895.89V578.74H14Z"/><path d="M14 578.74V0H289.59V.19H620.3V0H895.89V578.74ZM289.59 275.78V303.15H620.3V275.78Z" transform="translate(910,0)"/><path d="M895.89 578.74H14V0H289.59V303.15H895.89Z" transform="translate(1820,0)"/><path d="M14 578.74V0H289.59V303.15H317.15V0H592.74V303.15H620.3V0H895.89V578.74Z" transform="translate(2730,0)"/><path d="M14 578.74V0H592.74V275.59H289.59V303.15H620.3V0H895.89V578.74Z" transform="translate(3640,0)"/></g></svg>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════ -->
+<!-- SECTION 3B: FOrMA (lowercase r) + OLD Symbol -->
+<!-- ════════════════════════════════════════════════ -->
+<div class="card">
+  <div class="label">03B — FOrMA (lowercase r) + Original Symbol (diagonal notch)</div>
+  <div class="desc">You preferred the original V3 symbol. Testing it monocromatic with the mixed-case wordmark.</div>
+
+  <!-- OLD symbol + FOrMA horizontal -->
+  <div style="margin-bottom:48px">
+    <span class="label-dim" style="position:static;display:block;margin-bottom:16px">Original V3 + FOrMA</span>
+    <div class="lockup">
+      <svg viewBox="0 0 300 180" width="70" height="42">
+        <polygon points="0,0 300,0 253,87 0,87" fill="#f0eee8"/>
+        <polygon points="0,93 253,93 300,180 0,180" fill="#f0eee8"/>
+      </svg>
+      <svg viewBox="0 0 4550 882" width="420" height="54" fill="#f0eee8"><g transform="scale(1,-1) translate(0,-881.89)"><path d="M14 0H289.59V303.15H895.89V578.74H289.59V606.3H895.89V881.89H14Z" transform="translate(0,0)"/><path d="M14 881.89V0H895.89V881.89ZM620.3 606.3V275.59H289.59V606.3Z" transform="translate(910,0)"/><path d="M895.89 578.74H14V0H289.59V303.15H895.89Z" transform="translate(1820,0)"/><path d="M14 881.89V0H289.59V606.3H317.15V0H592.74V606.3H620.3V0H895.89V881.89Z" transform="translate(2730,0)"/><path d="M14 881.89V0H289.59V303.15H620.3V0H895.89V881.89ZM620.3 578.74H289.59V606.3H620.3Z" transform="translate(3640,0)"/></g></svg>
+    </div>
+  </div>
+
+  <!-- OLD symbol + FOrMA larger, more breathing -->
+  <div style="margin-bottom:48px">
+    <span class="label-dim" style="position:static;display:block;margin-bottom:16px">Original V3 + FOrMA (larger, more space)</span>
+    <div class="lockup" style="gap:32px">
+      <svg viewBox="0 0 300 180" width="90" height="54">
+        <polygon points="0,0 300,0 253,87 0,87" fill="#f0eee8"/>
+        <polygon points="0,93 253,93 300,180 0,180" fill="#f0eee8"/>
+      </svg>
+      <svg viewBox="0 0 4550 882" width="520" height="67" fill="#f0eee8"><g transform="scale(1,-1) translate(0,-881.89)"><path d="M14 0H289.59V303.15H895.89V578.74H289.59V606.3H895.89V881.89H14Z" transform="translate(0,0)"/><path d="M14 881.89V0H895.89V881.89ZM620.3 606.3V275.59H289.59V606.3Z" transform="translate(910,0)"/><path d="M895.89 578.74H14V0H289.59V303.15H895.89Z" transform="translate(1820,0)"/><path d="M14 881.89V0H289.59V606.3H317.15V0H592.74V606.3H620.3V0H895.89V881.89Z" transform="translate(2730,0)"/><path d="M14 881.89V0H289.59V303.15H620.3V0H895.89V881.89ZM620.3 578.74H289.59V606.3H620.3Z" transform="translate(3640,0)"/></g></svg>
+    </div>
+  </div>
+
+  <!-- OLD symbol + FORMA full uppercase for comparison -->
+  <div style="margin-bottom:48px">
+    <span class="label-dim" style="position:static;display:block;margin-bottom:16px">Original V3 + FORMA (full uppercase, for comparison)</span>
+    <div class="lockup" style="gap:32px">
+      <svg viewBox="0 0 300 180" width="90" height="54">
+        <polygon points="0,0 300,0 253,87 0,87" fill="#f0eee8"/>
+        <polygon points="0,93 253,93 300,180 0,180" fill="#f0eee8"/>
+      </svg>
+      <svg viewBox="0 0 4550 882" width="520" height="67" fill="#f0eee8"><g transform="scale(1,-1) translate(0,-881.89)"><path d="M14 0H289.59V303.15H895.89V578.74H289.59V606.3H895.89V881.89H14Z"/><path d="M14 881.89V0H895.89V881.89ZM620.3 606.3V275.59H289.59V606.3Z" transform="translate(910,0)"/><path d="M14 881.89V0H289.59V303.15H317.15V0H895.89V275.59H592.74V303.15H895.89V881.89ZM620.3 578.74H289.59V606.3H620.3Z" transform="translate(1820,0)"/><path d="M14 881.89V0H289.59V606.3H317.15V0H592.74V606.3H620.3V0H895.89V881.89Z" transform="translate(2730,0)"/><path d="M14 881.89V0H289.59V303.15H620.3V0H895.89V881.89ZM620.3 578.74H289.59V606.3H620.3Z" transform="translate(3640,0)"/></g></svg>
+    </div>
+  </div>
+
+  <!-- Vertical: OLD symbol + FOrMA -->
+  <div>
+    <span class="label-dim" style="position:static;display:block;margin-bottom:16px">Vertical: Original V3 + FOrMA</span>
+    <div style="display:flex;gap:120px">
+      <div class="lockup-v">
+        <svg viewBox="0 0 300 180" width="80" height="48">
+          <polygon points="0,0 300,0 253,87 0,87" fill="#f0eee8"/>
+          <polygon points="0,93 253,93 300,180 0,180" fill="#f0eee8"/>
+        </svg>
+        <svg viewBox="0 0 4550 882" width="340" height="44" fill="#f0eee8"><g transform="scale(1,-1) translate(0,-881.89)"><path d="M14 0H289.59V303.15H895.89V578.74H289.59V606.3H895.89V881.89H14Z" transform="translate(0,0)"/><path d="M14 881.89V0H895.89V881.89ZM620.3 606.3V275.59H289.59V606.3Z" transform="translate(910,0)"/><path d="M895.89 578.74H14V0H289.59V303.15H895.89Z" transform="translate(1820,0)"/><path d="M14 881.89V0H289.59V606.3H317.15V0H592.74V606.3H620.3V0H895.89V881.89Z" transform="translate(2730,0)"/><path d="M14 881.89V0H289.59V303.15H620.3V0H895.89V881.89ZM620.3 578.74H289.59V606.3H620.3Z" transform="translate(3640,0)"/></g></svg>
+        <div style="font-size:10px;color:#8b7355;margin-top:12px;font-family:'Space Mono',monospace">FOrMA + V3 Original</div>
+      </div>
+
+      <div class="lockup-v">
+        <svg viewBox="0 0 300 180" width="80" height="48">
+          <polygon points="0,0 300,0 253,87 0,87" fill="#f0eee8"/>
+          <polygon points="0,93 253,93 300,180 0,180" fill="#f0eee8"/>
+        </svg>
+        <svg viewBox="0 0 4550 882" width="340" height="44" fill="#f0eee8"><g transform="scale(1,-1) translate(0,-881.89)"><path d="M14 606.3H592.74V881.89H14ZM289.59 0V303.15H895.89V578.74H14V0Z"/><path d="M14 578.74V0H289.59V.19H620.3V0H895.89V578.74ZM289.59 275.78V303.15H620.3V275.78Z" transform="translate(910,0)"/><path d="M895.89 578.74H14V0H289.59V303.15H895.89Z" transform="translate(1820,0)"/><path d="M14 578.74V0H289.59V303.15H317.15V0H592.74V303.15H620.3V0H895.89V578.74Z" transform="translate(2730,0)"/><path d="M14 578.74V0H592.74V275.59H289.59V303.15H620.3V0H895.89V578.74Z" transform="translate(3640,0)"/></g></svg>
+        <div style="font-size:10px;color:#8b7355;margin-top:12px;font-family:'Space Mono',monospace">forma + V3 Original</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════ -->
+<!-- SECTION 4: VERTICAL LOCKUPS -->
+<!-- ════════════════════════════════════════════════ -->
+<div class="card">
+  <div class="label">04 — Vertical Lockups (best combinations)</div>
+
+  <div class="row" style="justify-content:space-around">
+    <!-- B + FORMA vertical -->
+    <div style="text-align:center">
+      <div class="lockup-v">
+        <svg viewBox="0 0 300 180" width="80" height="48">
+          <polygon points="0,0 300,0 300,40 240,40 240,84 0,84" fill="#f0eee8"/>
+          <polygon points="0,96 240,96 240,140 300,140 300,180 0,180" fill="#f0eee8"/>
+        </svg>
+        <svg viewBox="0 0 4550 882" width="340" height="44" fill="#f0eee8"><g transform="scale(1,-1) translate(0,-881.89)"><path d="M14 0H289.59V303.15H895.89V578.74H289.59V606.3H895.89V881.89H14Z"/><path d="M14 881.89V0H895.89V881.89ZM620.3 606.3V275.59H289.59V606.3Z" transform="translate(910,0)"/><path d="M14 881.89V0H289.59V303.15H317.15V0H895.89V275.59H592.74V303.15H895.89V881.89ZM620.3 578.74H289.59V606.3H620.3Z" transform="translate(1820,0)"/><path d="M14 881.89V0H289.59V606.3H317.15V0H592.74V606.3H620.3V0H895.89V881.89Z" transform="translate(2730,0)"/><path d="M14 881.89V0H289.59V303.15H620.3V0H895.89V881.89ZM620.3 578.74H289.59V606.3H620.3Z" transform="translate(3640,0)"/></g></svg>
+      </div>
+      <div style="font-size:10px;color:#8b7355;margin-top:16px;font-family:'Space Mono',monospace">B + FORMA</div>
+    </div>
+
+    <div class="sep" style="height:140px"></div>
+
+    <!-- C + FORMA vertical -->
+    <div style="text-align:center">
+      <div class="lockup-v">
+        <svg viewBox="0 0 300 180" width="80" height="48">
+          <rect x="0" y="0" width="300" height="52" fill="#f0eee8"/>
+          <rect x="0" y="64" width="240" height="52" fill="#f0eee8"/>
+          <rect x="0" y="128" width="300" height="52" fill="#f0eee8"/>
+        </svg>
+        <svg viewBox="0 0 4550 882" width="340" height="44" fill="#f0eee8"><g transform="scale(1,-1) translate(0,-881.89)"><path d="M14 0H289.59V303.15H895.89V578.74H289.59V606.3H895.89V881.89H14Z"/><path d="M14 881.89V0H895.89V881.89ZM620.3 606.3V275.59H289.59V606.3Z" transform="translate(910,0)"/><path d="M14 881.89V0H289.59V303.15H317.15V0H895.89V275.59H592.74V303.15H895.89V881.89ZM620.3 578.74H289.59V606.3H620.3Z" transform="translate(1820,0)"/><path d="M14 881.89V0H289.59V606.3H317.15V0H592.74V606.3H620.3V0H895.89V881.89Z" transform="translate(2730,0)"/><path d="M14 881.89V0H289.59V303.15H620.3V0H895.89V881.89ZM620.3 578.74H289.59V606.3H620.3Z" transform="translate(3640,0)"/></g></svg>
+      </div>
+      <div style="font-size:10px;color:#8b7355;margin-top:16px;font-family:'Space Mono',monospace">C + FORMA</div>
+    </div>
+
+    <div class="sep" style="height:140px"></div>
+
+    <!-- C + forma vertical -->
+    <div style="text-align:center">
+      <div class="lockup-v">
+        <svg viewBox="0 0 300 180" width="80" height="48">
+          <rect x="0" y="0" width="300" height="52" fill="#f0eee8"/>
+          <rect x="0" y="64" width="240" height="52" fill="#f0eee8"/>
+          <rect x="0" y="128" width="300" height="52" fill="#f0eee8"/>
+        </svg>
+        <svg viewBox="0 0 4550 882" width="340" height="44" fill="#f0eee8"><g transform="scale(1,-1) translate(0,-881.89)"><path d="M14 606.3H592.74V881.89H14ZM289.59 0V303.15H895.89V578.74H14V0Z"/><path d="M14 578.74V0H289.59V.19H620.3V0H895.89V578.74ZM289.59 275.78V303.15H620.3V275.78Z" transform="translate(910,0)"/><path d="M895.89 578.74H14V0H289.59V303.15H895.89Z" transform="translate(1820,0)"/><path d="M14 578.74V0H289.59V303.15H317.15V0H592.74V303.15H620.3V0H895.89V578.74Z" transform="translate(2730,0)"/><path d="M14 578.74V0H592.74V275.59H289.59V303.15H620.3V0H895.89V578.74Z" transform="translate(3640,0)"/></g></svg>
+      </div>
+      <div style="font-size:10px;color:#8b7355;margin-top:16px;font-family:'Space Mono',monospace">C + forma</div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════ -->
+<!-- SECTION 5: ON LIGHT BACKGROUND -->
+<!-- ════════════════════════════════════════════════ -->
+<div class="card card-light" style="color:#1a1714">
+  <div class="label" style="color:#8b7355">05 — Light Background Test</div>
+
+  <div class="row" style="gap:80px">
+    <div class="lockup">
+      <svg viewBox="0 0 300 180" width="70" height="42">
+        <polygon points="0,0 300,0 300,40 240,40 240,84 0,84" fill="#1a1714"/>
+        <polygon points="0,96 240,96 240,140 300,140 300,180 0,180" fill="#1a1714"/>
+      </svg>
+      <svg viewBox="0 0 4550 882" width="380" height="49" fill="#1a1714"><g transform="scale(1,-1) translate(0,-881.89)"><path d="M14 0H289.59V303.15H895.89V578.74H289.59V606.3H895.89V881.89H14Z"/><path d="M14 881.89V0H895.89V881.89ZM620.3 606.3V275.59H289.59V606.3Z" transform="translate(910,0)"/><path d="M14 881.89V0H289.59V303.15H317.15V0H895.89V275.59H592.74V303.15H895.89V881.89ZM620.3 578.74H289.59V606.3H620.3Z" transform="translate(1820,0)"/><path d="M14 881.89V0H289.59V606.3H317.15V0H592.74V606.3H620.3V0H895.89V881.89Z" transform="translate(2730,0)"/><path d="M14 881.89V0H289.59V303.15H620.3V0H895.89V881.89ZM620.3 578.74H289.59V606.3H620.3Z" transform="translate(3640,0)"/></g></svg>
+    </div>
+  </div>
+
+  <div style="margin-top:40px">
+    <div class="lockup">
+      <svg viewBox="0 0 300 180" width="70" height="42">
+        <rect x="0" y="0" width="300" height="52" fill="#1a1714"/>
+        <rect x="0" y="64" width="240" height="52" fill="#1a1714"/>
+        <rect x="0" y="128" width="300" height="52" fill="#1a1714"/>
+      </svg>
+      <svg viewBox="0 0 4550 882" width="380" height="49" fill="#1a1714"><g transform="scale(1,-1) translate(0,-881.89)"><path d="M14 0H289.59V303.15H895.89V578.74H289.59V606.3H895.89V881.89H14Z"/><path d="M14 881.89V0H895.89V881.89ZM620.3 606.3V275.59H289.59V606.3Z" transform="translate(910,0)"/><path d="M14 881.89V0H289.59V303.15H317.15V0H895.89V275.59H592.74V303.15H895.89V881.89ZM620.3 578.74H289.59V606.3H620.3Z" transform="translate(1820,0)"/><path d="M14 881.89V0H289.59V606.3H317.15V0H592.74V606.3H620.3V0H895.89V881.89Z" transform="translate(2730,0)"/><path d="M14 881.89V0H289.59V303.15H620.3V0H895.89V881.89ZM620.3 578.74H289.59V606.3H620.3Z" transform="translate(3640,0)"/></g></svg>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
