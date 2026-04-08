@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="shark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,96 +7,127 @@
 <meta name="description" content="Sound design and sonic strategy for brands that move people.">
 <meta property="og:title" content="Forma — Audio Solutions">
 <meta property="og:description" content="Sound design and sonic strategy for brands that move people.">
-<meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #1E1E22;
-    --bg-alt: #28282D;
-    --surface: #323237;
-    --surface-light: #3A3A40;
-    --border: #3A3A40;
-    --text: #CDD2D7;
-    --text-dim: #9DA4AA;
-    --text-muted: #6A7078;
-    --text-ghost: #404046;
-    --accent: #E6FF50;
-    --accent-dim: rgba(230, 255, 80, 0.12);
+  [data-theme="original"] {
+    --bg:#0c0c0e; --bg-alt:#0e0e10;
+    --surface:#141414; --surface-light:#1a1a1a;
+    --border:#1e1e1e; --border-mid:#252525;
+    --text:#f0eee8; --text-dim:#8a8a8a; --text-muted:#6b6b6b; --text-ghost:#3a3a3a;
+    --accent:#8b7355; --accent-dim:rgba(139,115,85,0.15);
+    --ar:139; --ag:115; --ab:85;
+  }
+  [data-theme="shark"] {
+    --bg:#28282D; --bg-alt:#2E2E33;
+    --surface:#323237; --surface-light:#3A3A40;
+    --border:#3A3A40; --border-mid:#48484E;
+    --text:#CDD2D7; --text-dim:#9DA4AA; --text-muted:#6A7078; --text-ghost:#404046;
+    --accent:#E6FF50; --accent-dim:rgba(230,255,80,0.12);
+    --ar:230; --ag:255; --ab:80;
+  }
+  [data-theme="light"] {
+    --bg:#FFFFFF; --bg-alt:#F8F8F6;
+    --surface:#EAEAE7; --surface-light:#E2E2DF;
+    --border:#D8D8D4; --border-mid:#CCCCC8;
+    --text:#1A1A1F; --text-dim:#55555A; --text-muted:#7A7A80; --text-ghost:#C0C0BC;
+    --accent:#8b7355; --accent-dim:rgba(139,115,85,0.10);
+    --ar:139; --ag:115; --ab:85;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
-  html {
+  html, body {
+    height: 100%;
+    overflow: hidden;
     background: var(--bg);
     font-family: 'Space Grotesk', sans-serif;
     color: var(--text);
     -webkit-font-smoothing: antialiased;
-    scroll-behavior: smooth;
+    transition: background 0.5s, color 0.5s;
   }
 
-  body { background: var(--bg); }
-
-  /* ===== HERO ===== */
-  .hero {
-    position: relative;
-    height: 100vh;
-    min-height: 600px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: clamp(24px, 5vw, 80px);
-    overflow: hidden;
-  }
-
-  .hero canvas {
-    position: absolute;
+  canvas {
+    position: fixed;
     top: 0; left: 0;
     width: 100%; height: 100%;
     z-index: 0;
   }
 
-  .hero > * { position: relative; z-index: 1; }
-
-  .hero .flag-bg {
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    width: clamp(240px, 40vw, 560px);
-    z-index: 0;
-    opacity: 0;
-    animation: fadeIn 3s ease 0.4s forwards;
+  /* UI */
+  .ui {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: clamp(18px, 3.5vw, 48px) clamp(18px, 4vw, 60px);
+    pointer-events: none;
   }
+  .ui > * { pointer-events: auto; }
 
-  .hero .flag-bg polygon { fill: var(--accent); opacity: 0.025; }
-
-  /* Top bar */
   .top-bar {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
+    align-items: center;
     opacity: 0;
-    animation: fadeSlideDown 1.2s cubic-bezier(0.16,1,0.3,1) 0.3s forwards;
+    animation: fadeIn 1.2s ease 0.2s forwards;
   }
 
   .logo-group {
     display: flex;
     align-items: center;
-    gap: 14px;
+    gap: 12px;
   }
 
   .logo-label {
     font-family: 'Space Mono', monospace;
-    font-size: 10px;
+    font-size: clamp(8px, 1.1vw, 10px);
     letter-spacing: 0.2em;
     text-transform: uppercase;
     color: var(--accent);
+    transition: color 0.5s;
   }
 
-  .status-pill {
+  .top-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .theme-toggle {
+    display: flex;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+    transition: border-color 0.5s;
+  }
+
+  .theme-toggle button {
+    padding: 6px 10px;
+    font-size: 8px;
+    font-family: 'Space Mono', monospace;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border: none;
+    cursor: pointer;
+    background: none;
+    color: var(--text-muted);
+    transition: background 0.15s, color 0.15s;
+  }
+
+  .theme-toggle button.active {
+    background: var(--accent);
+    color: var(--bg);
+    font-weight: 700;
+  }
+
+  .pill {
     font-family: 'Space Mono', monospace;
     font-size: 9px;
-    letter-spacing: 0.15em;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--text-muted);
     border: 1px solid var(--border);
@@ -104,903 +135,404 @@
     display: flex;
     align-items: center;
     gap: 8px;
+    cursor: pointer;
+    background: none;
+    transition: border-color 0.2s, color 0.2s;
   }
 
-  .status-dot {
+  .pill:hover { border-color: var(--accent); color: var(--text); }
+
+  .pill .dot {
     width: 6px; height: 6px;
     border-radius: 50%;
     background: var(--accent);
     animation: pulse 2.4s ease-in-out infinite;
+    transition: background 0.5s;
   }
 
-  /* Center hero */
-  .hero-center {
-    text-align: center;
+  .bottom-bar {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .hero-title {
-    font-size: clamp(48px, 10vw, 120px);
-    font-weight: 700;
-    line-height: 0.9;
-    letter-spacing: -0.04em;
+    justify-content: space-between;
+    align-items: flex-end;
     opacity: 0;
-    animation: fadeScaleUp 1.6s cubic-bezier(0.16,1,0.3,1) 0.6s forwards;
+    animation: fadeIn 1.2s ease 0.5s forwards;
   }
 
-  .hero-tagline {
-    font-family: 'Space Mono', monospace;
-    font-size: clamp(10px, 1.4vw, 13px);
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-top: clamp(16px, 2vw, 28px);
-    opacity: 0;
-    animation: fadeSlideUp 1.4s cubic-bezier(0.16,1,0.3,1) 1s forwards;
-  }
-
-  .hero-sub {
-    font-size: clamp(14px, 1.6vw, 17px);
-    font-weight: 300;
-    color: var(--text-dim);
-    margin-top: clamp(12px, 2vw, 24px);
-    max-width: 460px;
-    line-height: 1.6;
-    opacity: 0;
-    animation: fadeSlideUp 1.4s cubic-bezier(0.16,1,0.3,1) 1.3s forwards;
-  }
-
-  .scroll-hint {
-    font-family: 'Space Mono', monospace;
-    font-size: 9px;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--text-ghost);
-    text-align: center;
-    opacity: 0;
-    animation: fadeSlideUp 1.2s cubic-bezier(0.16,1,0.3,1) 2s forwards;
-  }
-
-  .scroll-hint .arrow {
-    display: block;
-    margin: 8px auto 0;
-    animation: float 2s ease-in-out infinite;
-  }
-
-  /* ===== SOUND PAD SECTION ===== */
-  .sound-section {
-    padding: clamp(40px, 8vw, 120px) clamp(24px, 5vw, 80px);
-    background: var(--bg-alt);
-    position: relative;
-  }
-
-  .section-label {
+  .bottom-bar span {
     font-family: 'Space Mono', monospace;
     font-size: 10px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 12px;
+    color: var(--text-ghost);
+    letter-spacing: 0.1em;
+    transition: color 0.5s;
   }
 
-  .section-title {
-    font-size: clamp(28px, 4vw, 44px);
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    margin-bottom: 8px;
-  }
-
-  .section-desc {
-    font-size: clamp(13px, 1.4vw, 15px);
-    font-weight: 300;
-    color: var(--text-muted);
-    max-width: 500px;
-    line-height: 1.5;
-    margin-bottom: clamp(32px, 5vw, 60px);
-  }
-
-  /* Waveform visualizer */
-  .visualizer-wrap {
-    width: 100%;
-    height: 120px;
-    margin-bottom: clamp(24px, 4vw, 48px);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    overflow: hidden;
-    background: var(--bg);
-  }
-
-  .visualizer-wrap canvas {
-    width: 100%;
-    height: 100%;
-    display: block;
-  }
-
-  /* Pad grid */
-  .pad-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: clamp(8px, 1.5vw, 16px);
-    max-width: 700px;
-  }
-
-  .pad {
-    aspect-ratio: 1;
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 6px;
+  /* Modal */
+  .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    z-index: 100;
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 8px;
-    cursor: pointer;
-    transition: border-color 0.15s, background 0.15s, transform 0.1s;
-    position: relative;
-    overflow: hidden;
-    user-select: none;
-    -webkit-tap-highlight-color: transparent;
-  }
-
-  .pad:hover {
-    border-color: var(--accent);
-    background: rgba(230, 255, 80, 0.03);
-  }
-
-  .pad:active {
-    transform: scale(0.96);
-  }
-
-  .pad.hit {
-    border-color: var(--accent);
-    background: rgba(230, 255, 80, 0.08);
-  }
-
-  .pad .ripple {
-    position: absolute;
-    border-radius: 50%;
-    background: rgba(230, 255, 80, 0.15);
-    transform: scale(0);
-    animation: ripple 0.6s ease-out forwards;
+    opacity: 0;
     pointer-events: none;
+    transition: opacity 0.3s;
   }
 
-  .pad .pad-icon {
-    font-size: 24px;
-    line-height: 1;
-    color: var(--text-dim);
-    transition: color 0.15s;
-  }
+  .modal-backdrop.open { opacity: 1; pointer-events: auto; }
 
-  .pad:hover .pad-icon,
-  .pad.hit .pad-icon {
-    color: var(--accent);
-  }
-
-  .pad .pad-label {
-    font-family: 'Space Mono', monospace;
-    font-size: 8px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--text-ghost);
-    transition: color 0.15s;
-  }
-
-  .pad:hover .pad-label { color: var(--text-muted); }
-
-  .pad .key-hint {
-    position: absolute;
-    top: 6px;
-    right: 8px;
-    font-family: 'Space Mono', monospace;
-    font-size: 9px;
-    color: var(--text-ghost);
-    opacity: 0.5;
-  }
-
-  .pad-tip {
-    font-family: 'Space Mono', monospace;
-    font-size: 9px;
-    letter-spacing: 0.1em;
-    color: var(--text-ghost);
-    margin-top: clamp(16px, 2vw, 24px);
-  }
-
-  /* ===== CONTACT SECTION ===== */
-  .contact-section {
-    padding: clamp(40px, 8vw, 120px) clamp(24px, 5vw, 80px);
-    background: var(--bg);
-  }
-
-  .contact-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: clamp(40px, 6vw, 80px);
-    max-width: 900px;
-  }
-
-  .contact-form {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
-
-  .form-group { display: flex; flex-direction: column; gap: 6px; }
-
-  .form-group label {
-    font-family: 'Space Mono', monospace;
-    font-size: 9px;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-  }
-
-  .form-group input,
-  .form-group textarea {
+  .modal {
     background: var(--bg-alt);
     border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 12px 16px;
+    border-radius: 6px;
+    width: min(92vw, 480px);
+    max-height: 92vh;
+    overflow-y: auto;
+    padding: clamp(20px, 4vw, 36px);
+    transform: translateY(16px) scale(0.97);
+    transition: transform 0.3s cubic-bezier(0.16,1,0.3,1), background 0.5s, border-color 0.5s;
+  }
+
+  .modal-backdrop.open .modal { transform: translateY(0) scale(1); }
+
+  .modal-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+  }
+
+  .modal-title { font-size: 20px; font-weight: 700; letter-spacing: -0.02em; }
+
+  .modal-close {
+    background: none; border: none;
+    color: var(--text-muted); font-size: 18px;
+    cursor: pointer; padding: 2px 6px; line-height: 1;
+    transition: color 0.2s;
+  }
+  .modal-close:hover { color: var(--text); }
+
+  .modal-desc {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.5;
+    margin-bottom: 24px;
+  }
+
+  .fg { display: flex; flex-direction: column; gap: 5px; margin-bottom: 14px; }
+
+  .fg label {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--text-muted);
+    transition: color 0.5s;
+  }
+
+  .fg input, .fg textarea, .fg select {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 10px 14px;
     color: var(--text);
     font-family: 'Space Grotesk', sans-serif;
     font-size: 14px;
     outline: none;
-    transition: border-color 0.2s;
+    transition: border-color 0.2s, background 0.5s, color 0.5s;
     resize: vertical;
+    -webkit-appearance: none;
   }
 
-  .form-group input:focus,
-  .form-group textarea:focus {
-    border-color: var(--accent);
-  }
+  .fg select { cursor: pointer; }
+  .fg input:focus, .fg textarea:focus, .fg select:focus { border-color: var(--accent); }
+  .fg input::placeholder, .fg textarea::placeholder { color: var(--text-ghost); }
+  .fg textarea { min-height: 72px; }
 
-  .form-group input::placeholder,
-  .form-group textarea::placeholder {
-    color: var(--text-ghost);
-  }
-
-  .form-group textarea { min-height: 100px; }
+  .fr { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 
   .submit-btn {
     font-family: 'Space Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.15em;
+    font-size: 10px; letter-spacing: 0.15em;
     text-transform: uppercase;
-    background: var(--accent);
-    color: var(--bg);
-    border: none;
-    border-radius: 4px;
-    padding: 14px 28px;
-    cursor: pointer;
-    font-weight: 700;
-    transition: opacity 0.2s, transform 0.1s;
-    align-self: flex-start;
+    background: var(--accent); color: var(--bg);
+    border: none; border-radius: 3px;
+    padding: 12px; cursor: pointer;
+    font-weight: 700; width: 100%; margin-top: 4px;
+    transition: opacity 0.2s, transform 0.1s, background 0.5s, color 0.5s;
   }
-
   .submit-btn:hover { opacity: 0.9; }
   .submit-btn:active { transform: scale(0.98); }
 
-  .form-note {
-    font-size: 11px;
-    color: var(--text-ghost);
-    margin-top: 4px;
-  }
+  .form-note { font-size: 11px; color: var(--accent); margin-top: 8px; min-height: 16px; }
 
-  /* ===== FOOTER ===== */
-  footer {
-    padding: clamp(24px, 4vw, 40px) clamp(24px, 5vw, 80px);
-    background: var(--bg);
-    border-top: 1px solid var(--border);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  footer span {
-    font-family: 'Space Mono', monospace;
-    font-size: 10px;
-    color: var(--text-ghost);
-    letter-spacing: 0.1em;
-  }
-
-  /* ===== ANIMATIONS ===== */
-  @keyframes fadeSlideDown {
-    from { opacity: 0; transform: translateY(-16px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  @keyframes fadeSlideUp {
-    from { opacity: 0; transform: translateY(16px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  @keyframes fadeScaleUp {
-    from { opacity: 0; transform: scale(0.92) translateY(24px); }
-    to { opacity: 1; transform: scale(1) translateY(0); }
-  }
-  @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
   @keyframes pulse {
     0%, 100% { opacity: 1; transform: scale(1); }
     50% { opacity: 0.4; transform: scale(0.85); }
   }
-  @keyframes ripple {
-    to { transform: scale(4); opacity: 0; }
-  }
-  @keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(4px); }
-  }
 
-  /* ===== RESPONSIVE ===== */
-  @media (max-width: 768px) {
-    .pad-grid { grid-template-columns: repeat(4, 1fr); }
-    .contact-grid { grid-template-columns: 1fr; }
-    .status-pill { display: none; }
-    .pad .key-hint { display: none; }
-  }
-
-  @media (max-width: 480px) {
-    .pad-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  @media (max-width: 600px) {
+    .fr { grid-template-columns: 1fr; }
+    .bottom-bar span:first-child { display: none; }
+    .theme-toggle button { padding: 5px 7px; font-size: 7px; }
+    .pill span:last-child { font-size: 8px; }
   }
 </style>
 </head>
 <body>
 
-<!-- ===== HERO ===== -->
-<section class="hero">
-  <svg class="flag-bg" viewBox="0 0 300 180">
-    <polygon points="0,0 300,0 253,87 0,87"/>
-    <polygon points="0,93 253,93 300,180 0,180"/>
-  </svg>
-  <canvas id="bgCanvas"></canvas>
+<canvas id="c"></canvas>
 
+<div class="ui">
   <div class="top-bar">
     <div class="logo-group">
-      <svg viewBox="0 0 300 180" width="36" height="22">
+      <svg viewBox="0 0 300 180" width="30" height="18">
         <polygon points="0,0 300,0 253,87 0,87" fill="var(--accent)"/>
         <polygon points="0,93 253,93 300,180 0,180" fill="var(--accent)"/>
       </svg>
       <span class="logo-label">Forma Audio Solutions</span>
     </div>
-    <div class="status-pill">
-      <span class="status-dot"></span>
-      <span>Launching 2026</span>
-    </div>
-  </div>
-
-  <div class="hero-center">
-    <div class="hero-title">Forma</div>
-    <div class="hero-tagline">Audio Solutions</div>
-    <div class="hero-sub">
-      Sound design and sonic strategy for brands that move people.
-    </div>
-  </div>
-
-  <div class="scroll-hint">
-    Explore
-    <svg class="arrow" width="16" height="16" viewBox="0 0 16 16" fill="none">
-      <path d="M8 3v10M4 9l4 4 4-4" stroke="var(--text-ghost)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
-  </div>
-</section>
-
-<!-- ===== SOUND PAD ===== -->
-<section class="sound-section" id="soundlab">
-  <div class="section-label">Interactive</div>
-  <div class="section-title">Sound Lab</div>
-  <div class="section-desc">
-    Tap the pads. Each one triggers a cinematic texture. This is a glimpse of how we think about sound.
-  </div>
-
-  <div class="visualizer-wrap">
-    <canvas id="vizCanvas"></canvas>
-  </div>
-
-  <div class="pad-grid" id="padGrid">
-    <div class="pad" data-sound="deep-boom" data-key="1">
-      <span class="key-hint">1</span>
-      <span class="pad-icon">&#9676;</span>
-      <span class="pad-label">Deep Boom</span>
-    </div>
-    <div class="pad" data-sound="atmos-pad" data-key="2">
-      <span class="key-hint">2</span>
-      <span class="pad-icon">&#9687;</span>
-      <span class="pad-label">Atmosphere</span>
-    </div>
-    <div class="pad" data-sound="riser" data-key="3">
-      <span class="key-hint">3</span>
-      <span class="pad-icon">&#9651;</span>
-      <span class="pad-label">Riser</span>
-    </div>
-    <div class="pad" data-sound="shimmer" data-key="4">
-      <span class="key-hint">4</span>
-      <span class="pad-icon">&#10022;</span>
-      <span class="pad-label">Shimmer</span>
-    </div>
-    <div class="pad" data-sound="perc-hit" data-key="Q">
-      <span class="key-hint">Q</span>
-      <span class="pad-icon">&#9670;</span>
-      <span class="pad-label">Perc Hit</span>
-    </div>
-    <div class="pad" data-sound="reverse" data-key="W">
-      <span class="key-hint">W</span>
-      <span class="pad-icon">&#9664;</span>
-      <span class="pad-label">Reverse</span>
-    </div>
-    <div class="pad" data-sound="string-swell" data-key="E">
-      <span class="key-hint">E</span>
-      <span class="pad-icon">&#9837;</span>
-      <span class="pad-label">Strings</span>
-    </div>
-    <div class="pad" data-sound="sub-drop" data-key="R">
-      <span class="key-hint">R</span>
-      <span class="pad-icon">&#9660;</span>
-      <span class="pad-label">Sub Drop</span>
-    </div>
-  </div>
-
-  <div class="pad-tip">Tap the pads or press 1-4 / Q-W-E-R</div>
-</section>
-
-<!-- ===== CONTACT ===== -->
-<section class="contact-section" id="contact">
-  <div class="contact-grid">
-    <div>
-      <div class="section-label">Get in touch</div>
-      <div class="section-title">Let's talk<br>sound.</div>
-      <div class="section-desc" style="margin-bottom:24px">
-        Tell us about your project. Campaign films, brand identity, spatial audio, sonic logos, whatever shape sound needs to take.
+    <div class="top-right">
+      <div class="theme-toggle">
+        <button onclick="setTheme('light')">Light</button>
+        <button onclick="setTheme('original')">Dark</button>
+        <button class="active" onclick="setTheme('shark')">Shark</button>
       </div>
-      <div style="display:flex;flex-direction:column;gap:12px">
-        <a href="mailto:hello@formasound.co" style="font-family:'Space Mono',monospace;font-size:13px;color:var(--accent);text-decoration:none;letter-spacing:0.05em">hello@formasound.co</a>
-      </div>
+      <button class="pill" onclick="openModal()">
+        <span class="dot"></span>
+        <span>Get in touch</span>
+      </button>
     </div>
-    <form class="contact-form" id="contactForm" onsubmit="handleSubmit(event)">
-      <div class="form-group">
-        <label for="name">Name</label>
-        <input type="text" id="name" name="name" placeholder="Your name" required>
+  </div>
+
+  <div></div>
+
+  <div class="bottom-bar">
+    <span>Sound Design &amp; Sonic Strategy</span>
+    <span>&copy; 2026</span>
+  </div>
+</div>
+
+<!-- Contact modal -->
+<div class="modal-backdrop" id="mb" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-title">New project</div>
+      <button class="modal-close" onclick="closeModal()">&times;</button>
+    </div>
+    <div class="modal-desc">Tell us about the sonic world your brand needs. We'll get back within 48h.</div>
+    <form id="cf" onsubmit="handleSubmit(event)">
+      <div class="fr">
+        <div class="fg">
+          <label>Your name</label>
+          <input type="text" name="name" placeholder="Name" required>
+        </div>
+        <div class="fg">
+          <label>Company</label>
+          <input type="text" name="company" placeholder="Company name">
+        </div>
       </div>
-      <div class="form-group">
-        <label for="email">Email</label>
-        <input type="email" id="email" name="email" placeholder="you@company.com" required>
+      <div class="fg">
+        <label>Work email</label>
+        <input type="email" name="email" placeholder="you@company.com" required>
       </div>
-      <div class="form-group">
-        <label for="project">About your project</label>
-        <textarea id="project" name="project" placeholder="Brief description of what you need..."></textarea>
+      <div class="fg">
+        <label>What do you need?</label>
+        <select name="service">
+          <option value="">Select a service</option>
+          <option value="sound-design">Sound Design for Film / Campaign</option>
+          <option value="sonic-branding">Sonic Branding / Audio Identity</option>
+          <option value="music-production">Music Production / Composition</option>
+          <option value="spatial-audio">Spatial Audio / Immersive</option>
+          <option value="sonic-strategy">Sonic Strategy / Consulting</option>
+          <option value="other">Other</option>
+        </select>
       </div>
-      <button type="submit" class="submit-btn">Send message</button>
-      <div class="form-note" id="formNote"></div>
+      <div class="fg">
+        <label>Project brief</label>
+        <textarea name="brief" placeholder="What's the project? Timeline, scope, references..."></textarea>
+      </div>
+      <div class="fr">
+        <div class="fg">
+          <label>Budget range</label>
+          <select name="budget">
+            <option value="">Prefer not to say</option>
+            <option value="<5k">Under $5,000</option>
+            <option value="5-15k">$5,000 — $15,000</option>
+            <option value="15-50k">$15,000 — $50,000</option>
+            <option value="50k+">$50,000+</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label>Timeline</label>
+          <select name="timeline">
+            <option value="">No rush</option>
+            <option value="asap">ASAP</option>
+            <option value="1-2w">1–2 weeks</option>
+            <option value="1m">~1 month</option>
+            <option value="3m+">3+ months</option>
+          </select>
+        </div>
+      </div>
+      <button type="submit" class="submit-btn">Send inquiry</button>
+      <div class="form-note" id="fn"></div>
     </form>
   </div>
-</section>
-
-<!-- ===== FOOTER ===== -->
-<footer>
-  <span>Forma Audio Solutions</span>
-  <span>&copy; 2026</span>
-</footer>
+</div>
 
 <script>
-// ============================
-// AUDIO ENGINE (Web Audio API)
-// ============================
-let audioCtx;
-let analyser;
-let analyserData;
+// ====== THEME ======
+let AR=230, AG=255, AB=80;
 
-function initAudio() {
-  if (audioCtx) return;
-  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  analyser = audioCtx.createAnalyser();
-  analyser.fftSize = 256;
-  analyser.smoothingTimeConstant = 0.75;
-  analyserData = new Uint8Array(analyser.frequencyBinCount);
-  analyser.connect(audioCtx.destination);
+function getColors() {
+  const s = getComputedStyle(document.documentElement);
+  AR = parseInt(s.getPropertyValue('--ar'));
+  AG = parseInt(s.getPropertyValue('--ag'));
+  AB = parseInt(s.getPropertyValue('--ab'));
 }
 
-// Sound generators
-const sounds = {
-  'deep-boom'(ctx, out) {
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-    osc.type = 'sine';
-    osc.frequency.setValueAtTime(60, ctx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(20, ctx.currentTime + 1.5);
-    gain.gain.setValueAtTime(0.7, ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1.5);
-    osc.connect(gain).connect(out);
-    osc.start(); osc.stop(ctx.currentTime + 1.5);
-    // Sub layer
-    const sub = ctx.createOscillator();
-    const sg = ctx.createGain();
-    sub.type = 'sine';
-    sub.frequency.setValueAtTime(40, ctx.currentTime);
-    sub.frequency.exponentialRampToValueAtTime(15, ctx.currentTime + 2);
-    sg.gain.setValueAtTime(0.5, ctx.currentTime);
-    sg.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 2);
-    sub.connect(sg).connect(out);
-    sub.start(); sub.stop(ctx.currentTime + 2);
-  },
-
-  'atmos-pad'(ctx, out) {
-    const freqs = [220, 330, 440, 554];
-    freqs.forEach((f, i) => {
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(f, ctx.currentTime);
-      osc.frequency.setValueAtTime(f * 1.005, ctx.currentTime + 0.5);
-      gain.gain.setValueAtTime(0, ctx.currentTime);
-      gain.gain.linearRampToValueAtTime(0.12, ctx.currentTime + 0.4);
-      gain.gain.linearRampToValueAtTime(0.08, ctx.currentTime + 1.5);
-      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 3);
-      osc.connect(gain).connect(out);
-      osc.start(ctx.currentTime + i * 0.05);
-      osc.stop(ctx.currentTime + 3);
-    });
-  },
-
-  'riser'(ctx, out) {
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-    const filter = ctx.createBiquadFilter();
-    osc.type = 'sawtooth';
-    osc.frequency.setValueAtTime(100, ctx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(2000, ctx.currentTime + 2);
-    filter.type = 'lowpass';
-    filter.frequency.setValueAtTime(200, ctx.currentTime);
-    filter.frequency.exponentialRampToValueAtTime(6000, ctx.currentTime + 2);
-    gain.gain.setValueAtTime(0.05, ctx.currentTime);
-    gain.gain.linearRampToValueAtTime(0.25, ctx.currentTime + 1.8);
-    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 2.2);
-    osc.connect(filter).connect(gain).connect(out);
-    osc.start(); osc.stop(ctx.currentTime + 2.2);
-  },
-
-  'shimmer'(ctx, out) {
-    for (let i = 0; i < 6; i++) {
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      const freq = 800 + Math.random() * 2000;
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(freq, ctx.currentTime);
-      const delay = Math.random() * 0.15;
-      gain.gain.setValueAtTime(0, ctx.currentTime);
-      gain.gain.linearRampToValueAtTime(0.06, ctx.currentTime + delay + 0.05);
-      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1.5 + Math.random());
-      osc.connect(gain).connect(out);
-      osc.start(ctx.currentTime + delay);
-      osc.stop(ctx.currentTime + 2.5);
-    }
-  },
-
-  'perc-hit'(ctx, out) {
-    // Noise burst
-    const bufferSize = ctx.sampleRate * 0.15;
-    const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
-    const data = buffer.getChannelData(0);
-    for (let i = 0; i < bufferSize; i++) data[i] = (Math.random() * 2 - 1);
-    const noise = ctx.createBufferSource();
-    noise.buffer = buffer;
-    const noiseGain = ctx.createGain();
-    const filter = ctx.createBiquadFilter();
-    filter.type = 'bandpass';
-    filter.frequency.value = 800;
-    filter.Q.value = 2;
-    noiseGain.gain.setValueAtTime(0.5, ctx.currentTime);
-    noiseGain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.15);
-    noise.connect(filter).connect(noiseGain).connect(out);
-    noise.start();
-    // Tonal body
-    const osc = ctx.createOscillator();
-    const og = ctx.createGain();
-    osc.type = 'triangle';
-    osc.frequency.setValueAtTime(200, ctx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(80, ctx.currentTime + 0.1);
-    og.gain.setValueAtTime(0.4, ctx.currentTime);
-    og.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.2);
-    osc.connect(og).connect(out);
-    osc.start(); osc.stop(ctx.currentTime + 0.2);
-  },
-
-  'reverse'(ctx, out) {
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-    osc.type = 'sawtooth';
-    osc.frequency.setValueAtTime(600, ctx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(150, ctx.currentTime + 0.8);
-    gain.gain.setValueAtTime(0.001, ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.3, ctx.currentTime + 0.7);
-    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.85);
-    const filter = ctx.createBiquadFilter();
-    filter.type = 'lowpass';
-    filter.frequency.setValueAtTime(400, ctx.currentTime);
-    filter.frequency.exponentialRampToValueAtTime(3000, ctx.currentTime + 0.7);
-    osc.connect(filter).connect(gain).connect(out);
-    osc.start(); osc.stop(ctx.currentTime + 0.9);
-  },
-
-  'string-swell'(ctx, out) {
-    const notes = [261.6, 329.6, 392, 523.2];
-    notes.forEach((f, i) => {
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.type = 'sawtooth';
-      osc.frequency.setValueAtTime(f, ctx.currentTime);
-      // Detune for warmth
-      osc.detune.setValueAtTime((Math.random() - 0.5) * 15, ctx.currentTime);
-      const filter = ctx.createBiquadFilter();
-      filter.type = 'lowpass';
-      filter.frequency.value = 1200;
-      gain.gain.setValueAtTime(0, ctx.currentTime);
-      gain.gain.linearRampToValueAtTime(0.07, ctx.currentTime + 0.6);
-      gain.gain.linearRampToValueAtTime(0.05, ctx.currentTime + 2);
-      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 3);
-      osc.connect(filter).connect(gain).connect(out);
-      osc.start(ctx.currentTime + i * 0.03);
-      osc.stop(ctx.currentTime + 3);
-    });
-  },
-
-  'sub-drop'(ctx, out) {
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-    osc.type = 'sine';
-    osc.frequency.setValueAtTime(300, ctx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(20, ctx.currentTime + 1);
-    gain.gain.setValueAtTime(0.6, ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1.2);
-    osc.connect(gain).connect(out);
-    osc.start(); osc.stop(ctx.currentTime + 1.2);
-    // Noise transient
-    const buf = ctx.createBuffer(1, ctx.sampleRate * 0.05, ctx.sampleRate);
-    const d = buf.getChannelData(0);
-    for (let i = 0; i < d.length; i++) d[i] = (Math.random() * 2 - 1);
-    const n = ctx.createBufferSource();
-    n.buffer = buf;
-    const ng = ctx.createGain();
-    ng.gain.setValueAtTime(0.3, ctx.currentTime);
-    ng.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.05);
-    n.connect(ng).connect(out);
-    n.start();
-  }
-};
-
-function playSound(name) {
-  initAudio();
-  if (audioCtx.state === 'suspended') audioCtx.resume();
-  if (sounds[name]) sounds[name](audioCtx, analyser);
-}
-
-// ========================
-// PAD INTERACTION
-// ========================
-const pads = document.querySelectorAll('.pad');
-const keyMap = {};
-
-pads.forEach(pad => {
-  const key = pad.dataset.key;
-  keyMap[key.toUpperCase()] = pad;
-
-  pad.addEventListener('pointerdown', (e) => {
-    e.preventDefault();
-    triggerPad(pad);
+function setTheme(name) {
+  document.documentElement.setAttribute('data-theme', name);
+  document.querySelectorAll('.theme-toggle button').forEach(b => b.classList.remove('active'));
+  const map = { light:'Light', original:'Dark', shark:'Shark' };
+  document.querySelectorAll('.theme-toggle button').forEach(b => {
+    if (b.textContent === map[name]) b.classList.add('active');
   });
-});
-
-function triggerPad(pad) {
-  const soundName = pad.dataset.sound;
-  playSound(soundName);
-
-  // Visual feedback
-  pad.classList.add('hit');
-  setTimeout(() => pad.classList.remove('hit'), 200);
-
-  // Ripple
-  const ripple = document.createElement('div');
-  ripple.className = 'ripple';
-  const rect = pad.getBoundingClientRect();
-  const size = Math.max(rect.width, rect.height);
-  ripple.style.width = ripple.style.height = size + 'px';
-  ripple.style.left = '50%';
-  ripple.style.top = '50%';
-  ripple.style.marginLeft = -size / 2 + 'px';
-  ripple.style.marginTop = -size / 2 + 'px';
-  pad.appendChild(ripple);
-  ripple.addEventListener('animationend', () => ripple.remove());
+  setTimeout(getColors, 60);
 }
 
-// Keyboard support
-document.addEventListener('keydown', (e) => {
-  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-  const pad = keyMap[e.key.toUpperCase()];
-  if (pad && !e.repeat) triggerPad(pad);
-});
+// ====== MODAL ======
+function openModal() { document.getElementById('mb').classList.add('open'); }
+function closeModal() { document.getElementById('mb').classList.remove('open'); }
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
-// ========================
-// VISUALIZER
-// ========================
-const vizCanvas = document.getElementById('vizCanvas');
-const vizCtx = vizCanvas.getContext('2d');
-let vizW, vizH;
-
-function resizeViz() {
-  const dpr = window.devicePixelRatio || 1;
-  const rect = vizCanvas.parentElement.getBoundingClientRect();
-  vizW = rect.width;
-  vizH = rect.height;
-  vizCanvas.width = vizW * dpr;
-  vizCanvas.height = vizH * dpr;
-  vizCtx.scale(dpr, dpr);
-}
-
-resizeViz();
-window.addEventListener('resize', resizeViz);
-
-function drawViz() {
-  vizCtx.clearRect(0, 0, vizW, vizH);
-
-  if (analyser) {
-    analyser.getByteFrequencyData(analyserData);
-  }
-
-  const bins = analyserData ? analyserData.length : 64;
-  const barW = vizW / bins;
-  const hasSignal = analyserData && analyserData.some(v => v > 0);
-
-  for (let i = 0; i < bins; i++) {
-    const v = analyserData ? analyserData[i] / 255 : 0;
-    // Idle animation when no signal
-    const idle = hasSignal ? 0 : (Math.sin(Date.now() * 0.002 + i * 0.3) * 0.5 + 0.5) * 0.06;
-    const h = Math.max((v + idle) * vizH, 1);
-    const alpha = Math.max(v * 0.8 + 0.05, idle > 0 ? 0.08 : 0.05);
-
-    vizCtx.fillStyle = `rgba(230, 255, 80, ${alpha})`;
-    vizCtx.fillRect(i * barW, vizH - h, barW - 1, h);
-  }
-
-  requestAnimationFrame(drawViz);
-}
-
-drawViz();
-
-// ========================
-// HERO BACKGROUND CANVAS
-// ========================
-const bgCanvas = document.getElementById('bgCanvas');
-const bgCtx = bgCanvas.getContext('2d');
-let bW, bH, bt = 0;
-let bgParticles = [];
-
-function resizeBg() {
-  const dpr = window.devicePixelRatio || 1;
-  const hero = bgCanvas.parentElement;
-  bW = hero.offsetWidth;
-  bH = hero.offsetHeight;
-  bgCanvas.width = bW * dpr;
-  bgCanvas.height = bH * dpr;
-  bgCtx.scale(dpr, dpr);
-  bgCanvas.style.width = bW + 'px';
-  bgCanvas.style.height = bH + 'px';
-}
-
-class BgParticle {
-  constructor() { this.reset(); }
-  reset() {
-    this.x = Math.random() * bW;
-    this.y = Math.random() * bH;
-    this.size = Math.random() * 1.5 + 0.3;
-    this.vx = (Math.random() - 0.5) * 0.12;
-    this.vy = (Math.random() - 0.5) * 0.1;
-    this.opacity = Math.random() * 0.25 + 0.05;
-    this.phase = Math.random() * Math.PI * 2;
-  }
-  update(t) {
-    this.x += this.vx;
-    this.y += this.vy;
-    if (this.x < -10) this.x = bW + 10;
-    if (this.x > bW + 10) this.x = -10;
-    if (this.y < -10) this.y = bH + 10;
-    if (this.y > bH + 10) this.y = -10;
-    this.curOp = this.opacity * (0.5 + 0.5 * Math.sin(t * 0.005 + this.phase));
-  }
-  draw(ctx) {
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-    ctx.fillStyle = `rgba(230, 255, 80, ${this.curOp})`;
-    ctx.fill();
-  }
-}
-
-resizeBg();
-const pCount = Math.min(Math.floor(bW * bH / 12000), 80);
-for (let i = 0; i < pCount; i++) bgParticles.push(new BgParticle());
-
-function drawWave(yBase, amp, freq, speed, lw, op, off) {
-  bgCtx.beginPath();
-  bgCtx.strokeStyle = `rgba(230, 255, 80, ${op})`;
-  bgCtx.lineWidth = lw;
-  for (let x = 0; x <= bW; x += 3) {
-    const nx = x / bW;
-    const w = Math.sin(nx * freq + bt * speed + off)
-            + Math.sin(nx * freq * 1.7 + bt * speed * 0.6 + off * 2) * 0.4;
-    const env = Math.sin(nx * Math.PI);
-    const y = yBase + w * amp * env;
-    if (x === 0) bgCtx.moveTo(x, y); else bgCtx.lineTo(x, y);
-  }
-  bgCtx.stroke();
-}
-
-function animateBg() {
-  bt++;
-  bgCtx.clearRect(0, 0, bW, bH);
-
-  // Radial glow
-  const gOp = 0.012 + 0.006 * Math.sin(bt * 0.008);
-  const grad = bgCtx.createRadialGradient(bW / 2, bH / 2, 0, bW / 2, bH / 2, bW * 0.5);
-  grad.addColorStop(0, `rgba(230, 255, 80, ${gOp})`);
-  grad.addColorStop(1, 'transparent');
-  bgCtx.fillStyle = grad;
-  bgCtx.fillRect(0, 0, bW, bH);
-
-  // Waves
-  drawWave(bH * 0.4, 18, 4, 0.01, 1, 0.04, 0);
-  drawWave(bH * 0.5, 25, 3, 0.007, 1.2, 0.05, 2);
-  drawWave(bH * 0.6, 15, 5, 0.013, 0.8, 0.03, 4);
-
-  // Particles
-  bgParticles.forEach(p => { p.update(bt); p.draw(bgCtx); });
-
-  // Connections
-  for (let i = 0; i < bgParticles.length; i++) {
-    for (let j = i + 1; j < bgParticles.length; j++) {
-      const dx = bgParticles[i].x - bgParticles[j].x;
-      const dy = bgParticles[i].y - bgParticles[j].y;
-      const d = Math.sqrt(dx * dx + dy * dy);
-      if (d < 90) {
-        bgCtx.beginPath();
-        bgCtx.strokeStyle = `rgba(230, 255, 80, ${(1 - d / 90) * 0.03})`;
-        bgCtx.lineWidth = 0.5;
-        bgCtx.moveTo(bgParticles[i].x, bgParticles[i].y);
-        bgCtx.lineTo(bgParticles[j].x, bgParticles[j].y);
-        bgCtx.stroke();
-      }
-    }
-  }
-
-  requestAnimationFrame(animateBg);
-}
-
-animateBg();
-window.addEventListener('resize', () => {
-  resizeBg();
-  const n = Math.min(Math.floor(bW * bH / 12000), 80);
-  while (bgParticles.length < n) bgParticles.push(new BgParticle());
-  while (bgParticles.length > n) bgParticles.pop();
-});
-
-// ========================
-// CONTACT FORM
-// ========================
 function handleSubmit(e) {
   e.preventDefault();
-  const form = document.getElementById('contactForm');
-  const note = document.getElementById('formNote');
-  const name = form.name.value;
-  const email = form.email.value;
-  const project = form.project.value;
-
-  // Mailto fallback (no backend)
-  const subject = encodeURIComponent(`New inquiry from ${name}`);
-  const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nProject:\n${project}`);
-  window.location.href = `mailto:hello@formasound.co?subject=${subject}&body=${body}`;
-
-  note.textContent = 'Opening your email client...';
-  note.style.color = 'var(--accent)';
+  const f = e.target;
+  const subj = encodeURIComponent(`Project inquiry from ${f.name.value}${f.company.value ? ' @ '+f.company.value : ''}`);
+  const body = encodeURIComponent(
+    `Name: ${f.name.value}\nCompany: ${f.company.value||'—'}\nEmail: ${f.email.value}\nService: ${f.service.value||'—'}\nBudget: ${f.budget.value||'—'}\nTimeline: ${f.timeline.value||'—'}\n\nBrief:\n${f.brief.value||'—'}`
+  );
+  window.location.href = `mailto:hello@formasound.co?subject=${subj}&body=${body}`;
+  document.getElementById('fn').textContent = 'Opening your email client...';
 }
+
+// ====== CANVAS: SOUND TERRAIN ======
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+let W, H, t = 0;
+let mx = -9999, my = -9999, mActive = false;
+
+function resize() {
+  const dpr = window.devicePixelRatio || 1;
+  W = window.innerWidth; H = window.innerHeight;
+  canvas.width = W * dpr; canvas.height = H * dpr;
+  ctx.scale(dpr, dpr);
+}
+
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; mActive = true; });
+document.addEventListener('mouseleave', () => { mActive = false; });
+document.addEventListener('touchmove', e => { mx = e.touches[0].clientX; my = e.touches[0].clientY; mActive = true; }, { passive: true });
+document.addEventListener('touchend', () => { mActive = false; });
+
+resize();
+window.addEventListener('resize', resize);
+
+const LINE_COUNT = 55;
+const STEP = 3;
+
+function animate() {
+  t += 0.004;
+  ctx.clearRect(0, 0, W, H);
+
+  const lineGap = H / (LINE_COUNT + 1);
+
+  for (let i = 0; i < LINE_COUNT; i++) {
+    const baseY = lineGap * (i + 1);
+    const linePhase = i * 0.18;
+    // Vertical position in 0-1 range
+    const normalY = (i + 1) / (LINE_COUNT + 1);
+    // Center emphasis: lines near vertical center have more amplitude
+    const centerDist = Math.abs(normalY - 0.5) * 2;
+    const centerAmp = 1 - centerDist * centerDist;
+
+    ctx.beginPath();
+
+    for (let x = 0; x <= W; x += STEP) {
+      const nx = x / W;
+
+      // Compound waveform: multiple frequencies for organic feel
+      const w1 = Math.sin(nx * 6 + t * 2.5 + linePhase) * 0.6;
+      const w2 = Math.sin(nx * 14 + t * 1.8 - linePhase * 0.7) * 0.25;
+      const w3 = Math.sin(nx * 3.5 - t * 1.2 + linePhase * 1.3) * 0.35;
+      const w4 = Math.sin(nx * 22 + t * 3.2 + i * 0.4) * 0.1;
+      const wave = (w1 + w2 + w3 + w4);
+
+      // Base amplitude: varies by line position, creates "terrain" shape
+      const baseAmp = (8 + centerAmp * 14) * (0.7 + 0.3 * Math.sin(t * 0.5 + i * 0.3));
+
+      let amp = baseAmp;
+      let verticalShift = 0;
+
+      // Mouse interaction: displacement field
+      if (mActive) {
+        const dx = x - mx;
+        const dy = baseY - my;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        const radius = 220;
+        if (dist < radius) {
+          const force = (1 - dist / radius);
+          const f2 = force * force;
+          // Amplify the waveform near cursor
+          amp += f2 * 35;
+          // Push lines away from cursor vertically
+          verticalShift = (dy > 0 ? 1 : -1) * f2 * 30;
+          // Add high-frequency detail near cursor
+          const detail = Math.sin(nx * 40 + t * 5 + linePhase) * f2 * 8;
+          verticalShift += detail;
+        }
+      }
+
+      const y = baseY + wave * amp + verticalShift;
+
+      if (x === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    }
+
+    // Opacity: brighter near center and where mouse is
+    let alpha = 0.06 + centerAmp * 0.1;
+
+    if (mActive) {
+      const dy = Math.abs(baseY - my);
+      if (dy < 200) {
+        alpha += (1 - dy / 200) * 0.25;
+      }
+    }
+
+    ctx.strokeStyle = `rgba(${AR},${AG},${AB},${alpha})`;
+    ctx.lineWidth = 1 + centerAmp * 0.5;
+    ctx.stroke();
+  }
+
+  // Mouse glow
+  if (mActive) {
+    const g = ctx.createRadialGradient(mx, my, 0, mx, my, 200);
+    g.addColorStop(0, `rgba(${AR},${AG},${AB},0.06)`);
+    g.addColorStop(0.5, `rgba(${AR},${AG},${AB},0.02)`);
+    g.addColorStop(1, 'transparent');
+    ctx.fillStyle = g;
+    ctx.beginPath();
+    ctx.arc(mx, my, 200, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  requestAnimationFrame(animate);
+}
+
+getColors();
+animate();
 </script>
 </body>
 </html>
