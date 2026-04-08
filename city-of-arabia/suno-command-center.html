@@ -1,0 +1,1653 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Suno Command Center — City of Arabia</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:system-ui,-apple-system,sans-serif;background:#FAFAF8;color:#111827;-webkit-font-smoothing:antialiased}
+
+/* Header */
+.header{background:linear-gradient(135deg,#1A1F36 0%,#2D1B4E 100%);color:#fff;padding:32px 48px 0;position:relative;overflow:hidden}
+.header::after{content:'';position:absolute;top:0;right:0;width:300px;height:100%;background:linear-gradient(135deg,transparent 0%,rgba(245,158,11,0.08) 100%);pointer-events:none}
+.header h1{font-size:26px;font-weight:600;letter-spacing:-0.02em;margin-bottom:6px}
+.header p{font-size:13px;color:rgba(255,255,255,0.55);max-width:700px;line-height:1.5}
+.dot{display:inline-block;width:12px;height:12px;border-radius:50%;background:#F59E0B;margin-right:8px;vertical-align:middle}
+.ref-badges{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.ref-badge{display:inline-block;font-size:11px;font-weight:600;padding:4px 12px;border-radius:20px;letter-spacing:0.02em}
+.ref-primary{background:rgba(245,158,11,0.15);color:#FCD34D}
+.ref-secondary{background:rgba(99,102,241,0.15);color:#A5B4FC}
+
+/* Main tabs */
+.main-tabs{display:flex;gap:0;padding:0 48px;margin-top:20px;position:relative;z-index:1}
+.main-tab{padding:12px 24px;font-size:13px;font-weight:600;color:rgba(255,255,255,0.45);cursor:pointer;border-bottom:3px solid transparent;transition:all 150ms;letter-spacing:0.01em}
+.main-tab:hover{color:rgba(255,255,255,0.7)}
+.main-tab.active{color:#fff;border-bottom-color:#F59E0B}
+.main-tab .tab-count{display:inline-block;background:rgba(255,255,255,0.1);font-size:10px;padding:2px 7px;border-radius:10px;margin-left:6px;font-weight:500}
+.main-tab.active .tab-count{background:rgba(245,158,11,0.25)}
+
+/* Page sections */
+.page{display:none}
+.page.active{display:block}
+
+/* Content */
+.content{max-width:1200px;margin:0 auto;padding:32px 48px}
+
+/* KPIs */
+.kpis{display:flex;gap:32px;margin-bottom:8px;align-items:baseline;flex-wrap:wrap}
+.kpi{display:flex;align-items:baseline;gap:6px}
+.kpi-value{font-size:28px;font-weight:600;letter-spacing:-0.02em}
+.kpi-label{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:0.05em;color:#9CA3AF}
+.kpi-sub{font-size:12px;color:#9CA3AF;margin-bottom:28px}
+
+/* Specs bar */
+.specs{display:flex;gap:16px;margin-bottom:32px;flex-wrap:wrap}
+.spec{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E5E7EB;border-radius:8px;padding:8px 14px;font-size:12px;font-weight:500;color:#374151}
+.spec-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+
+/* Section titles */
+.section-title{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:#9CA3AF;margin:36px 0 14px;display:flex;align-items:center;gap:10px}
+.section-title::after{content:'';flex:1;height:1px;background:#E5E7EB}
+
+/* Phase badges */
+.phase-mood{background:#DBEAFE;color:#1D4ED8}
+.phase-hero{background:#FEF3C7;color:#92400E}
+.phase-sfx{background:#D1FAE5;color:#065F46}
+.phase-teaser{background:#EDE9FE;color:#5B21B6}
+.phase-val{background:#FEF3C7;color:#92400E}
+
+/* Cards */
+.card{background:#fff;border-radius:12px;overflow:hidden;border:1px solid rgba(0,0,0,0.04);margin-bottom:10px;transition:box-shadow 150ms ease}
+.card:hover{box-shadow:0 2px 12px rgba(0,0,0,0.06)}
+.card-header{display:flex;align-items:center;padding:14px 20px;cursor:pointer;gap:14px;user-select:none}
+.card-header:hover{background:#FAFAF8}
+.card-badge{font-size:10px;font-weight:700;color:#fff;border-radius:6px;padding:4px 10px;min-width:56px;text-align:center;flex-shrink:0;letter-spacing:0.03em}
+.card-title{font-size:14px;font-weight:500;flex:1;line-height:1.3}
+.card-title small{display:block;font-size:11px;font-weight:400;color:#9CA3AF;margin-top:2px}
+.card-meta{display:flex;gap:8px;align-items:center;flex-shrink:0}
+.tag{font-size:10px;font-weight:500;padding:3px 8px;border-radius:4px;background:#F3F4F6;color:#6B7280}
+.bpm-tag{background:#FEF3C7;color:#92400E}
+.chevron{color:#9CA3AF;transition:transform 200ms ease;flex-shrink:0;font-size:18px}
+.card.open .chevron{transform:rotate(180deg)}
+.card-body{display:none;border-top:1px solid rgba(0,0,0,0.04)}
+.card.open .card-body{display:block}
+
+/* Tabs inside cards */
+.tabs{display:flex;gap:0;border-bottom:1px solid #E5E7EB;padding:0 20px}
+.tab{padding:10px 16px;font-size:12px;font-weight:500;color:#9CA3AF;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:color 150ms}
+.tab:hover{color:#374151}
+.tab.active{color:#111827;border-bottom-color:#F59E0B}
+.tab-pane{display:none;padding:20px}
+.tab-pane.active{display:block}
+
+/* Prompt box */
+.prompt-wrap{position:relative}
+.prompt-box{background:#1E1E2E;color:#CDD6F4;border-radius:8px;padding:16px 20px;font-family:'SF Mono',SFMono-Regular,Consolas,monospace;font-size:12px;line-height:1.7;white-space:pre-wrap;word-break:break-word;max-height:360px;overflow-y:auto}
+.prompt-box::selection{background:rgba(245,158,11,0.3)}
+.copy-btn{position:absolute;top:8px;right:8px;background:#F59E0B;color:#111;border:none;border-radius:6px;padding:6px 14px;font-size:11px;font-weight:600;cursor:pointer;z-index:2;transition:all 150ms}
+.copy-btn:hover{background:#D97706}
+.copy-btn.copied{background:#10B981;color:#fff}
+.style-box{margin-top:12px;padding:10px 16px;background:#F9FAFB;border:1px solid #E5E7EB;border-radius:8px;font-size:12px;color:#374151;line-height:1.6}
+.style-box strong{color:#111827}
+.guide{padding:0 20px 20px;font-size:13px;line-height:1.6;color:#6B7280}
+.guide strong{color:#374151}
+
+/* Validation mood cards - larger, more visual */
+.val-card{background:#fff;border-radius:16px;overflow:hidden;border:1px solid rgba(0,0,0,0.04);margin-bottom:16px;transition:box-shadow 150ms}
+.val-card:hover{box-shadow:0 4px 20px rgba(0,0,0,0.08)}
+.val-top{padding:24px 28px;border-bottom:1px solid #F3F4F6}
+.val-number{font-size:48px;font-weight:700;letter-spacing:-0.03em;line-height:1;margin-bottom:4px}
+.val-name{font-size:18px;font-weight:600;margin-bottom:4px;letter-spacing:-0.01em}
+.val-sub{font-size:13px;color:#6B7280;margin-bottom:12px;line-height:1.5}
+.val-refs{display:flex;gap:8px;flex-wrap:wrap}
+.val-ref{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:500;padding:5px 12px;border-radius:20px}
+.val-ref-pool{background:#FEF3C7;color:#92400E}
+.val-ref-metro{background:#EDE9FE;color:#5B21B6}
+.val-ref-blend{background:#DBEAFE;color:#1D4ED8}
+.val-ref-bossa{background:#D1FAE5;color:#065F46}
+.val-body{padding:24px 28px}
+.val-prompt-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:#9CA3AF;margin-bottom:8px}
+.val-tags{margin-top:16px}
+.val-guide{margin-top:16px;padding:14px 18px;background:#FFFBEB;border:1px solid #FEF3C7;border-radius:10px;font-size:13px;line-height:1.6;color:#92400E}
+.val-guide strong{color:#78350F}
+.val-specs{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.val-spec{font-size:11px;font-weight:600;padding:4px 10px;border-radius:6px;background:#F3F4F6;color:#6B7280}
+
+/* Suno field sections */
+.suno-field{margin-bottom:20px}
+.suno-field-label{display:flex;align-items:center;gap:8px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px}
+.suno-field-label .suno-icon{width:20px;height:20px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff;flex-shrink:0}
+.suno-icon-desc{background:#374151}
+.suno-icon-insp{background:#7C3AED}
+.suno-icon-set{background:#059669}
+.suno-icon-ref{background:#F59E0B}
+.suno-field-label span:last-child{color:#6B7280}
+
+/* Inspiration tag pills */
+.insp-tags{display:flex;flex-wrap:wrap;gap:8px}
+.insp-tag{display:inline-flex;align-items:center;gap:6px;background:#1E1E2E;color:#CDD6F4;font-size:12px;font-weight:500;padding:7px 14px;border-radius:20px;cursor:pointer;transition:all 150ms;user-select:none;border:1px solid transparent}
+.insp-tag:hover{border-color:#F59E0B;background:#2A2A3E}
+.insp-tag.copied-tag{background:#059669;color:#fff;border-color:#059669}
+
+/* Settings row */
+.settings-row{display:flex;gap:16px;flex-wrap:wrap}
+.setting-item{display:flex;align-items:center;gap:8px;background:#F9FAFB;border:1px solid #E5E7EB;border-radius:8px;padding:8px 14px;font-size:12px;font-weight:500;color:#374151}
+.setting-toggle{display:inline-block;width:32px;height:18px;background:#10B981;border-radius:9px;position:relative}
+.setting-toggle::after{content:'';position:absolute;right:2px;top:2px;width:14px;height:14px;background:#fff;border-radius:50%}
+.setting-off{background:#D1D5DB}
+.setting-off::after{right:auto;left:2px}
+
+/* Audio ref row */
+.audio-ref{display:flex;align-items:center;gap:10px;padding:10px 16px;background:#1E1E2E;border-radius:8px;font-size:12px;color:#CDD6F4}
+.audio-ref-icon{font-size:16px}
+.audio-ref-name{font-weight:500}
+.audio-ref-note{color:#9CA3AF;font-size:11px;margin-left:auto}
+
+/* Validation intro */
+.val-intro{background:linear-gradient(135deg,#FFFBEB 0%,#FEF3C7 100%);border:1px solid #FDE68A;border-radius:16px;padding:28px;margin-bottom:28px}
+.val-intro h2{font-size:18px;font-weight:600;color:#78350F;margin-bottom:8px;letter-spacing:-0.01em}
+.val-intro p{font-size:13px;color:#92400E;line-height:1.7}
+.val-intro ul{margin-top:12px;padding-left:18px;font-size:13px;color:#92400E;line-height:1.8}
+
+/* Shot map */
+.shot-map{width:100%;border-collapse:collapse;font-size:12px;margin:20px 0}
+.shot-map th{text-align:left;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:#9CA3AF;padding:8px 12px;border-bottom:2px solid #E5E7EB}
+.shot-map td{padding:8px 12px;border-bottom:1px solid #F3F4F6;color:#374151}
+.shot-map tr:hover td{background:#FAFAF8}
+.groove-bar{display:inline-block;height:6px;border-radius:3px;vertical-align:middle;margin-right:6px}
+.g-latente{width:20px;background:#BFDBFE}.g-emergindo{width:30px;background:#93C5FD}.g-entrando{width:40px;background:#60A5FA}.g-presente{width:55px;background:#3B82F6}.g-filtrado{width:35px;background:#818CF8}.g-reabre{width:55px;background:#3B82F6}.g-pleno{width:70px;background:#2563EB}.g-pleno-plus{width:80px;background:#1D4ED8}.g-maximo{width:100px;background:#F59E0B}.g-descendo{width:60px;background:#FBBF24}.g-simplificando{width:30px;background:#D1D5DB}.g-dissolvendo{width:15px;background:#E5E7EB}
+.shimmer-icon{color:#F59E0B;font-weight:700}
+
+/* Timeline */
+.timeline{display:flex;height:48px;border-radius:8px;overflow:hidden;margin:20px 0;gap:2px}
+.timeline-block{display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:#fff;letter-spacing:0.02em;flex-shrink:0}
+.tl-act1{background:linear-gradient(135deg,#BFDBFE,#93C5FD);color:#1E40AF}
+.tl-act2{background:linear-gradient(135deg,#93C5FD,#3B82F6);color:#fff}
+.tl-act3{background:linear-gradient(135deg,#3B82F6,#2563EB);color:#fff}
+.tl-act4{background:linear-gradient(135deg,#F59E0B,#D97706);color:#fff}
+.tl-act5{background:linear-gradient(135deg,#D1D5DB,#E5E7EB);color:#6B7280}
+
+/* Checklist */
+.checklist{list-style:none;padding:20px}
+.checklist li{display:flex;align-items:center;gap:10px;padding:8px 0;font-size:13px;color:#374151;border-bottom:1px solid #F3F4F6}
+.checklist li:last-child{border-bottom:none}
+.check{width:18px;height:18px;border:2px solid #D1D5DB;border-radius:4px;flex-shrink:0;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 150ms;font-size:12px}
+.check.done{background:#10B981;border-color:#10B981;color:#fff}
+.check.done+span{text-decoration:line-through;color:#9CA3AF}
+
+/* Tips */
+.tips-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:20px}
+.tip{background:#FFFBEB;border:1px solid #FEF3C7;border-radius:8px;padding:14px 16px;font-size:12px;line-height:1.6;color:#92400E}
+.tip strong{display:block;margin-bottom:4px;color:#78350F}
+.tip-danger{background:#FEF2F2;border-color:#FECACA;color:#991B1B}
+.tip-danger strong{color:#7F1D1D}
+
+/* Day cards */
+.day-card{background:#fff;border:1px solid rgba(0,0,0,0.04);border-radius:12px;padding:20px;margin-bottom:12px}
+.day-card h3{font-size:14px;font-weight:600;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.day-number{font-size:11px;font-weight:700;color:#fff;background:#1A1F36;border-radius:6px;padding:3px 10px}
+.day-card ol{padding-left:20px;font-size:13px;line-height:1.8;color:#374151}
+
+/* Footer */
+.footer{text-align:center;padding:40px 0;color:#9CA3AF;font-size:12px;line-height:1.6}
+
+@media(max-width:768px){
+  .header{padding:20px 20px 0}.content{padding:20px}
+  .main-tabs{padding:0 20px}
+  .kpis{gap:16px}.card-meta{display:none}
+  .tips-grid{grid-template-columns:1fr}
+  .timeline-block{font-size:8px}
+  .val-number{font-size:36px}
+  .val-top,.val-body{padding:18px 20px}
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1><span class="dot"></span>Suno Command Center</h1>
+  <p>City of Arabia / Aranchia Yards — Trilha sonora e sound design para campanha de luxo imobiliario.</p>
+  <div class="ref-badges">
+    <span class="ref-badge ref-primary">Poolside - "Harvest Moon"</span>
+    <span class="ref-badge ref-secondary">Metronomy - "The Bay"</span>
+    <span class="ref-badge" style="background:rgba(16,185,129,0.15);color:#6EE7B7">Mediterranean Sexy / New Gen</span>
+    <span class="ref-badge" style="background:rgba(239,68,68,0.15);color:#FCA5A5">Cinematic / Zimmer x Fashion</span>
+    <span class="ref-badge" style="background:rgba(168,85,247,0.15);color:#D8B4FE">Haute Couture / Monaco 4x4</span>
+    <span class="ref-badge" style="background:rgba(22,163,74,0.15);color:#86EFAC">Zara Brazil Edit / Tropical</span>
+    <span class="ref-badge" style="background:rgba(14,165,233,0.15);color:#7DD3FC">Hybrid: Zara x Poolside</span>
+  </div>
+  <div class="main-tabs">
+    <div class="main-tab active" onclick="switchPage('validation')">Validacao<span class="tab-count">19 moods</span></div>
+    <div class="main-tab" onclick="switchPage('production')">Producao<span class="tab-count">17 prompts</span></div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- VALIDATION PAGE                                               -->
+<!-- ============================================================ -->
+<div class="page active" id="page-validation">
+<div class="content">
+
+<div class="val-intro">
+  <h2>4 Moods para Validacao</h2>
+  <p>Gerar 4 tracks no Suno e enviar pro cliente escolher a direcao. Cada mood explora uma faceta diferente do territorio sonoro entre as duas referencias principais.</p>
+  <ul>
+    <li><strong>Mood A</strong> — Poolside-forward: balearic, quente, relaxado</li>
+    <li><strong>Mood B</strong> — Metronomy-forward: synth-driven, JUNO bass, mais energetico</li>
+    <li><strong>Mood C</strong> — Fusao: o melhor dos dois, territorio do meio</li>
+    <li><strong>Mood D</strong> — Cinematico: mais atmosferico, textural, slow-burn</li>
+    <li><strong>Mood E1/E2/E3</strong> — Mediterranean Sexy: tensao, sensualidade, new gen, minor keys</li>
+    <li><strong>Mood F1/F2/F3</strong> — Cinematic Zimmer x Fashion: orquestral + eletronico, drives massivos, comercial com alma</li>
+    <li><strong>Mood G1/G2/G3</strong> — Haute Couture Monaco 4x4: deep house, minimal, piano house, desfile, champagne</li>
+    <li><strong>Mood H1/H2/H3</strong> — Zara Brazil Edit: tropical, sunny, fashion editorial, MPB moderna, percussao brasileira</li>
+    <li><strong>Mood I1/I2/I3</strong> — Hybrid Zara x Poolside: fusao balearic + tropical, nylon + eletrica, California + Rio</li>
+  </ul>
+</div>
+
+<!-- MOOD A -->
+<div class="val-card" id="vala">
+  <div class="val-top">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap">
+      <div>
+        <div class="val-number" style="color:#F59E0B">A</div>
+        <div class="val-name">Golden Poolside</div>
+        <div class="val-sub">Balearic puro. Groove relaxado, guitarra limpa com reverb, synth bass quente e redondo. Tarde dourada a beira da piscina. O som mais proximo de "Harvest Moon".</div>
+      </div>
+      <div class="val-specs">
+        <span class="val-spec" style="background:#FEF3C7;color:#92400E">98 BPM</span>
+        <span class="val-spec" style="background:#FEF3C7;color:#92400E">F major</span>
+        <span class="val-spec">Instrumental</span>
+      </div>
+    </div>
+    <div class="val-refs">
+      <span class="val-ref val-ref-pool">&#9679; Poolside "Harvest Moon" (80%)</span>
+      <span class="val-ref val-ref-blend">&#9679; Khruangbin "Todavia Viva"</span>
+    </div>
+  </div>
+  <div class="val-body">
+    <!-- Song Description -->
+    <div class="suno-field">
+      <div class="suno-field-label"><span class="suno-icon suno-icon-desc">&#9998;</span><span>Song Description</span></div>
+      <div class="prompt-wrap">
+        <button class="copy-btn" onclick="copyPrompt(this)">Copiar</button>
+        <div class="prompt-box">Warm round synth bass driving a relaxed, laid-back groove. Clean electric guitar with spring reverb playing a catchy melodic riff, effortless and cool. Soft drum machine with brushed snare, light hi-hats, subtle kick with swing. Warm Rhodes electric piano chords floating underneath. Airy synth pads adding depth without weight. The feeling of a perfect afternoon by the pool in the Mediterranean, golden hour light, breeze on skin. Sophisticated without trying, like a lifestyle you step into. Never aggressive, never cheesy.</div>
+      </div>
+    </div>
+    <!-- Inspiration Tags -->
+    <div class="suno-field">
+      <div class="suno-field-label"><span class="suno-icon suno-icon-insp">&#9733;</span><span>Inspiration (clicar pra copiar cada tag)</span></div>
+      <div class="insp-tags">
+        <span class="insp-tag" onclick="copyTag(this)">balearic</span>
+        <span class="insp-tag" onclick="copyTag(this)">poolside</span>
+        <span class="insp-tag" onclick="copyTag(this)">nu-disco</span>
+        <span class="insp-tag" onclick="copyTag(this)">chillwave</span>
+        <span class="insp-tag" onclick="copyTag(this)">indie electronic</span>
+        <span class="insp-tag" onclick="copyTag(this)">cinematic</span>
+        <span class="insp-tag" onclick="copyTag(this)">sun-drenched</span>
+        <span class="insp-tag" onclick="copyTag(this)">warm</span>
+      </div>
+    </div>
+    <!-- Settings -->
+    <div class="suno-field">
+      <div class="suno-field-label"><span class="suno-icon suno-icon-set">&#9881;</span><span>Settings</span></div>
+      <div class="settings-row">
+        <div class="setting-item"><span class="setting-toggle"></span> Instrumental ON</div>
+        <div class="setting-item">Versao: v5.5</div>
+      </div>
+    </div>
+    <!-- Audio Reference -->
+    <div class="suno-field">
+      <div class="suno-field-label"><span class="suno-icon suno-icon-ref">&#9835;</span><span>+ Audio (referencia opcional)</span></div>
+      <div class="audio-ref">
+        <span class="audio-ref-icon">&#127925;</span>
+        <span class="audio-ref-name">Poolside - Harvest Moon</span>
+        <span class="audio-ref-note">Baixar do YouTube e fazer upload</span>
+      </div>
+    </div>
+    <div class="val-guide"><strong>O que buscar:</strong> O mais fiel a "Harvest Moon". Groove que soa como estilo de vida, nao pista de danca. Guitarra limpa com spring reverb e a assinatura. Se rolar, esse mood e a base segura.</div>
+  </div>
+</div>
+
+<!-- MOOD B -->
+<div class="val-card" id="valb">
+  <div class="val-top">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap">
+      <div>
+        <div class="val-number" style="color:#7C3AED">B</div>
+        <div class="val-name">Synth Bay</div>
+        <div class="val-sub">Indie electronic com energia. JUNO-style synth bass proeminente, hook sintetizado, sidechain sutil. Mais dancefloor que Poolside mas mantendo sofisticacao. A direcao "The Bay".</div>
+      </div>
+      <div class="val-specs">
+        <span class="val-spec" style="background:#EDE9FE;color:#5B21B6">110 BPM</span>
+        <span class="val-spec" style="background:#EDE9FE;color:#5B21B6">F# minor</span>
+        <span class="val-spec">Instrumental</span>
+      </div>
+    </div>
+    <div class="val-refs">
+      <span class="val-ref val-ref-metro">&#9679; Metronomy "The Bay" (80%)</span>
+      <span class="val-ref val-ref-blend">&#9679; Daft Punk (texturas leves)</span>
+    </div>
+  </div>
+  <div class="val-body">
+    <!-- Song Description -->
+    <div class="suno-field">
+      <div class="suno-field-label"><span class="suno-icon suno-icon-desc">&#9998;</span><span>Song Description</span></div>
+      <div class="prompt-wrap">
+        <button class="copy-btn" onclick="copyPrompt(this)">Copiar</button>
+        <div class="prompt-box">Prominent analog synth bass line, warm JUNO-style, melodic and bouncy, driving the whole track. Catchy synth hook with subtle distortion and reverb wash. Clean electric guitar playing rhythmic chords with a disco-funk feel. Crisp drum machine with tight kick, snappy snare, hi-hats with groove. Sidechain compression giving a subtle pumping feel to the pads. Warm analog pads in the background. The energy of a perfect summer day at a beach club, more vibrant than ambient, but never aggressive. Sophisticated indie electronic, yacht rock meets French house.</div>
+      </div>
+    </div>
+    <!-- Inspiration Tags -->
+    <div class="suno-field">
+      <div class="suno-field-label"><span class="suno-icon suno-icon-insp">&#9733;</span><span>Inspiration (clicar pra copiar cada tag)</span></div>
+      <div class="insp-tags">
+        <span class="insp-tag" onclick="copyTag(this)">indie electronic</span>
+        <span class="insp-tag" onclick="copyTag(this)">synth-pop</span>
+        <span class="insp-tag" onclick="copyTag(this)">nu-disco</span>
+        <span class="insp-tag" onclick="copyTag(this)">JUNO synth</span>
+        <span class="insp-tag" onclick="copyTag(this)">disco-funk</span>
+        <span class="insp-tag" onclick="copyTag(this)">balearic</span>
+        <span class="insp-tag" onclick="copyTag(this)">sophisticated</span>
+        <span class="insp-tag" onclick="copyTag(this)">groovy</span>
+      </div>
+    </div>
+    <!-- Settings -->
+    <div class="suno-field">
+      <div class="suno-field-label"><span class="suno-icon suno-icon-set">&#9881;</span><span>Settings</span></div>
+      <div class="settings-row">
+        <div class="setting-item"><span class="setting-toggle"></span> Instrumental ON</div>
+        <div class="setting-item">Versao: v5.5</div>
+      </div>
+    </div>
+    <!-- Audio Reference -->
+    <div class="suno-field">
+      <div class="suno-field-label"><span class="suno-icon suno-icon-ref">&#9835;</span><span>+ Audio (referencia opcional)</span></div>
+      <div class="audio-ref">
+        <span class="audio-ref-icon">&#127925;</span>
+        <span class="audio-ref-name">Metronomy - The Bay</span>
+        <span class="audio-ref-note">Baixar do YouTube e fazer upload</span>
+      </div>
+    </div>
+    <div class="val-guide"><strong>O que buscar:</strong> Mais energetico e synth-driven que Mood A. O bassline sintetizado conduz tudo. Se o cliente quiser mais "cool" e menos "chill", esse e o caminho. Funciona bem pros atos 2-4 do filme.</div>
+  </div>
+</div>
+
+<!-- MOOD C -->
+<div class="val-card" id="valc">
+  <div class="val-top">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap">
+      <div>
+        <div class="val-number" style="color:#2563EB">C</div>
+        <div class="val-name">Mediterranean Fusion</div>
+        <div class="val-sub">O melhor dos dois mundos. Groove balearic do Poolside com as texturas sinteticas e a energia do Metronomy. Guitarra limpa E synth bass JUNO coexistindo. Ensolarado com personalidade.</div>
+      </div>
+      <div class="val-specs">
+        <span class="val-spec" style="background:#DBEAFE;color:#1D4ED8">104 BPM</span>
+        <span class="val-spec" style="background:#DBEAFE;color:#1D4ED8">F major</span>
+        <span class="val-spec">Instrumental + vocal hum</span>
+      </div>
+    </div>
+    <div class="val-refs">
+      <span class="val-ref val-ref-pool">&#9679; Poolside (50%)</span>
+      <span class="val-ref val-ref-metro">&#9679; Metronomy (50%)</span>
+    </div>
+  </div>
+  <div class="val-body">
+    <!-- Song Description -->
+    <div class="suno-field">
+      <div class="suno-field-label"><span class="suno-icon suno-icon-desc">&#9998;</span><span>Song Description</span></div>
+      <div class="prompt-wrap">
+        <button class="copy-btn" onclick="copyPrompt(this)">Copiar</button>
+        <div class="prompt-box">Clean electric guitar with spring reverb playing sun-drenched melodic riffs over a warm analog synth bass, round and present, driving the groove with a melodic bounce. Soft drum machine with tight kick, brushed snare, crisp hi-hats and shaker. Rhodes piano chords adding warmth. Analog synth pads with gentle sidechain pulse. Subtle airy vocal harmonies, wordless, floating above the mix. The feeling of a Mediterranean sunset party where indie rock meets electronic sophistication. Guitars and synths coexisting naturally. Warm, golden, alive, danceable but not a club track.</div>
+      </div>
+    </div>
+    <!-- Inspiration Tags -->
+    <div class="suno-field">
+      <div class="suno-field-label"><span class="suno-icon suno-icon-insp">&#9733;</span><span>Inspiration (clicar pra copiar cada tag)</span></div>
+      <div class="insp-tags">
+        <span class="insp-tag" onclick="copyTag(this)">balearic</span>
+        <span class="insp-tag" onclick="copyTag(this)">indie electronic</span>
+        <span class="insp-tag" onclick="copyTag(this)">nu-disco</span>
+        <span class="insp-tag" onclick="copyTag(this)">Mediterranean</span>
+        <span class="insp-tag" onclick="copyTag(this)">poolside</span>
+        <span class="insp-tag" onclick="copyTag(this)">synth-pop</span>
+        <span class="insp-tag" onclick="copyTag(this)">cinematic</span>
+        <span class="insp-tag" onclick="copyTag(this)">warm</span>
+      </div>
+    </div>
+    <!-- Settings -->
+    <div class="suno-field">
+      <div class="suno-field-label"><span class="suno-icon suno-icon-set">&#9881;</span><span>Settings</span></div>
+      <div class="settings-row">
+        <div class="setting-item"><span class="setting-toggle setting-off"></span> Instrumental OFF (tem vocal hum)</div>
+        <div class="setting-item">Versao: v5.5</div>
+      </div>
+    </div>
+    <!-- Audio Reference -->
+    <div class="suno-field">
+      <div class="suno-field-label"><span class="suno-icon suno-icon-ref">&#9835;</span><span>+ Audio (referencia opcional)</span></div>
+      <div class="audio-ref">
+        <span class="audio-ref-icon">&#127925;</span>
+        <span class="audio-ref-name">Poolside - Harvest Moon</span>
+        <span class="audio-ref-note">OU Metronomy - The Bay (testar os dois)</span>
+      </div>
+    </div>
+    <div class="val-guide"><strong>O que buscar:</strong> O territorio hibrido. Guitarra do Poolside com energia e texturas do Metronomy. Se funcionar, esse e o sweet spot pro projeto inteiro. Mais versatil que A ou B. Instrumental OFF aqui pra permitir os hums vocais, mas sem letras.</div>
+  </div>
+</div>
+
+<!-- MOOD D -->
+<div class="val-card" id="vald">
+  <div class="val-top">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap">
+      <div>
+        <div class="val-number" style="color:#059669">D</div>
+        <div class="val-name">Cinematic Dream</div>
+        <div class="val-sub">A versao mais atmosferica e cinematica. Groove presente mas subordinado as texturas. Mais espacoso, mais reverb, mais "filme". Ideal pra abertura e encerramento do hero film.</div>
+      </div>
+      <div class="val-specs">
+        <span class="val-spec" style="background:#D1FAE5;color:#065F46">92 BPM</span>
+        <span class="val-spec" style="background:#D1FAE5;color:#065F46">F major</span>
+        <span class="val-spec">Instrumental</span>
+      </div>
+    </div>
+    <div class="val-refs">
+      <span class="val-ref val-ref-pool">&#9679; Poolside (intro feel)</span>
+      <span class="val-ref val-ref-blend">&#9679; Tycho "A Walk" + Bonobo "Kerala"</span>
+    </div>
+  </div>
+  <div class="val-body">
+    <!-- Song Description -->
+    <div class="suno-field">
+      <div class="suno-field-label"><span class="suno-icon suno-icon-desc">&#9998;</span><span>Song Description</span></div>
+      <div class="prompt-wrap">
+        <button class="copy-btn" onclick="copyPrompt(this)">Copiar</button>
+        <div class="prompt-box">Clean electric guitar playing sparse, reverb-drenched notes, more texture than melody, each note hanging in space. Warm analog synth pad slowly evolving underneath. Soft synth bass, round and deep but restrained. Minimal drum machine, just a slow hi-hat tick and occasional soft kick, giving the faintest sense of pulse. Subtle analog synth arpeggios appearing and disappearing like light through curtains. The feeling of waking inside a dream, Mediterranean warmth, golden light, time suspended. Cinematic and spacious, more film score than dance floor. The groove is there but it breathes, it waits, it unfolds.</div>
+      </div>
+    </div>
+    <!-- Inspiration Tags -->
+    <div class="suno-field">
+      <div class="suno-field-label"><span class="suno-icon suno-icon-insp">&#9733;</span><span>Inspiration (clicar pra copiar cada tag)</span></div>
+      <div class="insp-tags">
+        <span class="insp-tag" onclick="copyTag(this)">cinematic</span>
+        <span class="insp-tag" onclick="copyTag(this)">balearic</span>
+        <span class="insp-tag" onclick="copyTag(this)">ambient</span>
+        <span class="insp-tag" onclick="copyTag(this)">dreampop</span>
+        <span class="insp-tag" onclick="copyTag(this)">atmospheric</span>
+        <span class="insp-tag" onclick="copyTag(this)">film score</span>
+        <span class="insp-tag" onclick="copyTag(this)">indie electronic</span>
+        <span class="insp-tag" onclick="copyTag(this)">Tycho</span>
+      </div>
+    </div>
+    <!-- Settings -->
+    <div class="suno-field">
+      <div class="suno-field-label"><span class="suno-icon suno-icon-set">&#9881;</span><span>Settings</span></div>
+      <div class="settings-row">
+        <div class="setting-item"><span class="setting-toggle"></span> Instrumental ON</div>
+        <div class="setting-item">Versao: v5.5</div>
+      </div>
+    </div>
+    <!-- Audio Reference -->
+    <div class="suno-field">
+      <div class="suno-field-label"><span class="suno-icon suno-icon-ref">&#9835;</span><span>+ Audio (referencia opcional)</span></div>
+      <div class="audio-ref">
+        <span class="audio-ref-icon">&#127925;</span>
+        <span class="audio-ref-name">Poolside - Harvest Moon</span>
+        <span class="audio-ref-note">Usar a intro/outro como ref, nao o corpo</span>
+      </div>
+    </div>
+    <div class="val-guide"><strong>O que buscar:</strong> O mais "filme" dos quatro. Se o cliente preferir algo mais atmosferico e menos groovy, essa e a direcao. Funciona bem pra atos 1 e 5 do hero film independente da escolha final.</div>
+  </div>
+</div>
+
+<!-- MOOD E - MEDITERRANEAN SEXY -->
+<div class="section-title">Mood E — Mediterranean Sexy / New Gen Luxe (3 variantes)</div>
+
+<!-- MOOD E1 -->
+<div class="val-card" id="vale1">
+  <div class="val-top">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap">
+      <div>
+        <div class="val-number" style="color:#059669">E1</div>
+        <div class="val-name">Amalfi Magnetic</div>
+        <div class="val-sub">Groove mediterraneo com tensao sexual. Guitarra limpa com delays que parecem suspiros. Synth bass profundo que voce sente no corpo. Percussao que mexe os quadris, nao so a cabeca. Producao moderna, minimalista, cada som no lugar certo. O editorial Gucci filmado na costa amalfitana, tudo em camera lenta, pele dourada.</div>
+      </div>
+      <div class="val-specs">
+        <span class="val-spec" style="background:#D1FAE5;color:#065F46">100 BPM</span>
+        <span class="val-spec" style="background:#D1FAE5;color:#065F46">G minor</span>
+        <span class="val-spec">Inst + breath vocal</span>
+      </div>
+    </div>
+    <div class="val-refs">
+      <span class="val-ref val-ref-pool">&#9679; Poolside (warmth)</span>
+      <span class="val-ref val-ref-bossa">&#9679; Kaytranada (groove sexy)</span>
+      <span class="val-ref val-ref-metro">&#9679; Sade meets Parcels</span>
+    </div>
+  </div>
+  <div class="val-body">
+    <div class="suno-field">
+      <div class="suno-field-label"><span class="suno-icon suno-icon-desc">&#9998;</span><span>Song Description</span></div>
+      <div class="prompt-wrap">
+        <button class="copy-btn" onclick="copyPrompt(this)">Copiar</button>
+        <div class="prompt-box">Clean electric guitar with analog delay playing a minimal, seductive Mediterranean riff. Each note deliberate, dripping with reverb, leaving space between phrases. Deep warm synth bass, fat and round, sitting low in the mix, you feel it in your chest. Tight modern drum programming: crisp hi-hats with swing, soft claps on the off-beat, deep kick with sub weight. Warm analog synth chords, lush and wide, slightly detuned. Subtle breathy vocal texture, no words, just breath and presence, close and intimate. The feeling of eye contact across a candlelit terrace on the Italian coast. Magnetic, slow-burning, confident. Modern luxury that knows its power. Sexy without being obvious, cool without being cold. Every element minimal but perfectly placed.</div>
+      </div>
+    </div>
+    <div class="suno-field">
+      <div class="suno-field-label"><span class="suno-icon suno-icon-insp">&#9733;</span><span>Inspiration</span></div>
+      <div class="insp-tags">
+        <span class="insp-tag" onclick="copyTag(this)">modern R&B</span>
+        <span class="insp-tag" onclick="copyTag(this)">nu-disco</span>
+        <span class="insp-tag" onclick="copyTag(this)">balearic</span>
+        <span class="insp-tag" onclick="copyTag(this)">seductive</span>
+        <span class="insp-tag" onclick="copyTag(this)">minimal groove</span>
+        <span class="insp-tag" onclick="copyTag(this)">Mediterranean</span>
+        <span class="insp-tag" onclick="copyTag(this)">cinematic</span>
+        <span class="insp-tag" onclick="copyTag(this)">late night</span>
+      </div>
+    </div>
+    <div class="suno-field">
+      <div class="suno-field-label"><span class="suno-icon suno-icon-set">&#9881;</span><span>Settings</span></div>
+      <div class="settings-row">
+        <div class="setting-item"><span class="setting-toggle setting-off"></span> Instrumental OFF (breath vocal)</div>
+        <div class="setting-item">v5.5</div>
+      </div>
+    </div>
+    <div class="suno-field">
+      <div class="suno-field-label"><span class="suno-icon suno-icon-ref">&#9835;</span><span>+ Audio</span></div>
+      <div class="audio-ref">
+        <span class="audio-ref-icon">&#127925;</span>
+        <span class="audio-ref-name">Poolside - Harvest Moon</span>
+        <span class="audio-ref-note">Pra manter a warmth, o sexy vem do prompt</span>
+      </div>
+    </div>
+    <div class="val-guide"><strong>O que buscar:</strong> O espaco entre as notas e tao importante quanto as notas. Se sair "cheio demais", ta errado. Se rolar aquela tensao magnetica onde voce espera a proxima nota e ela vem um beat depois do esperado, ta perfeito. G minor traz sensualidade sem melancolia. Pensa Sade mas produzida pelo Kaytranada em 2026.</div>
+  </div>
+</div>
+
+<!-- MOOD E2 -->
+<div class="val-card" id="vale2">
+  <div class="val-top">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap">
+      <div>
+        <div class="val-number" style="color:#059669">E2</div>
+        <div class="val-name">Capri New Wave</div>
+        <div class="val-sub">A versao mais moderna e ousada. Producao que soa 2026: texturas granulares, bass com carater, percussao que mistura acustico com eletronico sem pedir licenca. Mais Disclosure que Poolside. Mais editorial i-D que Vogue classica. A nova geracao nao quer smooth, quer interessante.</div>
+      </div>
+      <div class="val-specs">
+        <span class="val-spec" style="background:#D1FAE5;color:#065F46">105 BPM</span>
+        <span class="val-spec" style="background:#D1FAE5;color:#065F46">A minor</span>
+        <span class="val-spec">Inst + processed vocal</span>
+      </div>
+    </div>
+    <div class="val-refs">
+      <span class="val-ref val-ref-metro">&#9679; Disclosure / Channel Tres</span>
+      <span class="val-ref val-ref-bossa">&#9679; Rosalia (modern med)</span>
+      <span class="val-ref val-ref-pool">&#9679; Poolside (guitar tone)</span>
+    </div>
+  </div>
+  <div class="val-body">
+    <div class="suno-field">
+      <div class="suno-field-label"><span class="suno-icon suno-icon-desc">&#9998;</span><span>Song Description</span></div>
+      <div class="prompt-wrap">
+        <button class="copy-btn" onclick="copyPrompt(this)">Copiar</button>
+        <div class="prompt-box">Modern Mediterranean electronic groove. Clean electric guitar with chorus and tape delay, playing a hypnotic two-bar riff that locks into the groove. Deep analog synth bass with subtle filter modulation, warm but with edge. Modern drum programming: shuffled hi-hats, punchy soft kick, organic hand claps, finger snaps layered with electronic percussion. Chopped and pitched-down vocal sample, wordless, used as a rhythmic texture. Warm detuned synth stabs. Subtle tape saturation on the master giving analog warmth to digital production. The energy of a fashion show after-party on a Mediterranean island. Young, confident, magnetic. Not trying to impress, just being. Sexy through restraint, modern through taste, Italian summer distilled into sound.</div>
+      </div>
+    </div>
+    <div class="suno-field">
+      <div class="suno-field-label"><span class="suno-icon suno-icon-insp">&#9733;</span><span>Inspiration</span></div>
+      <div class="insp-tags">
+        <span class="insp-tag" onclick="copyTag(this)">indie electronic</span>
+        <span class="insp-tag" onclick="copyTag(this)">modern house</span>
+        <span class="insp-tag" onclick="copyTag(this)">nu-disco</span>
+        <span class="insp-tag" onclick="copyTag(this)">Mediterranean</span>
+        <span class="insp-tag" onclick="copyTag(this)">fashion</span>
+        <span class="insp-tag" onclick="copyTag(this)">groovy</span>
+        <span class="insp-tag" onclick="copyTag(this)">tape saturated</span>
+        <span class="insp-tag" onclick="copyTag(this)">sexy</span>
+      </div>
+    </div>
+    <div class="suno-field">
+      <div class="suno-field-label"><span class="suno-icon suno-icon-set">&#9881;</span><span>Settings</span></div>
+      <div class="settings-row">
+        <div class="setting-item"><span class="setting-toggle setting-off"></span> Instrumental OFF (vocal texture)</div>
+        <div class="setting-item">v5.5</div>
+      </div>
+    </div>
+    <div class="suno-field">
+      <div class="suno-field-label"><span class="suno-icon suno-icon-ref">&#9835;</span><span>+ Audio</span></div>
+      <div class="audio-ref">
+        <span class="audio-ref-icon">&#127925;</span>
+        <span class="audio-ref-name">Metronomy - The Bay</span>
+        <span class="audio-ref-note">Pra puxar a energia indie electronic moderna</span>
+      </div>
+    </div>
+    <div class="val-guide"><strong>O que buscar:</strong> Tem que soar novo. Se parecer que poderia ser de 2015, ta velho. A producao precisa ter textura: tape saturation, hi-hats com shuffle, vocal sample picotado. Se sair muito "club", adicionar "sophisticated, restrained". Se sair muito limpo/generico, adicionar "lo-fi warmth, analog texture, tape hiss". A referencia visual e o after-party da Jacquemus em Capri.</div>
+  </div>
+</div>
+
+<!-- MOOD E3 -->
+<div class="val-card" id="vale3">
+  <div class="val-top">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap">
+      <div>
+        <div class="val-number" style="color:#059669">E3</div>
+        <div class="val-name">Sardinia Slow Burn</div>
+        <div class="val-sub">O ponto de equilibrio. Groove Poolside como fundacao, mas com tensao e sensualidade. Guitarra mediterranea com nylon touches, bass que puxa pro corpo, percussao organica com swing. Nao e chill, nao e club. E o momento entre os dois: a hora dourada, um olhar que dura um segundo a mais. O Mediterraneo como desejo, nao como cartao postal.</div>
+      </div>
+      <div class="val-specs">
+        <span class="val-spec" style="background:#D1FAE5;color:#065F46">98 BPM</span>
+        <span class="val-spec" style="background:#D1FAE5;color:#065F46">F minor</span>
+        <span class="val-spec">Inst + subtle hum</span>
+      </div>
+    </div>
+    <div class="val-refs">
+      <span class="val-ref val-ref-pool">&#9679; Poolside (fundacao)</span>
+      <span class="val-ref val-ref-bossa">&#9679; Khruangbin (guitar feel)</span>
+      <span class="val-ref val-ref-metro">&#9679; Sade / Jorja Smith (warmth)</span>
+    </div>
+  </div>
+  <div class="val-body">
+    <div class="suno-field">
+      <div class="suno-field-label"><span class="suno-icon suno-icon-desc">&#9998;</span><span>Song Description</span></div>
+      <div class="prompt-wrap">
+        <button class="copy-btn" onclick="copyPrompt(this)">Copiar</button>
+        <div class="prompt-box">Mediterranean groove with slow-burning sensuality. Clean electric guitar playing a languid, reverb-soaked melodic line, minor key, notes bending slightly like heat rising from stone. Nylon guitar adding soft rhythmic texture underneath, intimate and close. Deep warm synth bass, present and physical, round with subtle movement. Organic percussion blended with electronics: frame drum pulse, finger snaps, soft shaker, programmed hi-hats with human swing. Warm Rhodes chords, rich and slightly dark. Analog pad sustained wide, like a warm evening breeze. Subtle wordless vocal hum, low and warm, barely there. The golden hour in Sardinia, terracotta and olive trees, skin glowing in low sun. Not relaxing, not dancing. The space in between where desire lives. Confident, warm, magnetic, unhurried but charged. A Louis Vuitton campaign where the beauty is in what's unsaid.</div>
+      </div>
+    </div>
+    <div class="suno-field">
+      <div class="suno-field-label"><span class="suno-icon suno-icon-insp">&#9733;</span><span>Inspiration</span></div>
+      <div class="insp-tags">
+        <span class="insp-tag" onclick="copyTag(this)">balearic</span>
+        <span class="insp-tag" onclick="copyTag(this)">Mediterranean</span>
+        <span class="insp-tag" onclick="copyTag(this)">sensual</span>
+        <span class="insp-tag" onclick="copyTag(this)">nu-disco</span>
+        <span class="insp-tag" onclick="copyTag(this)">indie electronic</span>
+        <span class="insp-tag" onclick="copyTag(this)">cinematic</span>
+        <span class="insp-tag" onclick="copyTag(this)">warm</span>
+        <span class="insp-tag" onclick="copyTag(this)">modern soul</span>
+      </div>
+    </div>
+    <div class="suno-field">
+      <div class="suno-field-label"><span class="suno-icon suno-icon-set">&#9881;</span><span>Settings</span></div>
+      <div class="settings-row">
+        <div class="setting-item"><span class="setting-toggle setting-off"></span> Instrumental OFF (vocal hum)</div>
+        <div class="setting-item">v5.5</div>
+      </div>
+    </div>
+    <div class="suno-field">
+      <div class="suno-field-label"><span class="suno-icon suno-icon-ref">&#9835;</span><span>+ Audio</span></div>
+      <div class="audio-ref">
+        <span class="audio-ref-icon">&#127925;</span>
+        <span class="audio-ref-name">Poolside - Harvest Moon</span>
+        <span class="audio-ref-note">Base quente, o prompt adiciona tensao e sensualidade</span>
+      </div>
+    </div>
+    <div class="val-guide"><strong>O que buscar:</strong> F minor no lugar de F major muda tudo. A mesma warmth, mas com sombra. Se soar triste, ta errado. Se soar como desejo contido, ta certo. A guitarra precisa deslizar, nao atacar. O bass precisa ser sentido no peito. Se sair muito "chill/lounge", jogar fora e refazer. Referencia visual: campanha LV "Journey", mas filmada por alguem de 28 anos que cresceu com Instagram.</div>
+  </div>
+</div>
+
+<!-- MOOD F - CINEMATIC COMMERCIAL -->
+<div class="section-title">Mood F — Cinematic / Hans Zimmer x Fashion (3 variantes)</div>
+
+<!-- MOOD F1 -->
+<div class="val-card" id="valf1">
+  <div class="val-top">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap">
+      <div>
+        <div class="val-number" style="color:#DC2626">F1</div>
+        <div class="val-name">Inception Riviera</div>
+        <div class="val-sub">Hans Zimmer dirigindo uma campanha Gucci no Mediterraneo. Cordas graves como fundacao, percussao cinematica que empurra pra frente, builds massivos, espaco e tensao. Orquestral + eletronico hibrido. Comercial com alma. O tipo de trilha que faz voce parar de scrollar e assistir o anuncio inteiro.</div>
+      </div>
+      <div class="val-specs">
+        <span class="val-spec" style="background:#FEE2E2;color:#991B1B">96 BPM</span>
+        <span class="val-spec" style="background:#FEE2E2;color:#991B1B">D minor</span>
+        <span class="val-spec">Instrumental</span>
+      </div>
+    </div>
+    <div class="val-refs">
+      <span class="val-ref" style="background:#FEE2E2;color:#991B1B">&#9679; Hans Zimmer (builds, tension)</span>
+      <span class="val-ref" style="background:#FEF3C7;color:#92400E">&#9679; Ludwig Goransson (modern)</span>
+      <span class="val-ref val-ref-blend">&#9679; Max Richter (strings emotion)</span>
+    </div>
+  </div>
+  <div class="val-body">
+    <div class="suno-field">
+      <div class="suno-field-label"><span class="suno-icon suno-icon-desc">&#9998;</span><span>Song Description</span></div>
+      <div class="prompt-wrap">
+        <button class="copy-btn" onclick="copyPrompt(this)">Copiar</button>
+        <div class="prompt-box">Cinematic orchestral hybrid, powerful and modern. Deep cello and bass strings playing a slow, heavy, pulsing ostinato that drives everything forward. Massive cinematic percussion: layered taiko hits, deep booming kicks, metallic textures. Builds from tension to release. Warm analog synth pad underneath adding electronic warmth to the orchestral weight. Staccato violins adding urgency in the upper register. No melody, just momentum and texture. One long dynamic arc: starts sparse and tense, builds layer by layer, percussion intensifies, strings swell, reaches a massive peak, then drops to a single sustained low note. The sound of desire becoming real. Mediterranean heat translated into orchestral power. A luxury fashion campaign that moves you physically. Commercial, dynamic, unforgettable. No guitar solos, no fluff, no softness. Pure drive.</div>
+      </div>
+    </div>
+    <div class="suno-field">
+      <div class="suno-field-label"><span class="suno-icon suno-icon-insp">&#9733;</span><span>Inspiration</span></div>
+      <div class="insp-tags">
+        <span class="insp-tag" onclick="copyTag(this)">cinematic</span>
+        <span class="insp-tag" onclick="copyTag(this)">epic orchestral</span>
+        <span class="insp-tag" onclick="copyTag(this)">film score</span>
+        <span class="insp-tag" onclick="copyTag(this)">Hans Zimmer</span>
+        <span class="insp-tag" onclick="copyTag(this)">hybrid scoring</span>
+        <span class="insp-tag" onclick="copyTag(this)">dark</span>
+        <span class="insp-tag" onclick="copyTag(this)">powerful</span>
+        <span class="insp-tag" onclick="copyTag(this)">dramatic</span>
+      </div>
+    </div>
+    <div class="suno-field">
+      <div class="suno-field-label"><span class="suno-icon suno-icon-set">&#9881;</span><span>Settings</span></div>
+      <div class="settings-row">
+        <div class="setting-item"><span class="setting-toggle"></span> Instrumental ON</div>
+        <div class="setting-item">v5.5</div>
+      </div>
+    </div>
+    <div class="suno-field">
+      <div class="suno-field-label"><span class="suno-icon suno-icon-ref">&#9835;</span><span>+ Audio</span></div>
+      <div class="audio-ref">
+        <span class="audio-ref-icon">&#127925;</span>
+        <span class="audio-ref-name">Nenhum</span>
+        <span class="audio-ref-note">Deixar Suno interpretar livre. Audio ref puxaria pro balearic.</span>
+      </div>
+    </div>
+    <div class="val-guide"><strong>O que buscar:</strong> Tem que ter PESO. As cordas graves precisam empurrar o ar. A percussao precisa ser fisica, cinematica, nao um drum machine de bedroom producer. Se sair orquestral classico sem punch, ta errado. Se sair trailer de filme, quase certo mas precisa de mais elegancia. O sweet spot e: Zimmer se ele estivesse fazendo a trilha de um curta da Gucci. Poder com graca.</div>
+  </div>
+</div>
+
+<!-- MOOD F2 -->
+<div class="val-card" id="valf2">
+  <div class="val-top">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap">
+      <div>
+        <div class="val-number" style="color:#DC2626">F2</div>
+        <div class="val-name">Territory</div>
+        <div class="val-sub">The Blaze encontra Woodkid. Eletronico cinematico com emocao humana por baixo da producao massiva. Drums enormes, synth bass que treme o chao, mas uma melodia simples e quente no centro que segura tudo junto. Sexy porque e intenso, nao porque e suave. O tipo de trilha que funciona num telao de 20 metros e num reel de 15 segundos.</div>
+      </div>
+      <div class="val-specs">
+        <span class="val-spec" style="background:#FEE2E2;color:#991B1B">104 BPM</span>
+        <span class="val-spec" style="background:#FEE2E2;color:#991B1B">C minor</span>
+        <span class="val-spec">Inst + processed vocal</span>
+      </div>
+    </div>
+    <div class="val-refs">
+      <span class="val-ref" style="background:#FEE2E2;color:#991B1B">&#9679; The Blaze (cinematico + humano)</span>
+      <span class="val-ref" style="background:#FEF3C7;color:#92400E">&#9679; Woodkid (drums + escala)</span>
+      <span class="val-ref val-ref-metro">&#9679; Moderat (eletronico emocional)</span>
+    </div>
+  </div>
+  <div class="val-body">
+    <div class="suno-field">
+      <div class="suno-field-label"><span class="suno-icon suno-icon-desc">&#9998;</span><span>Song Description</span></div>
+      <div class="prompt-wrap">
+        <button class="copy-btn" onclick="copyPrompt(this)">Copiar</button>
+        <div class="prompt-box">Cinematic electronic with massive drums and emotional core. Starts with a single deep synth note, wide and ominous. Then: huge processed kick drum enters, slow and deliberate, shaking the floor. Layered percussion builds around it, industrial textures, claps, metallic hits. A simple warm synth melody appears, just three or four notes, almost naive against the massive production. Deep sub bass, physical and relentless. Processed vocal texture, pitched and stretched, ghostly and human at the same time. Strings swell underneath adding drama without sentimentality. The track builds in waves, each section adding density and urgency. Mediterranean heat as pressure, not as comfort. A fashion film that makes you hold your breath. Dynamic, commercial, modern. Moves bodies and sells dreams. No softness, no filler, every element earns its place.</div>
+      </div>
+    </div>
+    <div class="suno-field">
+      <div class="suno-field-label"><span class="suno-icon suno-icon-insp">&#9733;</span><span>Inspiration</span></div>
+      <div class="insp-tags">
+        <span class="insp-tag" onclick="copyTag(this)">cinematic electronic</span>
+        <span class="insp-tag" onclick="copyTag(this)">epic</span>
+        <span class="insp-tag" onclick="copyTag(this)">dark</span>
+        <span class="insp-tag" onclick="copyTag(this)">industrial</span>
+        <span class="insp-tag" onclick="copyTag(this)">emotional</span>
+        <span class="insp-tag" onclick="copyTag(this)">modern</span>
+        <span class="insp-tag" onclick="copyTag(this)">powerful drums</span>
+        <span class="insp-tag" onclick="copyTag(this)">fashion</span>
+      </div>
+    </div>
+    <div class="suno-field">
+      <div class="suno-field-label"><span class="suno-icon suno-icon-set">&#9881;</span><span>Settings</span></div>
+      <div class="settings-row">
+        <div class="setting-item"><span class="setting-toggle setting-off"></span> Instrumental OFF (processed vocal texture)</div>
+        <div class="setting-item">v5.5</div>
+      </div>
+    </div>
+    <div class="suno-field">
+      <div class="suno-field-label"><span class="suno-icon suno-icon-ref">&#9835;</span><span>+ Audio</span></div>
+      <div class="audio-ref">
+        <span class="audio-ref-icon">&#127925;</span>
+        <span class="audio-ref-name">Nenhum</span>
+        <span class="audio-ref-note">Qualquer ref audio vai suavizar. Deixar o prompt guiar.</span>
+      </div>
+    </div>
+    <div class="val-guide"><strong>O que buscar:</strong> Duas coisas precisam coexistir: producao massiva E emocao humana. Se sair so pancada sem alma, ta errado. Se sair emotivo sem punch, tambem ta errado. A melodia simples de synth no meio da producao pesada e o que torna isso fashion e nao trailer de acao. Pensa The Blaze "Territory" ou "Virile" como ponto de partida. Funciona perfeitamente pros atos 2-4 do filme (descoberta > climax).</div>
+  </div>
+</div>
+
+<!-- MOOD F3 -->
+<div class="val-card" id="valf3">
+  <div class="val-top">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap">
+      <div>
+        <div class="val-number" style="color:#DC2626">F3</div>
+        <div class="val-name">Nero Mediterraneo</div>
+        <div class="val-sub">A versao mais dark e fashion-forward. Gesaffelstein dirige uma campanha Tom Ford no Mediterraneo. Percussao mecanica e precisa, bass que distorce levemente, tensao sexual como textura sonora. Comercial no sentido de que gruda na cabeca e nao sai. Minimalista, perigoso, irresistivel.</div>
+      </div>
+      <div class="val-specs">
+        <span class="val-spec" style="background:#FEE2E2;color:#991B1B">100 BPM</span>
+        <span class="val-spec" style="background:#FEE2E2;color:#991B1B">E minor</span>
+        <span class="val-spec">Inst + breath</span>
+      </div>
+    </div>
+    <div class="val-refs">
+      <span class="val-ref" style="background:#FEE2E2;color:#991B1B">&#9679; Gesaffelstein (dark, fashion)</span>
+      <span class="val-ref" style="background:#1E1E2E;color:#CDD6F4">&#9679; Trent Reznor / Atticus Ross</span>
+      <span class="val-ref val-ref-blend">&#9679; Nicolas Jaar (texturas)</span>
+    </div>
+  </div>
+  <div class="val-body">
+    <div class="suno-field">
+      <div class="suno-field-label"><span class="suno-icon suno-icon-desc">&#9998;</span><span>Song Description</span></div>
+      <div class="prompt-wrap">
+        <button class="copy-btn" onclick="copyPrompt(this)">Copiar</button>
+        <div class="prompt-box">Dark cinematic minimal electronic. Precise, mechanical kick drum pounding at a deliberate pace, industrial weight. Deep synth bass with subtle analog distortion, warm but dangerous, vibrating at the edge of clean. Sparse percussion: metallic hi-hat, single clap placed with surgical precision. Dark warm pad sustained underneath, barely moving, creating tension through stillness. No melody. Texture and rhythm only. A single processed breath sound used as a rhythmic element, intimate and unsettling. Occasional deep string hit, like a punch to the chest. Everything stripped to the essential: kick, bass, texture, tension. Mediterranean noir, luxury through darkness. The fashion campaign where nobody smiles but everyone watches. Hypnotic, minimal, relentless. Commercial through obsession, not through sweetness. Every second makes you want the next second.</div>
+      </div>
+    </div>
+    <div class="suno-field">
+      <div class="suno-field-label"><span class="suno-icon suno-icon-insp">&#9733;</span><span>Inspiration</span></div>
+      <div class="insp-tags">
+        <span class="insp-tag" onclick="copyTag(this)">dark electronic</span>
+        <span class="insp-tag" onclick="copyTag(this)">minimal techno</span>
+        <span class="insp-tag" onclick="copyTag(this)">cinematic</span>
+        <span class="insp-tag" onclick="copyTag(this)">industrial</span>
+        <span class="insp-tag" onclick="copyTag(this)">noir</span>
+        <span class="insp-tag" onclick="copyTag(this)">fashion</span>
+        <span class="insp-tag" onclick="copyTag(this)">hypnotic</span>
+        <span class="insp-tag" onclick="copyTag(this)">dark wave</span>
+      </div>
+    </div>
+    <div class="suno-field">
+      <div class="suno-field-label"><span class="suno-icon suno-icon-set">&#9881;</span><span>Settings</span></div>
+      <div class="settings-row">
+        <div class="setting-item"><span class="setting-toggle setting-off"></span> Instrumental OFF (breath texture)</div>
+        <div class="setting-item">v5.5</div>
+      </div>
+    </div>
+    <div class="suno-field">
+      <div class="suno-field-label"><span class="suno-icon suno-icon-ref">&#9835;</span><span>+ Audio</span></div>
+      <div class="audio-ref">
+        <span class="audio-ref-icon">&#127925;</span>
+        <span class="audio-ref-name">Nenhum</span>
+        <span class="audio-ref-note">Ref quebraria a escuridao. Prompt puro.</span>
+      </div>
+    </div>
+    <div class="val-guide"><strong>O que buscar:</strong> O MENOS e MAIS aqui. Se sair cheio de camadas, ta errado. Precisa ter ar, espaco, silencio entre os hits. O kick precisa ser fisico. O bass precisa ter textura de distorcao sutil. Se soar como techno de club, ta errado. Se soar como a trilha de um perfume que custa 500 euros, ta certo. Referencia visual: Tom Ford Noir campaign, ou a abertura de House of Gucci mas estilizada. Funciona muito bem pro ato 4 (climax) e como DNA geral se o cliente quiser algo premium e ousado.</div>
+  </div>
+</div>
+
+<!-- MOOD G - HAUTE COUTURE 4x4 -->
+<div class="section-title">Mood G — Haute Couture / Monaco 4x4 (3 variantes)</div>
+
+<!-- MOOD G1 -->
+<div class="val-card" id="valg1">
+  <div class="val-top">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap">
+      <div>
+        <div class="val-number" style="color:#B45309">G1</div>
+        <div class="val-name">Monte Carlo</div>
+        <div class="val-sub">Deep house elegante com cordas cinematicas. O 4x4 que toca no rooftop do Hotel de Paris em Monaco enquanto o sol desce sobre o porto. Kick preciso, hi-hats que brilham como cristal, bassline que desliza, strings que elevam. Chique sem ser frio. Desfile de alta costura onde cada passo e no beat.</div>
+      </div>
+      <div class="val-specs">
+        <span class="val-spec" style="background:#FEF3C7;color:#92400E">118 BPM</span>
+        <span class="val-spec" style="background:#FEF3C7;color:#92400E">A minor</span>
+        <span class="val-spec">Inst + vocal chop</span>
+      </div>
+    </div>
+    <div class="val-refs">
+      <span class="val-ref" style="background:#FEF3C7;color:#92400E">&#9679; Solomun (deep elegante)</span>
+      <span class="val-ref" style="background:#EDE9FE;color:#5B21B6">&#9679; Tale Of Us (melodic dark)</span>
+      <span class="val-ref val-ref-blend">&#9679; Strings cinematicas tipo Zimmer</span>
+    </div>
+  </div>
+  <div class="val-body">
+    <div class="suno-field">
+      <div class="suno-field-label"><span class="suno-icon suno-icon-desc">&#9998;</span><span>Song Description</span></div>
+      <div class="prompt-wrap">
+        <button class="copy-btn" onclick="copyPrompt(this)">Copiar</button>
+        <div class="prompt-box">Elegant deep house with cinematic strings. Clean, precise four-on-the-floor kick drum, tight and refined, not heavy. Crisp hi-hats shimmering like champagne bubbles, delicate open hats on the off-beat. Deep warm bass line, smooth and melodic, gliding underneath with sophisticated movement. Lush string arrangement swelling in and out, violins and violas adding drama and beauty, cinematic but rhythmic. Subtle processed vocal chop, pitched and filtered, used as a melodic texture. Warm analog pad providing depth. A single piano note appearing occasionally, sparse and elegant. The feeling of a haute couture runway show in Monaco at golden hour. Yacht-lined harbor, champagne terraces, silk catching light. Every element polished, nothing excessive, nothing missing. Chic, magnetic, elevated. Fashion house electronic music that belongs in a marble lobby and on a dance floor simultaneously.</div>
+      </div>
+    </div>
+    <div class="suno-field">
+      <div class="suno-field-label"><span class="suno-icon suno-icon-insp">&#9733;</span><span>Inspiration</span></div>
+      <div class="insp-tags">
+        <span class="insp-tag" onclick="copyTag(this)">deep house</span>
+        <span class="insp-tag" onclick="copyTag(this)">melodic techno</span>
+        <span class="insp-tag" onclick="copyTag(this)">cinematic</span>
+        <span class="insp-tag" onclick="copyTag(this)">elegant</span>
+        <span class="insp-tag" onclick="copyTag(this)">orchestral electronic</span>
+        <span class="insp-tag" onclick="copyTag(this)">fashion</span>
+        <span class="insp-tag" onclick="copyTag(this)">luxury</span>
+        <span class="insp-tag" onclick="copyTag(this)">strings</span>
+      </div>
+    </div>
+    <div class="suno-field">
+      <div class="suno-field-label"><span class="suno-icon suno-icon-set">&#9881;</span><span>Settings</span></div>
+      <div class="settings-row">
+        <div class="setting-item"><span class="setting-toggle setting-off"></span> Instrumental OFF (vocal chop)</div>
+        <div class="setting-item">v5.5</div>
+      </div>
+    </div>
+    <div class="suno-field">
+      <div class="suno-field-label"><span class="suno-icon suno-icon-ref">&#9835;</span><span>+ Audio</span></div>
+      <div class="audio-ref">
+        <span class="audio-ref-icon">&#127925;</span>
+        <span class="audio-ref-name">Nenhum</span>
+        <span class="audio-ref-note">Prompt puro. Ref audio puxaria pro balearic/indie.</span>
+      </div>
+    </div>
+    <div class="val-guide"><strong>O que buscar:</strong> O kick tem que ser preciso e refinado, nao pesado. Os hi-hats precisam brilhar. As cordas elevam sem ser melodramaticas. Se sair como set do Tomorrowland, ta errado. Se sair como a trilha de um desfile da Valentino, ta certo. O bass desliza, nunca agride. Cada elemento e luxo.</div>
+  </div>
+</div>
+
+<!-- MOOD G2 -->
+<div class="val-card" id="valg2">
+  <div class="val-top">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap">
+      <div>
+        <div class="val-number" style="color:#B45309">G2</div>
+        <div class="val-name">Runway Noir</div>
+        <div class="val-sub">O desfile escuro. 4x4 mais tenso e minimal que G1. Menos cordas, mais textura. O kick e o boss, o bass e a sombra, um arpejo sintetico hipnotico costura tudo. Saint Laurent, Balenciaga, luzes estroboscopicas em camera lenta. Champagne preto.</div>
+      </div>
+      <div class="val-specs">
+        <span class="val-spec" style="background:#FEF3C7;color:#92400E">122 BPM</span>
+        <span class="val-spec" style="background:#FEF3C7;color:#92400E">F minor</span>
+        <span class="val-spec">Instrumental</span>
+      </div>
+    </div>
+    <div class="val-refs">
+      <span class="val-ref" style="background:#1E1E2E;color:#CDD6F4">&#9679; Gesaffelstein (tension)</span>
+      <span class="val-ref" style="background:#EDE9FE;color:#5B21B6">&#9679; Tale Of Us / Afterlife</span>
+      <span class="val-ref" style="background:#FEE2E2;color:#991B1B">&#9679; Brodinski (Paris dark)</span>
+    </div>
+  </div>
+  <div class="val-body">
+    <div class="suno-field">
+      <div class="suno-field-label"><span class="suno-icon suno-icon-desc">&#9998;</span><span>Song Description</span></div>
+      <div class="prompt-wrap">
+        <button class="copy-btn" onclick="copyPrompt(this)">Copiar</button>
+        <div class="prompt-box">Dark minimal four-on-the-floor with hypnotic arpeggiated synth. Tight, punchy kick drum driving relentlessly, clean and present. Crisp closed hi-hats, mechanical precision. Deep analog bass, dark and warm, pulsing in a simple two-note pattern. A hypnotic analog synth arpeggio running through the entire track, filtered and evolving slowly, the spine of everything. Dark warm pad underneath, barely there, creating atmosphere. Occasional deep reverbed clap. One subtle string drone rising and falling, adding cinematic tension without melody. The sound of a fashion runway where the lights are low and every step is deliberate. Minimal, dark, hypnotic, chic. Not aggressive, not soft. Controlled power. The elegance of restraint in electronic music. Monaco after midnight, black marble, the Mediterranean as a dark mirror.</div>
+      </div>
+    </div>
+    <div class="suno-field">
+      <div class="suno-field-label"><span class="suno-icon suno-icon-insp">&#9733;</span><span>Inspiration</span></div>
+      <div class="insp-tags">
+        <span class="insp-tag" onclick="copyTag(this)">minimal techno</span>
+        <span class="insp-tag" onclick="copyTag(this)">dark electronic</span>
+        <span class="insp-tag" onclick="copyTag(this)">hypnotic</span>
+        <span class="insp-tag" onclick="copyTag(this)">fashion runway</span>
+        <span class="insp-tag" onclick="copyTag(this)">Afterlife</span>
+        <span class="insp-tag" onclick="copyTag(this)">noir</span>
+        <span class="insp-tag" onclick="copyTag(this)">elegant</span>
+        <span class="insp-tag" onclick="copyTag(this)">arpeggio</span>
+      </div>
+    </div>
+    <div class="suno-field">
+      <div class="suno-field-label"><span class="suno-icon suno-icon-set">&#9881;</span><span>Settings</span></div>
+      <div class="settings-row">
+        <div class="setting-item"><span class="setting-toggle"></span> Instrumental ON</div>
+        <div class="setting-item">v5.5</div>
+      </div>
+    </div>
+    <div class="suno-field">
+      <div class="suno-field-label"><span class="suno-icon suno-icon-ref">&#9835;</span><span>+ Audio</span></div>
+      <div class="audio-ref">
+        <span class="audio-ref-icon">&#127925;</span>
+        <span class="audio-ref-name">Nenhum</span>
+        <span class="audio-ref-note">Prompt puro. A escuridao vem do texto.</span>
+      </div>
+    </div>
+    <div class="val-guide"><strong>O que buscar:</strong> O arpejo hipnotico e o que faz ou quebra. Precisa ser simples, filtrado, e evoluir lentamente ao longo da track. Se sair arpejo tipo trance dos anos 2000, ta errado. Se sair tipo Afterlife/Tale Of Us, ta perfeito. O kick nao pode ser borrachudo, precisa ser tight e presente. A vibe e: voce ta num desfile e nao consegue tirar os olhos da passarela. Nao porque e bonito, porque e hipnotico.</div>
+  </div>
+</div>
+
+<!-- MOOD G3 -->
+<div class="val-card" id="valg3">
+  <div class="val-top">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap">
+      <div>
+        <div class="val-number" style="color:#B45309">G3</div>
+        <div class="val-name">Riviera Maison</div>
+        <div class="val-sub">O mais luminoso dos tres, mas ainda 4x4 e chique. House sofisticado com piano, cordas sutis, percussao organica sobre o four-on-the-floor. O desfile de verao, terracos brancos, Mediterraneo azul, champagne gelado. Dior Cruise collection. Sexy porque e irresistivelmente convidativo.</div>
+      </div>
+      <div class="val-specs">
+        <span class="val-spec" style="background:#FEF3C7;color:#92400E">120 BPM</span>
+        <span class="val-spec" style="background:#FEF3C7;color:#92400E">G major</span>
+        <span class="val-spec">Inst + airy vocal</span>
+      </div>
+    </div>
+    <div class="val-refs">
+      <span class="val-ref" style="background:#FEF3C7;color:#92400E">&#9679; DJ Tennis / Life and Death</span>
+      <span class="val-ref" style="background:#DBEAFE;color:#1D4ED8">&#9679; Parcels (disco-house)</span>
+      <span class="val-ref val-ref-pool">&#9679; Piano house elegante</span>
+    </div>
+  </div>
+  <div class="val-body">
+    <div class="suno-field">
+      <div class="suno-field-label"><span class="suno-icon suno-icon-desc">&#9998;</span><span>Song Description</span></div>
+      <div class="prompt-wrap">
+        <button class="copy-btn" onclick="copyPrompt(this)">Copiar</button>
+        <div class="prompt-box">Sophisticated Mediterranean house music with piano and strings. Warm four-on-the-floor kick, round and present but never brutal. Shimmering open hi-hats and crisp rides creating a golden rhythmic texture. Elegant piano chords, jazzy voicings, played with space and grace, not busy. Deep warm bass line, melodic and smooth, driving with purpose. Subtle string section adding warmth and movement, cellos and violas, cinematic but light. Organic percussion layered on top: tambourine, soft congas, hand claps with reverb. Airy female vocal, wordless, floating above the mix like sunlight through white linen. The feeling of a Dior summer show on a Mediterranean terrace. White stone, blue sea, champagne catching the light. Sophisticated, joyful, magnetic. House music for people who own the house. Every element breathes luxury without showing the price tag.</div>
+      </div>
+    </div>
+    <div class="suno-field">
+      <div class="suno-field-label"><span class="suno-icon suno-icon-insp">&#9733;</span><span>Inspiration</span></div>
+      <div class="insp-tags">
+        <span class="insp-tag" onclick="copyTag(this)">deep house</span>
+        <span class="insp-tag" onclick="copyTag(this)">piano house</span>
+        <span class="insp-tag" onclick="copyTag(this)">sophisticated</span>
+        <span class="insp-tag" onclick="copyTag(this)">Mediterranean</span>
+        <span class="insp-tag" onclick="copyTag(this)">cinematic</span>
+        <span class="insp-tag" onclick="copyTag(this)">luxury</span>
+        <span class="insp-tag" onclick="copyTag(this)">organic</span>
+        <span class="insp-tag" onclick="copyTag(this)">fashion</span>
+      </div>
+    </div>
+    <div class="suno-field">
+      <div class="suno-field-label"><span class="suno-icon suno-icon-set">&#9881;</span><span>Settings</span></div>
+      <div class="settings-row">
+        <div class="setting-item"><span class="setting-toggle setting-off"></span> Instrumental OFF (airy vocal)</div>
+        <div class="setting-item">v5.5</div>
+      </div>
+    </div>
+    <div class="suno-field">
+      <div class="suno-field-label"><span class="suno-icon suno-icon-ref">&#9835;</span><span>+ Audio</span></div>
+      <div class="audio-ref">
+        <span class="audio-ref-icon">&#127925;</span>
+        <span class="audio-ref-name">Nenhum</span>
+        <span class="audio-ref-note">O piano e as cordas diferenciam do balearic. Prompt puro.</span>
+      </div>
+    </div>
+    <div class="val-guide"><strong>O que buscar:</strong> O piano faz a diferenca entre house generico e house chique. Precisa ter voicings jazzisticos, espaco entre os acordes, graca. Se sair piano de Ibiza commercial house, descarta. Se sair piano tipo Kerri Chandler ou Larry Heard, perfeito. As cordas adicionam cinema sem pesar. G major traz luminosidade e otimismo. Esse e o mood que mais combina com o arco narrativo do filme (despertar > celebracao). A versao champagne da campanha.</div>
+  </div>
+</div>
+
+<!-- MOOD H — ZARA BRAZIL EDIT -->
+<div class="section-title">Mood H — Zara Brazil Edit / Tropical Fashion (3 variantes)</div>
+
+<div class="val-card" id="valh1">
+  <div class="val-top">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
+      <span class="val-number" style="background:#16A34A">H1</span>
+      <div>
+        <div class="val-name">Jardim Tropical</div>
+        <div class="val-sub">Bossa moderna com producao internacional. Nylon guitar intimo, percussao organica, Rhodes dourado, bass que voce sente no peito. A confianca tranquila de quem nao precisa provar nada. Fashion editorial filmado num jardim tropical privado no Rio, golden hour, modelos descalcos, tudo natural e caro ao mesmo tempo.</div>
+      </div>
+    </div>
+    <div class="val-specs">
+      <span class="val-spec" style="background:#D1FAE5;color:#065F46">Instrumental</span>
+      <span class="val-spec" style="background:#FEF3C7;color:#92400E">104 BPM</span>
+      <span class="val-spec" style="background:#DBEAFE;color:#1D4ED8">G major</span>
+    </div>
+    <div class="val-refs">
+      <span class="val-ref" style="background:#D1FAE5;color:#065F46">&#9679; Tom Misch (guitar warmth)</span>
+      <span class="val-ref" style="background:#FEF3C7;color:#92400E">&#9679; Toro y Moi (groove)</span>
+      <span class="val-ref" style="background:#DBEAFE;color:#1D4ED8">&#9679; Tim Maia (soul tropical)</span>
+    </div>
+  </div>
+  <div class="val-body">
+    <div class="suno-field">
+      <div class="suno-field-label"><span class="suno-icon suno-icon-desc">&#9998;</span><span>Song Description</span></div>
+      <div class="prompt-wrap">
+        <button class="copy-btn" onclick="copyPrompt(this)">Copiar</button>
+        <div class="prompt-box">An effortlessly sophisticated, sun-warmed, sensually charged tropical groove in 104bpm with a luxury fashion editorial energy for people who look expensive without trying, The track is built on a lazy, breathing, slightly syncopated organic groove where a pandeiro and a programmed kick find common ground and a shaker marks time like a slow pulse, The core atmosphere is a golden, intimate soundscape of warm nylon guitar fingerpicking bossa-inflected chords with natural string buzz and just enough imperfection to feel human, a round analog synth bass with subtle filter movement that you feel in your chest before you hear it, and Rhodes electric piano catching light like gold jewelry on sun-kissed skin, A single melodic hook on the nylon guitar, unhurried and confident, the kind of phrase someone plays while lying in a hammock deciding whether to get up or stay forever, Underneath everything a warm analog pad sustains like afternoon heat that never breaks, The overall mood is a masterful blend of modern MPB production sensibility and international indie electronic warmth and the quiet confidence of someone who knows exactly how good they look, designed for a Zara campaign shot in a private tropical garden in Rio de Janeiro at golden hour where the models are barefoot and the stylist gave up because they looked better in their own clothes</div>
+      </div>
+    </div>
+    <div class="suno-field">
+      <div class="suno-field-label"><span class="suno-icon suno-icon-insp">&#9733;</span><span>Inspiration</span></div>
+      <div class="insp-tags">
+        <span class="insp-tag" onclick="copyTag(this)">tropical</span>
+        <span class="insp-tag" onclick="copyTag(this)">bossa nova</span>
+        <span class="insp-tag" onclick="copyTag(this)">MPB</span>
+        <span class="insp-tag" onclick="copyTag(this)">indie pop</span>
+        <span class="insp-tag" onclick="copyTag(this)">nu-disco</span>
+        <span class="insp-tag" onclick="copyTag(this)">sunny</span>
+        <span class="insp-tag" onclick="copyTag(this)">fashion editorial</span>
+      </div>
+    </div>
+    <div class="suno-field">
+      <div class="suno-field-label"><span class="suno-icon suno-icon-settings">&#9881;</span><span>Settings</span></div>
+      <div class="suno-settings">
+        <div class="suno-toggle"><span class="toggle-label">Instrumental</span><span class="toggle-pill on">ON</span></div>
+      </div>
+    </div>
+    <div class="suno-field">
+      <div class="suno-field-label"><span class="suno-icon suno-icon-audio">&#9835;</span><span>+Audio reference</span></div>
+      <div class="audio-ref">
+        <span class="audio-ref-name">Nenhum</span>
+        <span class="audio-ref-note">Prompt puro. Deixar o Suno interpretar a tropicalidade sem audio ref.</span>
+      </div>
+    </div>
+    <div class="val-guide"><strong>O que buscar:</strong> O nylon guitar e a assinatura. Precisa soar organico, espontaneo, como alguem tocando no jardim. Se sair violao classico certinho demais, ta errado. Se sair com aquele swing de quem ta tocando descalco tomando sol, ta perfeito. A percussao brasileira tem que ser sutil mas presente: pandeiro no fundo, shaker marcando. G major traz otimismo puro. Referencia visual: as ilustracoes do Filipe Jardim ganhando vida.</div>
+  </div>
+</div>
+
+<div class="val-card" id="valh2">
+  <div class="val-top">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
+      <span class="val-number" style="background:#16A34A">H2</span>
+      <div>
+        <div class="val-name">Rio Editorial</div>
+        <div class="val-sub">Eletronica moderna com alma brasileira. Sidechain que respira, percussao samplada no pocket, synth bass que puxa fisicamente. Kaytranada meets tropicalia. A arrogancia silenciosa de uma marca que sabe que sua campanha vai ser a que todo mundo printa. A modelo danca entre takes e o fotografo continua clicando porque os momentos nao-posados valem mais.</div>
+      </div>
+    </div>
+    <div class="val-specs">
+      <span class="val-spec" style="background:#D1FAE5;color:#065F46">Instrumental</span>
+      <span class="val-spec" style="background:#FEF3C7;color:#92400E">108 BPM</span>
+      <span class="val-spec" style="background:#DBEAFE;color:#1D4ED8">A minor</span>
+    </div>
+    <div class="val-refs">
+      <span class="val-ref" style="background:#D1FAE5;color:#065F46">&#9679; Kaytranada (production)</span>
+      <span class="val-ref" style="background:#FEF3C7;color:#92400E">&#9679; Disclosure (energy)</span>
+      <span class="val-ref" style="background:#DBEAFE;color:#1D4ED8">&#9679; Marcos Valle (Brazilian soul)</span>
+    </div>
+  </div>
+  <div class="val-body">
+    <div class="suno-field">
+      <div class="suno-field-label"><span class="suno-icon suno-icon-desc">&#9998;</span><span>Song Description</span></div>
+      <div class="prompt-wrap">
+        <button class="copy-btn" onclick="copyPrompt(this)">Copiar</button>
+        <div class="prompt-box">An intelligent, groove-obsessed, polished modern electronic track in 108bpm with a fashion film energy that makes you want to move and buy things simultaneously, The track is built on a crisp, sidechain-compressed foundation where warm pads breathe in and out with every kick hit and sampled Brazilian percussion sits in the pocket: tamborim flicks ghosting behind the snare, conga hits buried low in the mix like a secret, a shaker that never stops moving and never gets louder, The core atmosphere is a kinetic, sun-saturated soundscape of bouncy round synth bass driving everything forward with an almost physical pull, warm filtered pads opening and closing with the rhythm like curtains in a breeze, and sharp melodic synth stabs that punctuate like camera flashes at a fashion week afterparty, No vocals but the production has so much personality and attitude it doesn't need them, every hi-hat placement is a decision, every filter sweep is a gesture, The overall mood is a masterful blend of Kaytranada's rhythmic sophistication and lateral swing and Brazilian percussive soul and the quiet arrogance of a fashion brand that knows its campaign will be the one people screenshot, designed for a luxury editorial where the model is dancing between takes and the photographer keeps shooting because the unposed moments are worth more than the art direction</div>
+      </div>
+    </div>
+    <div class="suno-field">
+      <div class="suno-field-label"><span class="suno-icon suno-icon-insp">&#9733;</span><span>Inspiration</span></div>
+      <div class="insp-tags">
+        <span class="insp-tag" onclick="copyTag(this)">electronic</span>
+        <span class="insp-tag" onclick="copyTag(this)">tropical house</span>
+        <span class="insp-tag" onclick="copyTag(this)">Brazilian bass</span>
+        <span class="insp-tag" onclick="copyTag(this)">fashion</span>
+        <span class="insp-tag" onclick="copyTag(this)">nu-disco</span>
+        <span class="insp-tag" onclick="copyTag(this)">sunny</span>
+        <span class="insp-tag" onclick="copyTag(this)">groovy</span>
+      </div>
+    </div>
+    <div class="suno-field">
+      <div class="suno-field-label"><span class="suno-icon suno-icon-settings">&#9881;</span><span>Settings</span></div>
+      <div class="suno-settings">
+        <div class="suno-toggle"><span class="toggle-label">Instrumental</span><span class="toggle-pill on">ON</span></div>
+      </div>
+    </div>
+    <div class="suno-field">
+      <div class="suno-field-label"><span class="suno-icon suno-icon-audio">&#9835;</span><span>+Audio reference</span></div>
+      <div class="audio-ref">
+        <span class="audio-ref-name">Nenhum</span>
+        <span class="audio-ref-note">Producao eletronica pura. O prompt carrega a direcao tropical.</span>
+      </div>
+    </div>
+    <div class="val-guide"><strong>O que buscar:</strong> O sidechain no pad e essencial: aquele "respiro" ritmico que da groove sem precisar de mais elementos. Se sair achatado e sem dinamica, ta errado. Se o kick e o pad respirarem juntos e voce sentir vontade de mexer o corpo antes de perceber, ta certo. A major e a tonalidade mais brilhante e otimista. A percussao brasileira precisa soar como sample bem escolhido, nao como percussao ao vivo num show de samba. Pensa Kaytranada produzindo no Rio.</div>
+  </div>
+</div>
+
+<div class="val-card" id="valh3">
+  <div class="val-top">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
+      <span class="val-number" style="background:#16A34A">H3</span>
+      <div>
+        <div class="val-name">Ilustracao Viva</div>
+        <div class="val-sub">Art-groove texturalmente obsessivo. Arpeggios que dancam em padroes irregulares, percussao que muda quando voce decorou, Rhodes que pontua como quem sublinha o importante. Cada som no seu espaco como objetos numa sala curada. A confianca estranha de quem sabe que ser imprevisivel e mais interessante que ser bonito. Filipe Jardim em forma de musica.</div>
+      </div>
+    </div>
+    <div class="val-specs">
+      <span class="val-spec" style="background:#D1FAE5;color:#065F46">Instrumental</span>
+      <span class="val-spec" style="background:#FEF3C7;color:#92400E">106 BPM</span>
+      <span class="val-spec" style="background:#DBEAFE;color:#1D4ED8">C major</span>
+    </div>
+    <div class="val-refs">
+      <span class="val-ref" style="background:#D1FAE5;color:#065F46">&#9679; Metronomy (playfulness)</span>
+      <span class="val-ref" style="background:#FEF3C7;color:#92400E">&#9679; Parcels (groove)</span>
+      <span class="val-ref" style="background:#DBEAFE;color:#1D4ED8">&#9679; Hermeto Pascoal (texturas)</span>
+    </div>
+  </div>
+  <div class="val-body">
+    <div class="suno-field">
+      <div class="suno-field-label"><span class="suno-icon suno-icon-desc">&#9998;</span><span>Song Description</span></div>
+      <div class="prompt-wrap">
+        <button class="copy-btn" onclick="copyPrompt(this)">Copiar</button>
+        <div class="prompt-box">A curious, texturally obsessive, deceptively simple art-groove in 106bpm with the energy of a gallery opening where the champagne is expensive and the crowd is more interesting than the art, The track is built on a warm bouncy bass groove that anchors everything while above it textures appear and disappear like ideas in a sketchbook: handclaps that arrive for 4 bars then vanish, a woodblock pattern that shifts just when you've memorized it, shakers made of something organic you can't quite identify, The core atmosphere is a rich, layered, confidently weird soundscape of bright synth arpeggios that dance in patterns just irregular enough to hold attention, warm Rhodes chords punctuating like someone underlining the important parts, and percussive elements that feel handcrafted and intentional, assembled by someone with impeccable taste and zero interest in being predictable, Each sound occupies its own frequency and space like objects in a curated room, nothing fights, nothing crowds, The overall mood is a masterful blend of Metronomy's British art-school cool and Parcels' effortless groove and the visual wit of Filipe Jardim's tropical illustrations where flowers have personalities and colors have temperatures, designed for the moment in a fashion film where the edit gets playful and the cuts sync to the rhythm and you realize the director is showing off because they can</div>
+      </div>
+    </div>
+    <div class="suno-field">
+      <div class="suno-field-label"><span class="suno-icon suno-icon-insp">&#9733;</span><span>Inspiration</span></div>
+      <div class="insp-tags">
+        <span class="insp-tag" onclick="copyTag(this)">indie pop</span>
+        <span class="insp-tag" onclick="copyTag(this)">tropical</span>
+        <span class="insp-tag" onclick="copyTag(this)">art pop</span>
+        <span class="insp-tag" onclick="copyTag(this)">playful</span>
+        <span class="insp-tag" onclick="copyTag(this)">colorful</span>
+        <span class="insp-tag" onclick="copyTag(this)">Metronomy</span>
+        <span class="insp-tag" onclick="copyTag(this)">Parcels</span>
+      </div>
+    </div>
+    <div class="suno-field">
+      <div class="suno-field-label"><span class="suno-icon suno-icon-settings">&#9881;</span><span>Settings</span></div>
+      <div class="suno-settings">
+        <div class="suno-toggle"><span class="toggle-label">Instrumental</span><span class="toggle-pill on">ON</span></div>
+      </div>
+    </div>
+    <div class="suno-field">
+      <div class="suno-field-label"><span class="suno-icon suno-icon-audio">&#9835;</span><span>+Audio reference</span></div>
+      <div class="audio-ref">
+        <span class="audio-ref-name">Nenhum</span>
+        <span class="audio-ref-note">Direcao artistica/playful. Prompt puro pra deixar o Suno ser criativo.</span>
+      </div>
+    </div>
+    <div class="val-guide"><strong>O que buscar:</strong> Esse mood depende de texturas inesperadas. Se sair generico/previsivel, ta errado. Se aparecerem sons que te surpreendem mas fazem sentido dentro do groove, ta perfeito. C major e a tonalidade mais "pura" e brilhante, como uma tela em branco cheia de cores. Os arpeggios precisam dancar, nao repetir mecanicamente. Pensa: se o Filipe Jardim fizesse musica em vez de ilustracoes, como soaria? Esse e o mood mais arriscado mas potencialmente o mais original.</div>
+  </div>
+</div>
+
+<!-- MOOD I — HYBRID: ZARA x POOLSIDE -->
+<div class="section-title">Mood I — Hybrid: Zara Brazil x Poolside (3 variantes)</div>
+
+<div class="val-card" id="vali1">
+  <div class="val-top">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
+      <span class="val-number" style="background:#0EA5E9">I1</span>
+      <div>
+        <div class="val-name">Tropical Harvest</div>
+        <div class="val-sub">California + Rio num rooftop pool de onde ninguem quer sair. Guitarra Poolside com spring reverb + pandeiro e shaker no pocket. Bass com voicings bossa que elevam o balearic. Rhodes como luz de fim de tarde na pele. O ritmo que mexe o quadril antes do cerebro registrar. O momento no filme onde o viewer para de pensar em comprar e comeca a pensar em como seria viver assim.</div>
+      </div>
+    </div>
+    <div class="val-specs">
+      <span class="val-spec" style="background:#D1FAE5;color:#065F46">Instrumental</span>
+      <span class="val-spec" style="background:#FEF3C7;color:#92400E">98 BPM</span>
+      <span class="val-spec" style="background:#DBEAFE;color:#1D4ED8">F major</span>
+    </div>
+    <div class="val-refs">
+      <span class="val-ref" style="background:#FEF3C7;color:#92400E">&#9679; Poolside - Harvest Moon (guitar/vibe)</span>
+      <span class="val-ref" style="background:#D1FAE5;color:#065F46">&#9679; Tom Misch (tropical warmth)</span>
+      <span class="val-ref" style="background:#DBEAFE;color:#1D4ED8">&#9679; Marcos Valle (bossa groove)</span>
+    </div>
+  </div>
+  <div class="val-body">
+    <div class="suno-field">
+      <div class="suno-field-label"><span class="suno-icon suno-icon-desc">&#9998;</span><span>Song Description</span></div>
+      <div class="prompt-wrap">
+        <button class="copy-btn" onclick="copyPrompt(this)">Copiar</button>
+        <div class="prompt-box">An effortlessly cool, sun-warmed, sensuously laid-back balearic-tropical fusion in 98bpm with the energy of a rooftop pool where California and Rio de Janeiro accidentally overlap and nobody wants to leave, The track is built on a relaxed but magnetically driving groove where a soft drum machine locks with pandeiro and shaker, electronic precision flirting with organic Brazilian swing, the kind of rhythm that moves your hips before your brain registers it, The core atmosphere is a golden, expansive, slightly hazy soundscape of clean electric guitar with spring reverb playing a melodic riff that lodges in your memory and stays, warm synth bass with bossa nova chord voicings adding a sophistication that most balearic tracks only dream of, and Rhodes electric piano spreading warmth like late afternoon light on bare skin, A nylon guitar appears briefly in the bridge like a whispered secret in Portuguese, The overall mood is a masterful blend of Poolside's Harvest Moon golden-hour balearic groove and the quiet sensuality of Brazilian bossa nova and the visual language of a luxury real estate campaign where the architecture is stunning but you can't stop looking at the people and the light and the way the water catches the sunset, designed for the moment in a 50-second film where the groove is established and the viewer stops thinking about buying property and starts thinking about how it would feel to live like this</div>
+      </div>
+    </div>
+    <div class="suno-field">
+      <div class="suno-field-label"><span class="suno-icon suno-icon-insp">&#9733;</span><span>Inspiration</span></div>
+      <div class="insp-tags">
+        <span class="insp-tag" onclick="copyTag(this)">balearic</span>
+        <span class="insp-tag" onclick="copyTag(this)">bossa nova</span>
+        <span class="insp-tag" onclick="copyTag(this)">poolside</span>
+        <span class="insp-tag" onclick="copyTag(this)">tropical</span>
+        <span class="insp-tag" onclick="copyTag(this)">nu-disco</span>
+        <span class="insp-tag" onclick="copyTag(this)">sunny</span>
+        <span class="insp-tag" onclick="copyTag(this)">Tom Misch</span>
+      </div>
+    </div>
+    <div class="suno-field">
+      <div class="suno-field-label"><span class="suno-icon suno-icon-settings">&#9881;</span><span>Settings</span></div>
+      <div class="suno-settings">
+        <div class="suno-toggle"><span class="toggle-label">Instrumental</span><span class="toggle-pill on">ON</span></div>
+      </div>
+    </div>
+    <div class="suno-field">
+      <div class="suno-field-label"><span class="suno-icon suno-icon-audio">&#9835;</span><span>+Audio reference</span></div>
+      <div class="audio-ref">
+        <span class="audio-ref-name">Poolside - Harvest Moon</span>
+        <span class="audio-ref-note">Base Poolside, o prompt adiciona a camada tropical/brasileira por cima</span>
+      </div>
+    </div>
+    <div class="val-guide"><strong>O que buscar:</strong> A guitarra limpa do Poolside precisa estar presente e reconhecivel, mas o pandeiro e o shaker transformam o groove de balearic puro pra algo mais quente e tropical. Se sair 100% Poolside sem influencia brasileira, ta incompleto. Se sair 100% bossa sem o drive balearic, tambem. O ponto magico e quando voce nao sabe se ta ouvindo California ou Rio, e nao importa. F major mantem continuidade com o Harvest Moon original.</div>
+  </div>
+</div>
+
+<div class="val-card" id="vali2">
+  <div class="val-top">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
+      <span class="val-number" style="background:#0EA5E9">I2</span>
+      <div>
+        <div class="val-name">Copacabana Dream</div>
+        <div class="val-sub">O momento entre dormir e acordar com sol na pele. Arpeggios encharcados de reverb se sobrepondo como luz na agua. Pads que se espalham como calor de tarde por cortinas finas. Bass quase subliminal. Nylon guitar distante como memoria de algum lugar tropical que voce sonhou ou viveu. O espaco entre as notas importa tanto quanto as notas. Pro inicio e fim do filme, onde o mundo ainda ta se formando ou ja ta se dissolvendo.</div>
+      </div>
+    </div>
+    <div class="val-specs">
+      <span class="val-spec" style="background:#D1FAE5;color:#065F46">Instrumental</span>
+      <span class="val-spec" style="background:#FEF3C7;color:#92400E">96 BPM</span>
+      <span class="val-spec" style="background:#DBEAFE;color:#1D4ED8">D minor</span>
+    </div>
+    <div class="val-refs">
+      <span class="val-ref" style="background:#FEF3C7;color:#92400E">&#9679; Poolside (atmosphere/reverb)</span>
+      <span class="val-ref" style="background:#D1FAE5;color:#065F46">&#9679; Marcos Valle (Brazilian groove)</span>
+      <span class="val-ref" style="background:#DBEAFE;color:#1D4ED8">&#9679; Tycho (dreamy texture)</span>
+    </div>
+  </div>
+  <div class="val-body">
+    <div class="suno-field">
+      <div class="suno-field-label"><span class="suno-icon suno-icon-desc">&#9998;</span><span>Song Description</span></div>
+      <div class="prompt-wrap">
+        <button class="copy-btn" onclick="copyPrompt(this)">Copiar</button>
+        <div class="prompt-box">A slow-burning, reverb-drenched, intimately sensual balearic dream-groove in 96bpm with the energy of the moment between sleep and waking when the sun is already warm on your skin but your eyes aren't open yet and you're not sure if the person next to you is real or part of the dream, The track is built on a gentle unhurried groove where brushed electronic drums carry samba ghost notes in the hi-hats and a distant shaker marks time like breathing, never rushing, never stopping, The core atmosphere is a hazy, golden, deeply intimate soundscape of clean guitar arpeggios swimming in long reverb tails that overlap and shimmer like light on water, warm analog pads spreading slowly across the stereo field like afternoon heat through sheer curtains, a round gentle synth bass grooving so low it's almost subliminal, and a nylon guitar appearing in the far distance like a memory of somewhere tropical you may have dreamed or may have lived, The space between the notes is as important as the notes themselves, The overall mood is a masterful blend of Poolside's dreamy California reverb-world and the warm bare-skin intimacy of late-period bossa nova and the visual softness of a luxury film shot on 35mm where everything is slightly out of focus on purpose, designed for the opening and closing moments of a 50-second real estate film where the world is still forming or already dissolving and the viewer feels like they're remembering something beautiful they haven't experienced yet</div>
+      </div>
+    </div>
+    <div class="suno-field">
+      <div class="suno-field-label"><span class="suno-icon suno-icon-insp">&#9733;</span><span>Inspiration</span></div>
+      <div class="insp-tags">
+        <span class="insp-tag" onclick="copyTag(this)">balearic</span>
+        <span class="insp-tag" onclick="copyTag(this)">chillwave</span>
+        <span class="insp-tag" onclick="copyTag(this)">bossa nova</span>
+        <span class="insp-tag" onclick="copyTag(this)">dreampop</span>
+        <span class="insp-tag" onclick="copyTag(this)">tropical</span>
+        <span class="insp-tag" onclick="copyTag(this)">warm</span>
+        <span class="insp-tag" onclick="copyTag(this)">Poolside</span>
+      </div>
+    </div>
+    <div class="suno-field">
+      <div class="suno-field-label"><span class="suno-icon suno-icon-settings">&#9881;</span><span>Settings</span></div>
+      <div class="suno-settings">
+        <div class="suno-toggle"><span class="toggle-label">Instrumental</span><span class="toggle-pill on">ON</span></div>
+      </div>
+    </div>
+    <div class="suno-field">
+      <div class="suno-field-label"><span class="suno-icon suno-icon-audio">&#9835;</span><span>+Audio reference</span></div>
+      <div class="audio-ref">
+        <span class="audio-ref-name">Poolside - Harvest Moon</span>
+        <span class="audio-ref-note">Base atmosferica do Poolside, prompt adiciona a camada dreamy/bossa</span>
+      </div>
+    </div>
+    <div class="val-guide"><strong>O que buscar:</strong> Esse e o mood mais lento e atmosferico da secao hibrida. O reverb e o espaco sao protagonistas. Se sair denso ou ocupado, ta errado. Se voce sentir que tem espaco pra respirar entre cada nota e cada som tem seu proprio halo de reverb dourado, ta perfeito. D major traz uma warmth diferente de F major, mais intima e melancolica-positiva. A nylon guitar distante e o detalhe que separa isso de Poolside puro. Ideal pra atos 1 e 5 do filme.</div>
+  </div>
+</div>
+
+<div class="val-card" id="vali3">
+  <div class="val-top">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
+      <span class="val-number" style="background:#0EA5E9">I3</span>
+      <div>
+        <div class="val-name">Sol Dourado</div>
+        <div class="val-sub">Fusao maxima com confianca magnetica. Guitarra eletrica e nylon conversando entre California e Rio. Beat que faz uma sala de estranhos se mover em sincronia. Bass com voicings bossa que adicionam sofisticacao sem desacelerar. Todas as camadas no maximo, nada competindo, tudo contribuindo. Desenhado pro pico nos 40s: abundancia nao mostrada, sentida. A arquitetura desaparece e so resta luz, calor, pele, e a sensacao fisica de que aqui e onde voce pertence.</div>
+      </div>
+    </div>
+    <div class="val-specs">
+      <span class="val-spec" style="background:#D1FAE5;color:#065F46">Instrumental</span>
+      <span class="val-spec" style="background:#FEF3C7;color:#92400E">102 BPM</span>
+      <span class="val-spec" style="background:#DBEAFE;color:#1D4ED8">F major</span>
+    </div>
+    <div class="val-refs">
+      <span class="val-ref" style="background:#FEF3C7;color:#92400E">&#9679; Poolside (nu-disco groove)</span>
+      <span class="val-ref" style="background:#D1FAE5;color:#065F46">&#9679; Toro y Moi (tropical fusion)</span>
+      <span class="val-ref" style="background:#DBEAFE;color:#1D4ED8">&#9679; Khruangbin (guitar interplay)</span>
+    </div>
+  </div>
+  <div class="val-body">
+    <div class="suno-field">
+      <div class="suno-field-label"><span class="suno-icon suno-icon-desc">&#9998;</span><span>Song Description</span></div>
+      <div class="prompt-wrap">
+        <button class="copy-btn" onclick="copyPrompt(this)">Copiar</button>
+        <div class="prompt-box">A full-spectrum, magnetically confident, sensuously layered nu-disco tropical fusion in 102bpm with the energy of peak golden hour when every layer of a perfect day converges into one undeniable moment and you realize this is why people pay what they pay to live like this, The track is built on a locked, driving, irresistibly physical groove where drum machine kick and snare sit tight with pandeiro and shaker, electronic precision married to organic Brazilian swing, the kind of beat that makes a room of strangers start moving in sync, The core atmosphere is a rich, dense, sun-saturated soundscape of clean electric guitar with spring reverb trading melodic lines with warm nylon guitar in a golden conversation between California and Rio, fat warm synth bass driving with bossa chord movement underneath that adds sophistication without slowing anything down, Rhodes electric piano and warm analog pad creating a bed of golden light so thick you can almost see it, Every layer present, every layer at full warmth, nothing competing, everything contributing, The overall mood is a masterful blend of Poolside's nu-disco drive and the spontaneous sensual warmth of a Zara Brazil Edit fashion film and the visual abundance of a luxury real estate climax sequence, designed for the peak moment at 40 seconds of a 50-second film where abundance isn't shown it's felt, where the architecture disappears and all that remains is light and warmth and skin and the undeniable physical sensation that this is exactly where you belong and you would do anything to stay</div>
+      </div>
+    </div>
+    <div class="suno-field">
+      <div class="suno-field-label"><span class="suno-icon suno-icon-insp">&#9733;</span><span>Inspiration</span></div>
+      <div class="insp-tags">
+        <span class="insp-tag" onclick="copyTag(this)">nu-disco</span>
+        <span class="insp-tag" onclick="copyTag(this)">balearic</span>
+        <span class="insp-tag" onclick="copyTag(this)">tropical</span>
+        <span class="insp-tag" onclick="copyTag(this)">poolside</span>
+        <span class="insp-tag" onclick="copyTag(this)">bossa nova</span>
+        <span class="insp-tag" onclick="copyTag(this)">sunny</span>
+        <span class="insp-tag" onclick="copyTag(this)">celebratory</span>
+      </div>
+    </div>
+    <div class="suno-field">
+      <div class="suno-field-label"><span class="suno-icon suno-icon-settings">&#9881;</span><span>Settings</span></div>
+      <div class="suno-settings">
+        <div class="suno-toggle"><span class="toggle-label">Instrumental</span><span class="toggle-pill on">ON</span></div>
+      </div>
+    </div>
+    <div class="suno-field">
+      <div class="suno-field-label"><span class="suno-icon suno-icon-audio">&#9835;</span><span>+Audio reference</span></div>
+      <div class="audio-ref">
+        <span class="audio-ref-name">Poolside - Harvest Moon</span>
+        <span class="audio-ref-note">Base Poolside com fusao tropical maxima no prompt</span>
+      </div>
+    </div>
+    <div class="val-guide"><strong>O que buscar:</strong> O dialogo entre guitarra eletrica e nylon e o coracao desse mood. Se so uma aparece, ta pela metade. Se as duas conversam e voce sente que sao velhos amigos tocando juntos, ta perfeito. Esse e o mood mais "cheio" e energetico do set. Todas as camadas no maximo, pico de sol. F major mantem o DNA Harvest Moon. Se o cliente quer algo que funciona pro climax do filme (pico nos 40s), esse e o candidato mais forte. A fusao completa: Poolside + Brasil + fashion + sol.</div>
+  </div>
+</div>
+
+<!-- Validation workflow -->
+<div class="section-title">Workflow de Validacao</div>
+
+<div class="day-card">
+  <h3><span class="day-number">STEP 1</span> Gerar no Suno</h3>
+  <ol>
+    <li>Copiar cada prompt e gerar <strong>4 variacoes</strong> de cada mood (76 tracks total)</li>
+    <li>Selecionar a <strong>melhor variacao</strong> de cada mood (4 tracks finais)</li>
+    <li>Se nenhuma variacao funcionar, ajustar prompt e rodar de novo</li>
+  </ol>
+</div>
+
+<div class="day-card">
+  <h3><span class="day-number">STEP 2</span> Preparar pra apresentacao</h3>
+  <ol>
+    <li>Nomear as 4 tracks: Mood A / B / C / D</li>
+    <li>Trim pra ~30-45s cada (o melhor trecho)</li>
+    <li>Nao mixar, nao processar — enviar como referencia bruta</li>
+  </ol>
+</div>
+
+<div class="day-card">
+  <h3><span class="day-number">STEP 3</span> Enviar e esperar feedback</h3>
+  <ol>
+    <li>Enviar as 4 tracks com descricao de uma linha cada</li>
+    <li>Perguntar: "Qual direcao mais se aproxima do que voce imagina?"</li>
+    <li>Aceitar combinacoes ("gostei do groove de A com os synths de B")</li>
+    <li>Com a direcao aprovada, seguir pra aba Producao</li>
+  </ol>
+</div>
+
+</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- PRODUCTION PAGE                                               -->
+<!-- ============================================================ -->
+<div class="page" id="page-production">
+<div class="content">
+
+<!-- KPIs -->
+<div class="kpis">
+  <div class="kpi"><span class="kpi-value">17</span><span class="kpi-label">Prompts</span></div>
+  <div class="kpi"><span class="kpi-value">6</span><span class="kpi-label">Moods</span></div>
+  <div class="kpi"><span class="kpi-value">6</span><span class="kpi-label">Hero</span></div>
+  <div class="kpi"><span class="kpi-value">4</span><span class="kpi-label">SFX</span></div>
+  <div class="kpi"><span class="kpi-value">2</span><span class="kpi-label">Teasers</span></div>
+  <div class="kpi"><span class="kpi-value">~50s</span><span class="kpi-label">Hero Film</span></div>
+</div>
+<div class="kpi-sub">Gerar 4-8 variacoes de cada prompt. Total estimado: ~80-120 tracks brutas.</div>
+
+<!-- Specs -->
+<div class="specs">
+  <div class="spec"><span class="spec-dot" style="background:#F59E0B"></span>98 BPM centro</div>
+  <div class="spec"><span class="spec-dot" style="background:#3B82F6"></span>F major</div>
+  <div class="spec"><span class="spec-dot" style="background:#8B5CF6"></span>Balearic / Nu-disco</div>
+  <div class="spec"><span class="spec-dot" style="background:#10B981"></span>Instrumental + airy vocals</div>
+</div>
+
+<!-- Timeline -->
+<div class="section-title">Arco Emocional — 5 Atos</div>
+<div class="timeline">
+  <div class="timeline-block tl-act1" style="flex:8">Ato 1<br>Despertar<br><span style="font-size:8px;opacity:.7">0-8s</span></div>
+  <div class="timeline-block tl-act2" style="flex:10">Ato 2<br>Descoberta<br><span style="font-size:8px;opacity:.7">8-18s</span></div>
+  <div class="timeline-block tl-act3" style="flex:14">Ato 3<br>Comunidade<br><span style="font-size:8px;opacity:.7">18-32s</span></div>
+  <div class="timeline-block tl-act4" style="flex:10">Ato 4<br>Climax<br><span style="font-size:8px;opacity:.7">32-42s &#9650;40s</span></div>
+  <div class="timeline-block tl-act5" style="flex:8">Ato 5<br>Retorno<br><span style="font-size:8px;opacity:.7">42-50s</span></div>
+</div>
+
+<!-- FASE 1: MOODS -->
+<div class="section-title">Fase 1 — Identidade Sonora (Mood Tracks)</div>
+
+<div class="card" id="mood01"><div class="card-header" onclick="toggleCard('mood01')"><span class="card-badge phase-mood">MOOD 01</span><span class="card-title">O Despertar (Amanhecer Dourado)<small>Poolside "Harvest Moon" (intro) + Tycho "A Walk"</small></span><span class="card-meta"><span class="tag bpm-tag">90 bpm</span><span class="tag">F maj</span></span><span class="chevron">&#9660;</span></div><div class="card-body"><div class="tabs"><div class="tab active" data-tab="prompt" onclick="switchTab('mood01','prompt')">Prompt</div><div class="tab" data-tab="guide" onclick="switchTab('mood01','guide')">Guia</div></div><div class="tab-pane active" data-tab="prompt"><div class="prompt-wrap"><button class="copy-btn" onclick="copyPrompt(this)">Copiar</button><div class="prompt-box">Instrumental, balearic ambient intro, golden hour. Warm analog pad fading in slowly, clean electric guitar plays a single reverb-drenched note, soft filtered synth bass hums underneath. Gentle hi-hat begins ticking. The feeling of waking up in sunlight, eyes adjusting to warmth. Minimal but with subtle groove underneath, promising movement to come. Dreamy, sun-drenched, hopeful. 90 bpm, F major. Balearic, chillwave, cinematic opening.</div></div><div class="style-box"><strong>Estilo/Tags:</strong> balearic, chillwave, ambient, cinematic, golden hour, dreampop</div></div><div class="tab-pane" data-tab="guide"><div class="guide"><strong>O que buscar:</strong> Nao e silencio puro. E um amanhecer que ja tem ritmo escondido.</div></div></div></div>
+
+<div class="card" id="mood02"><div class="card-header" onclick="toggleCard('mood02')"><span class="card-badge phase-mood">MOOD 02</span><span class="card-title">Groove dos Vinhedos (Descoberta em Movimento)<small>Poolside "Harvest Moon" (corpo) + Khruangbin "Todavia Viva"</small></span><span class="card-meta"><span class="tag bpm-tag">98 bpm</span><span class="tag">F maj</span></span><span class="chevron">&#9660;</span></div><div class="card-body"><div class="tabs"><div class="tab active" data-tab="prompt" onclick="switchTab('mood02','prompt')">Prompt</div><div class="tab" data-tab="guide" onclick="switchTab('mood02','guide')">Guia</div></div><div class="tab-pane active" data-tab="prompt"><div class="prompt-wrap"><button class="copy-btn" onclick="copyPrompt(this)">Copiar</button><div class="prompt-box">Instrumental, balearic groove, sun-drenched. Warm round synth bass driving a relaxed groove, clean electric guitar with spring reverb playing melodic riffs, soft drum machine — brushed snare, light hi-hats, subtle kick. Warm Rhodes chords underneath. The feeling of walking through vineyards on a perfect afternoon, breeze on skin. Laid-back but moving forward, sophisticated and effortless. 98 bpm, F major. Poolside vibes, nu-disco, balearic, indie electronic.</div></div><div class="style-box"><strong>Estilo/Tags:</strong> balearic, nu-disco, poolside, indie electronic, groove, warm</div></div><div class="tab-pane" data-tab="guide"><div class="guide"><strong>O que buscar:</strong> O coracao do projeto. Groove que soa como estilo de vida, nao como pista de danca.</div></div></div></div>
+
+<div class="card" id="mood03"><div class="card-header" onclick="toggleCard('mood03')"><span class="card-badge phase-mood">MOOD 03</span><span class="card-title">Mergulho (Pool Sequence)<small>Poolside "Harvest Moon" + Bonobo "Kerala"</small></span><span class="card-meta"><span class="tag bpm-tag">95 bpm</span><span class="tag">F maj</span></span><span class="chevron">&#9660;</span></div><div class="card-body"><div class="tabs"><div class="tab active" data-tab="prompt" onclick="switchTab('mood03','prompt')">Prompt</div><div class="tab" data-tab="guide" onclick="switchTab('mood03','guide')">Guia</div></div><div class="tab-pane active" data-tab="prompt"><div class="prompt-wrap"><button class="copy-btn" onclick="copyPrompt(this)">Copiar</button><div class="prompt-box">Instrumental, poolside electronic, aquatic groove. Warm synth bass with subtle filter movement, clean guitar arpeggios through long reverb simulating underwater echo. Soft percussion — rim clicks, shaker, muted kick. Airy synth pads like light through water. Halfway through: breaks surface, sound opens up, hi-hats get crisper, bass gets rounder, melody becomes clearer. The joy of diving into cool water on a hot day. 95 bpm, F major. Balearic, poolside, chillwave, aquatic, cinematic.</div></div><div class="style-box"><strong>Estilo/Tags:</strong> balearic, poolside, aquatic, chillwave, cinematic, groove</div></div><div class="tab-pane" data-tab="guide"><div class="guide"><strong>O que buscar:</strong> A transicao submersao > superficie traduzida em producao. Filtro fechando e abrindo.</div></div></div></div>
+
+<div class="card" id="mood04"><div class="card-header" onclick="toggleCard('mood04')"><span class="card-badge phase-mood">MOOD 04</span><span class="card-title">Comunidade e Calor (Reuniao ao Sol)<small>Khruangbin "So We Won't Forget" + Toro y Moi</small></span><span class="card-meta"><span class="tag bpm-tag">100 bpm</span><span class="tag">F maj</span></span><span class="chevron">&#9660;</span></div><div class="card-body"><div class="tabs"><div class="tab active" data-tab="prompt" onclick="switchTab('mood04','prompt')">Prompt</div><div class="tab" data-tab="guide" onclick="switchTab('mood04','guide')">Guia</div></div><div class="tab-pane active" data-tab="prompt"><div class="prompt-wrap"><button class="copy-btn" onclick="copyPrompt(this)">Copiar</button><div class="prompt-box">Warm balearic groove with human touch. Clean guitar melody with reverb and chorus, round synth bass, soft brushed drums, Rhodes electric piano chords adding warmth. Subtle airy vocal harmonies humming wordlessly in the background — human presence without lyrics. The feeling of friends gathering around a table outdoors, Mediterranean afternoon, easy laughter. Layered and full but never crowded. Sophisticated, relaxed, communal. 100 bpm, F major. Balearic, indie, poolside, chillwave, warm.</div></div><div class="style-box"><strong>Estilo/Tags:</strong> balearic, indie, warm, communal, chillwave, poolside</div></div><div class="tab-pane" data-tab="guide"><div class="guide"><strong>O que buscar:</strong> Calor coletivo com groove. Gente junta curtindo a vida.</div></div></div></div>
+
+<div class="card" id="mood05"><div class="card-header" onclick="toggleCard('mood05')"><span class="card-badge phase-mood">MOOD 05</span><span class="card-title">Climax / Abundancia Solar<small>Poolside "Harvest Moon" (pico) + Tycho "Awake"</small></span><span class="card-meta"><span class="tag bpm-tag">102 bpm</span><span class="tag">F maj</span></span><span class="chevron">&#9660;</span></div><div class="card-body"><div class="tabs"><div class="tab active" data-tab="prompt" onclick="switchTab('mood05','prompt')">Prompt</div><div class="tab" data-tab="guide" onclick="switchTab('mood05','guide')">Guia</div></div><div class="tab-pane active" data-tab="prompt"><div class="prompt-wrap"><button class="copy-btn" onclick="copyPrompt(this)">Copiar</button><div class="prompt-box">Balearic cinematic climax, all layers present. Clean electric guitar melody soaring with reverb and delay, warm synth bass driving, full drum pattern — kick, snare brushes, hi-hats, shaker all present. Lush warm synth pads filling the stereo field, Rhodes chords, subtle strings adding cinema. Airy wordless vocals floating above everything. Mediterranean celebration at golden hour, Dubai skyline, nature everywhere. Maximum warmth and groove without aggression. Peak joy, abundance, everything alive. 102 bpm, F major. Balearic, nu-disco, cinematic, poolside, climax.</div></div><div class="style-box"><strong>Estilo/Tags:</strong> balearic, nu-disco, cinematic climax, poolside, warm, lush</div></div><div class="tab-pane" data-tab="guide"><div class="guide"><strong>O que buscar:</strong> Todas as camadas juntas. Abundancia sonora = abundancia visual.</div></div></div></div>
+
+<div class="card" id="mood06"><div class="card-header" onclick="toggleCard('mood06')"><span class="card-badge phase-mood">MOOD 06</span><span class="card-title">Retorno ao Sonho (Sunset Dissolve)<small>Poolside desacelerando + Portishead "The Rip"</small></span><span class="card-meta"><span class="tag bpm-tag">90&#8594;80</span><span class="tag">F maj</span></span><span class="chevron">&#9660;</span></div><div class="card-body"><div class="tabs"><div class="tab active" data-tab="prompt" onclick="switchTab('mood06','prompt')">Prompt</div><div class="tab" data-tab="guide" onclick="switchTab('mood06','guide')">Guia</div></div><div class="tab-pane active" data-tab="prompt"><div class="prompt-wrap"><button class="copy-btn" onclick="copyPrompt(this)">Copiar</button><div class="prompt-box">Balearic comedown, dreamy dissolve. Groove slowing down and simplifying — drums fade first, then bass thins out. Clean guitar plays the opening melody again but with more reverb, more distance. Warm pad sustains and expands. Airy vocal hum fades to breath. One new element appears that wasn't in the opening — a soft analog synth arpeggio, delicate, questioning. Doesn't resolve. The sunset after a perfect day. Was it real? 90 bpm slowing to 80. F major, unresolved. Balearic, ambient, dissolving, dreamy.</div></div><div class="style-box"><strong>Estilo/Tags:</strong> balearic, ambient, dissolving, dreamy, sunset, chillwave</div></div><div class="tab-pane" data-tab="guide"><div class="guide"><strong>O que buscar:</strong> O groove se desfaz naturalmente, como o sol descendo.</div></div></div></div>
+
+<!-- FASE 2: HERO FILM -->
+<div class="section-title">Fase 2 — Hero Film (~50s)</div>
+
+<div class="card" id="heroa"><div class="card-header" onclick="toggleCard('heroa')"><span class="card-badge phase-hero">HERO A</span><span class="card-title">Track Completa (Arco Inteiro)<small>Opcao principal. Gerar 6-8 variacoes.</small></span><span class="card-meta"><span class="tag bpm-tag">98 bpm</span><span class="tag">prioridade</span></span><span class="chevron">&#9660;</span></div><div class="card-body"><div class="prompt-wrap" style="padding:20px"><button class="copy-btn" onclick="copyPrompt(this)">Copiar</button><div class="prompt-box">Instrumental, balearic cinematic journey, sun-drenched luxury. 50 seconds total, climax builds to peak at 40 seconds.
+
+Opens softly (0-8s): warm analog pad, single clean guitar note with long reverb, distant filtered texture. A subtle pulse begins underneath, just a warm bass throb hinting at rhythm.
+
+Groove emerges (8-18s): soft kick enters, hi-hats tick, synth bass rounds out, guitar starts a melodic riff. Walking through vineyards, then running, sunshine everywhere.
+
+Deepens (18-32s): Rhodes piano joins, more percussion layers, the groove is full now. Poolside energy, laid-back but alive. Aquatic textures briefly, then warmth of community. Long sustained section, never rushing.
+
+Peak at 40s (32-42s): all layers present, guitar melody soars, bass drives, drums full, warm pads and subtle airy vocal hums. Maximum abundance, Mediterranean celebration, golden hour. The peak lands at exactly 40 seconds.
+
+Dissolves slowly (42-50s): layers peel away gently. Groove simplifies. Returns to opening guitar note and pad, but with a new soft synth arpeggio that wasn't there before. Long warm tail, dreamy, sun setting slowly.
+
+98 bpm, F major. Balearic, poolside, nu-disco, cinematic, dreampop. Never aggressive, never corporate, never dark. Warm, sunny, and golden throughout.</div></div><div class="style-box" style="margin:0 20px 20px"><strong>Estilo/Tags:</strong> balearic, nu-disco, cinematic, poolside, dreampop, progressive build, warm</div></div></div>
+
+<div class="card" id="herob"><div class="card-header" onclick="toggleCard('herob')"><span class="card-badge phase-hero">HERO B</span><span class="card-title">Ato 1: Despertar (0:00 - 0:08)<small>~8s. Pad + guitar note, groove latente.</small></span><span class="card-meta"><span class="tag bpm-tag">90 bpm</span></span><span class="chevron">&#9660;</span></div><div class="card-body"><div class="prompt-wrap" style="padding:20px"><button class="copy-btn" onclick="copyPrompt(this)">Copiar</button><div class="prompt-box">Instrumental, balearic intro, golden sunrise. Warm filtered pad swelling in from silence. Clean electric guitar — one note, long reverb tail, like light hitting a surface. Subtle low-frequency hum suggesting a bass groove about to emerge. A hi-hat ticks once, twice, promising rhythm. Then: a delicate guitar pluck — brighter, closer — the seed falling, the trigger. The first hint that today will be extraordinary. 90 bpm implied, F major. Balearic ambient, poolside dawn, cinematic opener.</div></div><div class="style-box" style="margin:0 20px 20px"><strong>Estilo/Tags:</strong> balearic, ambient, cinematic opening, poolside, dawn</div></div></div>
+
+<div class="card" id="heroc"><div class="card-header" onclick="toggleCard('heroc')"><span class="card-badge phase-hero">HERO C</span><span class="card-title">Ato 2: Descoberta e Energia (0:08 - 0:18)<small>~10s. Groove entra.</small></span><span class="card-meta"><span class="tag bpm-tag">98 bpm</span></span><span class="chevron">&#9660;</span></div><div class="card-body"><div class="prompt-wrap" style="padding:20px"><button class="copy-btn" onclick="copyPrompt(this)">Copiar</button><div class="prompt-box">Instrumental, balearic groove building. The rhythm lands — soft kick, hi-hats, shaker. Warm round synth bass enters and the track starts moving. Clean guitar with spring reverb plays a catchy melodic riff. Energy rising, sunshine feeling. Running through vineyards — wind, warmth, freedom. Then a splash: brief filter sweep down (diving into pool), muffled for a beat, then opens back up brighter than before. Joy of movement, discovery, youth. 98 bpm, F major. Balearic, nu-disco, poolside, building groove, cinematic.</div></div><div class="style-box" style="margin:0 20px 20px"><strong>Estilo/Tags:</strong> balearic, nu-disco, building, poolside, groove, cinematic</div></div></div>
+
+<div class="card" id="herod"><div class="card-header" onclick="toggleCard('herod')"><span class="card-badge phase-hero">HERO D</span><span class="card-title">Ato 3: Comunidade e Conexao (0:18 - 0:32)<small>~14s. O coracao.</small></span><span class="card-meta"><span class="tag bpm-tag">100 bpm</span></span><span class="chevron">&#9660;</span></div><div class="card-body"><div class="prompt-wrap" style="padding:20px"><button class="copy-btn" onclick="copyPrompt(this)">Copiar</button><div class="prompt-box">Instrumental, warm balearic groove at full cruise. This is the heart — not climbing to climax yet, just living in the groove. Full band feeling: clean guitar melody trading with Rhodes piano, synth bass locked in, brushed drums steady. Warm pad underneath. Subtle airy vocal hums appear — wordless, human, like distant conversation turned to music. Layers accumulating organically, like friends arriving one by one. Must sustain 13 seconds of rich warmth without rushing to peak. Mediterranean afternoon, families, nature growing. 100 bpm, F major. Balearic, poolside, indie, warm, sustained groove, community.</div></div><div class="style-box" style="margin:0 20px 20px"><strong>Estilo/Tags:</strong> balearic, poolside, warm, sustained, groove, indie, community</div></div></div>
+
+<div class="card" id="heroe"><div class="card-header" onclick="toggleCard('heroe')"><span class="card-badge phase-hero">HERO E</span><span class="card-title">Ato 4: Celebracao e Climax (0:32 - 0:42)<small>~10s. Pico @40s.</small></span><span class="card-meta"><span class="tag bpm-tag">102 bpm</span></span><span class="chevron">&#9660;</span></div><div class="card-body"><div class="prompt-wrap" style="padding:20px"><button class="copy-btn" onclick="copyPrompt(this)">Copiar</button><div class="prompt-box">Instrumental, balearic cinematic peak. ALL layers at maximum, building to absolute peak at the 8-second mark of this section (40s in film). Guitar melody at its most expressive, soaring clean tone with delay and reverb. Synth bass fat and driving. Full drums: kick, brushed snare, open hi-hats, shaker. Rhodes chords rich. Warm analog pads wide in stereo. Subtle strings swell adding cinema. Airy wordless vocals floating on top. This is the Mediterranean feast, friends around the table, Dubai skyline, greenery covering everything. Peak abundance, warm, celebratory, golden, alive, sunny. Then in the last seconds, layers begin dropping. The gentle descent starts. 102 bpm, F major. Balearic, nu-disco, cinematic climax, poolside, celebration, sun-drenched.</div></div><div class="style-box" style="margin:0 20px 20px"><strong>Estilo/Tags:</strong> balearic, nu-disco, climax, cinematic, poolside, celebration, lush</div></div></div>
+
+<div class="card" id="herof"><div class="card-header" onclick="toggleCard('herof')"><span class="card-badge phase-hero">HERO F</span><span class="card-title">Ato 5: Retorno ao Sonho (0:42 - 0:50)<small>~8s. Dissolve lento.</small></span><span class="card-meta"><span class="tag bpm-tag">90&#8594;</span></span><span class="chevron">&#9660;</span></div><div class="card-body"><div class="prompt-wrap" style="padding:20px"><button class="copy-btn" onclick="copyPrompt(this)">Copiar</button><div class="prompt-box">Instrumental, balearic sunset dissolve. 8 seconds of gentle unwinding. The groove unravels slowly. Drums simplify to just hi-hat ticking, then stop. Bass thins to a single warm note. Guitar returns to the opening melody, same notes, but now with more reverb, more space, more golden distance. Warm pad sustains and spreads. A new element appears: soft analog synth arpeggio, three notes, delicate, that wasn't there at the start. Something gained from the journey. Doesn't resolve but feels complete, like a perfect sunset. Still warm, still sunny, just quieter. 90 bpm dissolving. F major unresolved. Balearic ambient, sunset, dissolving, dreamy, golden.</div></div><div class="style-box" style="margin:0 20px 20px"><strong>Estilo/Tags:</strong> balearic, ambient, dissolve, sunset, dreamy, unresolved</div></div></div>
+
+<!-- FASE 3: SFX -->
+<div class="section-title">Fase 3 — Sound Design</div>
+
+<div class="card" id="sfx01"><div class="card-header" onclick="toggleCard('sfx01')"><span class="card-badge phase-sfx">SFX 01</span><span class="card-title">Shimmers de Transicao (Light Flares)<small>Shots 5, 10, 16, 18, 20. Gerar 6-8 versoes.</small></span><span class="card-meta"><span class="tag">5-8s</span></span><span class="chevron">&#9660;</span></div><div class="card-body"><div class="prompt-wrap" style="padding:20px"><button class="copy-btn" onclick="copyPrompt(this)">Copiar</button><div class="prompt-box">Instrumental, cinematic sound design. A luminous shimmer — light becoming sound. Filtered white noise swell rising, bright clean guitar harmonic ringing with long reverb, reversed cymbal wash. Warm and crystalline simultaneously. Like a lens flare crossing the frame translated to audio. Builds from nothing to bright peak, then trails off into warm reverb. 5-8 seconds. Balearic texture, cinematic transition, sound design, ethereal shimmer.</div></div><div class="style-box" style="margin:0 20px 20px"><strong>Estilo/Tags:</strong> sound design, cinematic, transition, shimmer, balearic, ethereal</div></div></div>
+
+<div class="card" id="sfx02"><div class="card-header" onclick="toggleCard('sfx02')"><span class="card-badge phase-sfx">SFX 02</span><span class="card-title">Vegetacao Crescendo<small>Texturas organicas de crescimento.</small></span><span class="card-meta"><span class="tag">texture</span></span><span class="chevron">&#9660;</span></div><div class="card-body"><div class="prompt-wrap" style="padding:20px"><button class="copy-btn" onclick="copyPrompt(this)">Copiar</button><div class="prompt-box">Instrumental, organic texture, nature sound design. Rising warmth, like plants growing translated to music. Filtered synth slowly opening, soft granular texture ascending, reversed nature sounds. Layered and accumulating — starts with one voice, ends with many. Like roots spreading and vines climbing. Warm, alive, inevitable. Organic, ambient, cinematic, textural. Balearic undertone.</div></div><div class="style-box" style="margin:0 20px 20px"><strong>Estilo/Tags:</strong> sound design, organic, texture, growing, ambient, cinematic</div></div></div>
+
+<div class="card" id="sfx03"><div class="card-header" onclick="toggleCard('sfx03')"><span class="card-badge phase-sfx">SFX 03</span><span class="card-title">Ambiente Aquatico<small>Filtro underwater > superficie.</small></span><span class="card-meta"><span class="tag">filter</span></span><span class="chevron">&#9660;</span></div><div class="card-body"><div class="prompt-wrap" style="padding:20px"><button class="copy-btn" onclick="copyPrompt(this)">Copiar</button><div class="prompt-box">Instrumental, aquatic sound design with groove undertone. Low-pass filtered version of a balearic groove — as if hearing music from underwater. Muffled bass throb, distant muted percussion, bubbly arpeggiated synth. Halfway: filter opens dramatically, sound becomes full and bright. The moment of breaking the surface. Poolside, aquatic, filtered, cinematic, sound design.</div></div><div class="style-box" style="margin:0 20px 20px"><strong>Estilo/Tags:</strong> sound design, aquatic, poolside, filtered, cinematic</div></div></div>
+
+<div class="card" id="sfx04"><div class="card-header" onclick="toggleCard('sfx04')"><span class="card-badge phase-sfx">SFX 04</span><span class="card-title">Campo Dourado<small>Textura abertura/encerramento.</small></span><span class="card-meta"><span class="tag">ambient</span></span><span class="chevron">&#9660;</span></div><div class="card-body"><div class="prompt-wrap" style="padding:20px"><button class="copy-btn" onclick="copyPrompt(this)">Copiar</button><div class="prompt-box">Instrumental ambient texture, golden field at dawn. Warm analog pad sustained, very subtle clean guitar harmonic in distance, filtered white noise like gentle wind. Soft sub-bass hum — felt more than heard. The promise of a groove that hasn't started yet. Nature meeting music at the boundary. Golden, warm, still, dreamy. Balearic ambient, field texture, golden hour, minimal.</div></div><div class="style-box" style="margin:0 20px 20px"><strong>Estilo/Tags:</strong> ambient, balearic, field, golden hour, texture, minimal</div></div></div>
+
+<!-- FASE 4: TEASERS -->
+<div class="section-title">Fase 4 — Teasers</div>
+
+<div class="card" id="teaser01"><div class="card-header" onclick="toggleCard('teaser01')"><span class="card-badge phase-teaser">TEASER 1</span><span class="card-title">Poster vira Cena<small>Flat/seco > groove Poolside.</small></span><span class="card-meta"><span class="tag bpm-tag">98 bpm</span><span class="tag">~15s</span></span><span class="chevron">&#9660;</span></div><div class="card-body"><div class="prompt-wrap" style="padding:20px"><button class="copy-btn" onclick="copyPrompt(this)">Copiar</button><div class="prompt-box">Instrumental, balearic teaser. Opens with flat, dry, lo-fi texture — like sound heard through paper, no reverb, no bass, thin and 2D. Then: TRANSFORMATION. Bass drops in warm and round, reverb opens the space wide, clean guitar melody appears with full spring reverb, soft drums enter. The 2D poster becomes a 3D world. Mediterranean warmth floods in. Short piece, 15 seconds feel. The contrast between flat and alive IS the moment. 98 bpm, F major. Balearic, poolside, transformation, cinematic teaser.</div></div><div class="style-box" style="margin:0 20px 20px"><strong>Estilo/Tags:</strong> balearic, cinematic teaser, transformation, poolside, nu-disco</div></div></div>
+
+<div class="card" id="teaser02"><div class="card-header" onclick="toggleCard('teaser02')"><span class="card-badge phase-teaser">TEASER 2</span><span class="card-title">Poster Emoldurado Revela Interior<small>Mono/estreito > full stereo.</small></span><span class="card-meta"><span class="tag bpm-tag">98 bpm</span><span class="tag">~15s</span></span><span class="chevron">&#9660;</span></div><div class="card-body"><div class="prompt-wrap" style="padding:20px"><button class="copy-btn" onclick="copyPrompt(this)">Copiar</button><div class="prompt-box">Instrumental, balearic spatial reveal. Starts very narrow — single clean guitar note, dry, close, no reverb, like hearing through a keyhole. Soft filtered bass barely there. Then space opens: reverb widens, bass gets round and full, hi-hats appear, Rhodes chords spread across stereo. More layers enter as the room reveals itself. By the end: full warm balearic groove surrounding the listener. Progressive expansion from intimate to immersive. 98 bpm, F major. Balearic, poolside, spatial, expanding, cinematic reveal.</div></div><div class="style-box" style="margin:0 20px 20px"><strong>Estilo/Tags:</strong> balearic, spatial, expanding, cinematic, poolside, reveal</div></div></div>
+
+<!-- SHOT MAP -->
+<div class="section-title">Mapa Sonoro por Shot</div>
+<div style="background:#fff;border-radius:12px;border:1px solid rgba(0,0,0,0.04);overflow-x:auto;padding:4px 0">
+<table class="shot-map"><thead><tr><th>Shot</th><th>Dur</th><th>Ato</th><th>Groove Level</th><th>Elementos Chave</th></tr></thead><tbody>
+<tr><td>1</td><td>2.5s</td><td>1</td><td><span class="groove-bar g-latente"></span>Latente</td><td>Pad + guitar note, sem drums</td></tr>
+<tr><td>2</td><td>2.5s</td><td>1</td><td><span class="groove-bar g-latente"></span>Latente</td><td>Textura cresc, bass hint</td></tr>
+<tr><td>3</td><td>3s</td><td>1</td><td><span class="groove-bar g-emergindo"></span>Emergindo</td><td>Semente cai = guitar pluck trigger</td></tr>
+<tr><td>4</td><td>2s</td><td>2</td><td><span class="groove-bar g-entrando"></span>Entrando</td><td>Kick + hi-hat entram, bass chega</td></tr>
+<tr><td>5</td><td>2s</td><td>2</td><td><span class="groove-bar g-presente"></span>Presente</td><td><span class="shimmer-icon">&#9733;</span> SHIMMER 1</td></tr>
+<tr><td>6</td><td>1s</td><td>2</td><td><span class="groove-bar g-presente"></span>Presente</td><td>Splash, filtro fecha</td></tr>
+<tr><td>7</td><td>1.5s</td><td>2</td><td><span class="groove-bar g-filtrado"></span>Filtrado</td><td>Underwater, groove muffled</td></tr>
+<tr><td>8</td><td>1.5s</td><td>2</td><td><span class="groove-bar g-filtrado"></span>Filtrado</td><td>Underwater continua</td></tr>
+<tr><td>9</td><td>2s</td><td>2</td><td><span class="groove-bar g-reabre"></span>Reabre</td><td>Filtro abre, groove volta</td></tr>
+<tr><td>10</td><td>2s</td><td>3</td><td><span class="groove-bar g-pleno"></span>Pleno</td><td><span class="shimmer-icon">&#9733;</span> SHIMMER 2</td></tr>
+<tr><td>11</td><td>2.5s</td><td>3</td><td><span class="groove-bar g-pleno"></span>Pleno</td><td>Familias, camadas acumulando</td></tr>
+<tr><td>12</td><td>2.5s</td><td>3</td><td><span class="groove-bar g-pleno"></span>Pleno</td><td>Rhodes + guitar</td></tr>
+<tr><td>13</td><td>2.5s</td><td>3</td><td><span class="groove-bar g-pleno"></span>Pleno</td><td>Render exterior</td></tr>
+<tr><td>14</td><td>3s</td><td>3</td><td><span class="groove-bar g-pleno-plus"></span>Pleno+</td><td>Interior, grapes</td></tr>
+<tr><td>15</td><td>2s</td><td>3</td><td><span class="groove-bar g-pleno-plus"></span>Pleno+</td><td>Cozinha</td></tr>
+<tr><td>16</td><td>1s</td><td>4</td><td><span class="groove-bar g-maximo"></span>Maximo</td><td><span class="shimmer-icon">&#9733;</span> SHIMMER 3</td></tr>
+<tr><td>17</td><td>3s</td><td>4</td><td><span class="groove-bar g-maximo"></span>Maximo</td><td>Festa, pico groove</td></tr>
+<tr><td>18</td><td>3s</td><td>4</td><td><span class="groove-bar g-maximo"></span>Maximo</td><td><span class="shimmer-icon">&#9733;</span> SHIMMER 4</td></tr>
+<tr><td>19</td><td>1.5s</td><td>4</td><td><span class="groove-bar g-maximo"></span>Maximo</td><td>Render wide, abundancia</td></tr>
+<tr><td>20</td><td>1.5s</td><td>4</td><td><span class="groove-bar g-descendo"></span>Descendo</td><td><span class="shimmer-icon">&#9733;</span> SHIMMER 5</td></tr>
+<tr><td>21</td><td>3s</td><td>5</td><td><span class="groove-bar g-simplificando"></span>Simplificando</td><td>Drums saem, groove desacelera</td></tr>
+<tr><td>22</td><td>5s</td><td>5</td><td><span class="groove-bar g-dissolvendo"></span>Dissolvendo</td><td>Dissolve longo. Sunset. Sonho.</td></tr>
+</tbody></table></div>
+
+<!-- WORKFLOW -->
+<div class="section-title">Workflow — 5 Dias</div>
+<div class="day-card"><h3><span class="day-number">DIA 1</span> Explorar territorio</h3><ol><li>Escutar Poolside "Harvest Moon" 5x com foco analitico</li><li>Rodar <strong>MOOD 01 a 06</strong> (4 variacoes cada = 24 tracks)</li><li>Curar: SIM / QUASE / NAO contra "Harvest Moon"</li><li>Selecionar 1-2 de cada mood como referencia interna</li></ol></div>
+<div class="day-card"><h3><span class="day-number">DIA 2</span> Hero Film</h3><ol><li>Rodar <strong>HERO-A</strong> (6-8 variacoes, prioridade maxima)</li><li>Se nenhuma capturar o arco, rodar <strong>HERO-B a F</strong> (4 cada = 20 tracks)</li><li>Selecionar melhores segmentos por ato</li><li>Testar costuras entre atos</li></ol></div>
+<div class="day-card"><h3><span class="day-number">DIA 3</span> Sound Design + Teasers</h3><ol><li>Rodar <strong>SFX 01 a 04</strong> (4 cada = 16 tracks)</li><li>Rodar <strong>TEASER 01 e 02</strong> (4 cada = 8 tracks)</li><li>Selecionar melhores</li></ol></div>
+<div class="day-card"><h3><span class="day-number">DIA 4</span> Assembly no DAW</h3><ol><li>Importar material, montar timeline (markers 5 atos, 22 shots)</li><li>Editar/recortar pra timecodes</li><li>Layerar SFX, inserir shimmers (shots 5, 10, 16, 18, 20)</li><li>Checar: groove flui? Loop funciona? Momentos de respiro existem?</li></ol></div>
+<div class="day-card"><h3><span class="day-number">DIA 5</span> Teasers + Polish</h3><ol><li>Montar teasers com material selecionado</li><li>Review: ouvir 3 pecas em sequencia</li><li>A/B test contra "Harvest Moon"</li><li>Mix final + export WAV 48kHz/24bit</li></ol></div>
+
+<!-- TIPS -->
+<div class="section-title">Dicas Suno</div>
+<div class="tips-grid">
+  <div class="tip"><strong>Som Poolside</strong>"clean electric guitar with spring reverb" + "warm round synth bass" + "soft drum machine" + "Rhodes electric piano"</div>
+  <div class="tip"><strong>Coerencia</strong>F major em tudo. 98 bpm centro. Repetir "clean guitar melodic riff".</div>
+  <div class="tip"><strong>Transicoes</strong>Filter sweeps > fades. Crossfades no DAW.</div>
+  <div class="tip"><strong>Ritmo</strong>O groove ta SEMPRE presente. Respiro = filtro fechando, nao silencio morto.</div>
+  <div class="tip tip-danger"><strong>Muito EDM?</strong>Adicionar: "laid-back, sophisticated, mellow, cinematic"</div>
+  <div class="tip tip-danger"><strong>Muito vazio?</strong>Adicionar: "groove, rhythm, bass, driving"</div>
+  <div class="tip tip-danger"><strong>Muito pop?</strong>Reforcar: "instrumental, no lyrics, no singing"</div>
+  <div class="tip tip-danger"><strong>Guitarra errada?</strong>"clean Fender-style with spring reverb, NOT acoustic, NOT distorted"</div>
+</div>
+
+<!-- CHECKLIST -->
+<div class="section-title">Checklist de Entrega</div>
+<div style="background:#fff;border-radius:12px;border:1px solid rgba(0,0,0,0.04)">
+<ul class="checklist" id="checklist">
+  <li><span class="check" onclick="toggleCheck(this)"></span><span>Mood tracks selecionadas (6 referencias internas)</span></li>
+  <li><span class="check" onclick="toggleCheck(this)"></span><span>Hero Film — track principal editada (~50s, climax @40s)</span></li>
+  <li><span class="check" onclick="toggleCheck(this)"></span><span>Hero Film — sound design layers</span></li>
+  <li><span class="check" onclick="toggleCheck(this)"></span><span>Hero Film — shimmers de transicao (5 instancias)</span></li>
+  <li><span class="check" onclick="toggleCheck(this)"></span><span>Hero Film — mix completo</span></li>
+  <li><span class="check" onclick="toggleCheck(this)"></span><span>Teaser 1 — mix (~10-15s)</span></li>
+  <li><span class="check" onclick="toggleCheck(this)"></span><span>Teaser 2 — mix (~10-15s)</span></li>
+  <li><span class="check" onclick="toggleCheck(this)"></span><span>Review: 3 pecas em sequencia, coerencia confirmada</span></li>
+  <li><span class="check" onclick="toggleCheck(this)"></span><span>A/B contra "Harvest Moon" — territorio validado</span></li>
+  <li><span class="check" onclick="toggleCheck(this)"></span><span>Export: WAV 48kHz/24bit</span></li>
+</ul>
+</div>
+
+<div class="footer">City of Arabia / Aranchia Yards — Suno Command Center<br>Refs: Poolside "Harvest Moon" + Metronomy "The Bay" &middot; 98 BPM &middot; F major &middot; Balearic cinematic</div>
+
+</div>
+</div>
+
+<script>
+function switchPage(name){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.main-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('page-'+name).classList.add('active');
+  event.currentTarget.classList.add('active');
+}
+function toggleCard(id){document.getElementById(id).classList.toggle('open')}
+function switchTab(cardId,tabName){
+  const card=document.getElementById(cardId);
+  card.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.tab===tabName));
+  card.querySelectorAll('.tab-pane').forEach(c=>c.classList.toggle('active',c.dataset.tab===tabName));
+}
+function copyPrompt(btn){
+  const box=btn.closest('.val-body,.card-body,.prompt-wrap').querySelector('.prompt-box');
+  if(!box){const fb=btn.closest('.card-body');if(fb)box=fb.querySelector('.prompt-box');}
+  navigator.clipboard.writeText(box.textContent.trim()).then(()=>{
+    btn.textContent='Copiado!';btn.classList.add('copied');
+    setTimeout(()=>{btn.textContent='Copiar';btn.classList.remove('copied')},2000);
+  });
+}
+function copyTag(el){
+  navigator.clipboard.writeText(el.textContent.trim()).then(()=>{
+    el.classList.add('copied-tag');
+    setTimeout(()=>el.classList.remove('copied-tag'),1200);
+  });
+}
+function toggleCheck(el){
+  el.classList.toggle('done');
+  el.innerHTML=el.classList.contains('done')?'&#10003;':'';
+  saveChecklist();
+}
+function saveChecklist(){
+  const s=[];document.querySelectorAll('.check').forEach(c=>s.push(c.classList.contains('done')));
+  localStorage.setItem('suno-cc-checklist',JSON.stringify(s));
+}
+function loadChecklist(){
+  const r=localStorage.getItem('suno-cc-checklist');if(!r)return;
+  const s=JSON.parse(r);document.querySelectorAll('.check').forEach((c,i)=>{if(s[i]){c.classList.add('done');c.innerHTML='&#10003;';}});
+}
+loadChecklist();
+</script>
+</body>
+</html>

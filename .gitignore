@@ -1,0 +1,9 @@
+.vercel
+.DS_Store
+.playwright-mcp/
+invoices/
+tasks/
+*.wav
+*.mp4
+city-of-arabia/moods/
+city-of-arabia/mediterranean-stems/

@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BEYOND - Aranchia Yards | Timeline Map</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #f7f7fa;
+    color: #2a2a35;
+    padding: 40px 20px;
+    min-height: 100vh;
+  }
+
+  .container {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  h1 {
+    font-size: 14px;
+    font-weight: 300;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: #999;
+    margin-bottom: 8px;
+  }
+
+  h2 {
+    font-size: 32px;
+    font-weight: 600;
+    color: #1a1a2a;
+    margin-bottom: 40px;
+  }
+
+  /* ENERGY CURVE */
+  .energy-section {
+    margin-bottom: 60px;
+  }
+
+  .energy-section h3 {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #888;
+    margin-bottom: 20px;
+  }
+
+  .energy-curve {
+    position: relative;
+    height: 200px;
+    border-left: 1px solid #d0d0d8;
+    border-bottom: 1px solid #d0d0d8;
+    margin-bottom: 10px;
+  }
+
+  .energy-curve svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .energy-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    color: #999;
+    padding: 0 4px;
+  }
+
+  .y-label {
+    position: absolute;
+    left: -40px;
+    font-size: 9px;
+    color: #999;
+    letter-spacing: 1px;
+  }
+
+  /* ACT BLOCKS */
+  .acts-timeline {
+    display: flex;
+    width: 100%;
+    height: 80px;
+    margin-bottom: 8px;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .act-block {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 8px 4px;
+    position: relative;
+    transition: all 0.2s;
+  }
+
+  .act-block:hover {
+    filter: brightness(1.2);
+  }
+
+  .act-1 { background: #c8c8e8; flex: 7.5; }
+  .act-2 { background: #a8c0e0; flex: 10; }
+  .act-3 { background: #90b8d0; flex: 13.5; }
+  .act-4 { background: #c0a0d8; flex: 11; }
+  .act-5 { background: #c8c8e8; flex: 4.5; }
+
+  .act-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(30,30,50,0.9);
+  }
+
+  .act-name {
+    font-size: 11px;
+    font-weight: 400;
+    color: rgba(30,30,50,0.6);
+    margin-top: 4px;
+    text-align: center;
+  }
+
+  .act-time {
+    font-size: 10px;
+    font-weight: 300;
+    color: rgba(30,30,50,0.45);
+    margin-top: 2px;
+  }
+
+  /* TIME RULER */
+  .time-ruler {
+    display: flex;
+    width: 100%;
+    margin-bottom: 40px;
+  }
+
+  .time-mark {
+    font-size: 9px;
+    color: #999;
+    font-weight: 400;
+  }
+
+  /* SHOTS TIMELINE */
+  .shots-section {
+    margin-bottom: 60px;
+  }
+
+  .shots-section h3 {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #888;
+    margin-bottom: 20px;
+  }
+
+  .shots-row {
+    display: flex;
+    width: 100%;
+    gap: 1px;
+    margin-bottom: 4px;
+  }
+
+  .shot-block {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 6px 2px;
+    border-radius: 2px;
+    cursor: default;
+    transition: all 0.2s;
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .shot-block:hover {
+    filter: brightness(1.3);
+    transform: scaleY(1.05);
+  }
+
+  .shot-num {
+    font-size: 9px;
+    font-weight: 600;
+    color: rgba(30,30,50,0.85);
+  }
+
+  .shot-dur {
+    font-size: 8px;
+    color: rgba(30,30,50,0.5);
+    margin-top: 2px;
+  }
+
+  /* Shot colors by act */
+  .shot-act1 { background: #d0d0ec; }
+  .shot-act2 { background: #b8d0e8; }
+  .shot-act3 { background: #a0c8dc; }
+  .shot-act4 { background: #d0b0e4; }
+  .shot-act5 { background: #d0d0ec; }
+
+  /* SHOT DETAILS */
+  .shots-detail {
+    margin-top: 30px;
+  }
+
+  .shot-detail-row {
+    display: flex;
+    align-items: flex-start;
+    padding: 12px 0;
+    border-bottom: 1px solid #e4e4ea;
+    gap: 16px;
+  }
+
+  .shot-detail-row:hover {
+    background: rgba(0,0,0,0.02);
+  }
+
+  .sd-time {
+    font-size: 11px;
+    font-weight: 500;
+    color: #999;
+    min-width: 80px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .sd-num {
+    font-size: 11px;
+    font-weight: 600;
+    color: #555;
+    min-width: 30px;
+  }
+
+  .sd-name {
+    font-size: 12px;
+    font-weight: 500;
+    color: #2a2a40;
+    min-width: 220px;
+  }
+
+  .sd-dur {
+    font-size: 11px;
+    color: #999;
+    min-width: 40px;
+    text-align: right;
+  }
+
+  .sd-mood {
+    font-size: 11px;
+    color: #666;
+    font-style: italic;
+    flex: 1;
+  }
+
+  .sd-music {
+    font-size: 10px;
+    color: #888;
+    min-width: 120px;
+    text-align: right;
+  }
+
+  .music-on { color: #2e7a4a; }
+  .music-off { color: #a04040; }
+  .shimmer { color: #9a7a2a; }
+
+  /* ACT DIVIDER in detail list */
+  .act-divider {
+    padding: 20px 0 8px 0;
+    border-bottom: none;
+  }
+
+  .act-divider-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+
+  .act-divider-1 .act-divider-label { color: #6060a0; }
+  .act-divider-2 .act-divider-label { color: #4080b0; }
+  .act-divider-3 .act-divider-label { color: #3090a0; }
+  .act-divider-4 .act-divider-label { color: #9060b0; }
+  .act-divider-5 .act-divider-label { color: #6060a0; }
+
+  /* LEGEND */
+  .legend {
+    display: flex;
+    gap: 24px;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #e4e4ea;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 10px;
+    color: #777;
+  }
+
+  .legend-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+
+  .dot-music { background: #2e7a4a; }
+  .dot-silence { background: #a04040; }
+  .dot-shimmer { background: #9a7a2a; }
+
+  /* MUSIC DENSITY BAR */
+  .density-section {
+    margin-bottom: 60px;
+  }
+
+  .density-section h3 {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #888;
+    margin-bottom: 20px;
+  }
+
+  .density-bar {
+    display: flex;
+    width: 100%;
+    height: 40px;
+    border-radius: 4px;
+    overflow: hidden;
+    gap: 1px;
+    margin-bottom: 12px;
+  }
+
+  .density-segment {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 8px;
+    font-weight: 500;
+    color: rgba(30,30,50,0.5);
+  }
+
+  .layers-1 { background: rgba(46, 122, 74, 0.15); }
+  .layers-2 { background: rgba(46, 122, 74, 0.22); }
+  .layers-3 { background: rgba(46, 122, 74, 0.30); }
+  .layers-4 { background: rgba(46, 122, 74, 0.38); }
+  .layers-5 { background: rgba(46, 122, 74, 0.46); }
+  .layers-6 { background: rgba(46, 122, 74, 0.55); }
+  .layers-max { background: rgba(46, 122, 74, 0.68); }
+  .layers-silence { background: rgba(160, 64, 64, 0.15); }
+
+  .density-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 9px;
+    color: #999;
+  }
+
+  /* FOOTER */
+  .footer {
+    margin-top: 60px;
+    padding-top: 20px;
+    border-top: 1px solid #e4e4ea;
+    font-size: 10px;
+    color: #bbb;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <h1>BEYOND - City of Arabia / Aranchia Yards</h1>
+  <h2>Timeline Map - Sound Design</h2>
+
+  <!-- ENERGY CURVE -->
+  <div class="energy-section">
+    <h3>Curva de Energia</h3>
+    <div class="energy-curve">
+      <span class="y-label" style="top: 5px;">PICO</span>
+      <span class="y-label" style="top: 95px;">MEDIA</span>
+      <span class="y-label" style="bottom: 5px;">ZERO</span>
+      <svg viewBox="0 0 1000 200" preserveAspectRatio="none">
+        <!-- Grid lines -->
+        <line x1="0" y1="50" x2="1000" y2="50" stroke="#d8d8e0" stroke-width="0.5" stroke-dasharray="4"/>
+        <line x1="0" y1="100" x2="1000" y2="100" stroke="#d8d8e0" stroke-width="0.5" stroke-dasharray="4"/>
+        <line x1="0" y1="150" x2="1000" y2="150" stroke="#d8d8e0" stroke-width="0.5" stroke-dasharray="4"/>
+
+        <!-- Act dividers -->
+        <line x1="161" y1="0" x2="161" y2="200" stroke="#c0c0cc" stroke-width="1" stroke-dasharray="4"/>
+        <line x1="376" y1="0" x2="376" y2="200" stroke="#c0c0cc" stroke-width="1" stroke-dasharray="4"/>
+        <line x1="667" y1="0" x2="667" y2="200" stroke="#c0c0cc" stroke-width="1" stroke-dasharray="4"/>
+        <line x1="903" y1="0" x2="903" y2="200" stroke="#c0c0cc" stroke-width="1" stroke-dasharray="4"/>
+
+        <!-- Energy curve fill -->
+        <path d="M 0,185 C 40,180 80,170 161,140 C 200,125 250,95 320,80 C 376,70 430,60 500,55 C 560,50 620,40 700,30 C 750,22 800,15 850,12 C 880,10 903,15 930,60 C 950,100 970,150 1000,185"
+              fill="url(#energyGradient)" opacity="0.3"/>
+
+        <!-- Energy curve line -->
+        <path d="M 0,185 C 40,180 80,170 161,140 C 200,125 250,95 320,80 C 376,70 430,60 500,55 C 560,50 620,40 700,30 C 750,22 800,15 850,12 C 880,10 903,15 930,60 C 950,100 970,150 1000,185"
+              fill="none" stroke="url(#lineGradient)" stroke-width="2.5"/>
+
+        <!-- Shimmer markers -->
+        <circle cx="376" cy="70" r="4" fill="#9a7a2a" opacity="0.8"/>
+        <circle cx="430" cy="60" r="4" fill="#9a7a2a" opacity="0.8"/>
+        <circle cx="700" cy="30" r="4" fill="#9a7a2a" opacity="0.8"/>
+        <circle cx="780" cy="18" r="4" fill="#9a7a2a" opacity="0.8"/>
+        <circle cx="870" cy="11" r="4" fill="#9a7a2a" opacity="0.8"/>
+
+        <!-- Shimmer labels -->
+        <text x="376" y="58" fill="#9a7a2a" font-size="8" text-anchor="middle" font-family="Inter">flare</text>
+        <text x="430" y="48" fill="#9a7a2a" font-size="8" text-anchor="middle" font-family="Inter">flare</text>
+        <text x="700" y="18" fill="#9a7a2a" font-size="8" text-anchor="middle" font-family="Inter">flare</text>
+        <text x="780" y="8" fill="#9a7a2a" font-size="8" text-anchor="middle" font-family="Inter">flare</text>
+        <text x="870" y="3" fill="#9a7a2a" font-size="8" text-anchor="middle" font-family="Inter">flare</text>
+
+        <!-- Gradient definitions -->
+        <defs>
+          <linearGradient id="energyGradient" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#9090c0"/>
+            <stop offset="16%" stop-color="#7098c0"/>
+            <stop offset="40%" stop-color="#60a0b8"/>
+            <stop offset="70%" stop-color="#a070c0"/>
+            <stop offset="90%" stop-color="#b080d0"/>
+            <stop offset="100%" stop-color="#9090c0"/>
+          </linearGradient>
+          <linearGradient id="lineGradient" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#6060a0"/>
+            <stop offset="16%" stop-color="#4080b0"/>
+            <stop offset="40%" stop-color="#3090a0"/>
+            <stop offset="70%" stop-color="#9060b0"/>
+            <stop offset="90%" stop-color="#a070c0"/>
+            <stop offset="100%" stop-color="#6060a0"/>
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+    <div class="energy-labels">
+      <span>0:00</span>
+      <span>0:07.5</span>
+      <span>0:17.5</span>
+      <span>0:31</span>
+      <span>0:42</span>
+      <span>0:46.5</span>
+    </div>
+  </div>
+
+  <!-- ACTS TIMELINE -->
+  <div class="shots-section">
+    <h3>5 Atos</h3>
+    <div class="acts-timeline">
+      <div class="act-block act-1">
+        <span class="act-label">ATO 1</span>
+        <span class="act-name">O Despertar</span>
+        <span class="act-time">0:00 - 0:07.5 (7.5s)</span>
+      </div>
+      <div class="act-block act-2">
+        <span class="act-label">ATO 2</span>
+        <span class="act-name">Descoberta & Energia</span>
+        <span class="act-time">0:07.5 - 0:17.5 (10s)</span>
+      </div>
+      <div class="act-block act-3">
+        <span class="act-label">ATO 3</span>
+        <span class="act-name">Comunidade & Conexao</span>
+        <span class="act-time">0:17.5 - 0:31 (13.5s)</span>
+      </div>
+      <div class="act-block act-4">
+        <span class="act-label">ATO 4</span>
+        <span class="act-name">Celebracao & Climax</span>
+        <span class="act-time">0:31 - 0:42 (11s)</span>
+      </div>
+      <div class="act-block act-5">
+        <span class="act-label">ATO 5</span>
+        <span class="act-name">Retorno</span>
+        <span class="act-time">0:42 - 0:46.5 (4.5s)</span>
+      </div>
+    </div>
+
+    <!-- SHOTS ROW -->
+    <h3 style="margin-top: 30px;">22 Shots</h3>
+    <div class="shots-row" style="height: 50px;">
+      <div class="shot-block shot-act1" style="flex: 2;"><span class="shot-num">1</span><span class="shot-dur">2s</span></div>
+      <div class="shot-block shot-act1" style="flex: 2.5;"><span class="shot-num">2</span><span class="shot-dur">2.5s</span></div>
+      <div class="shot-block shot-act1" style="flex: 3;"><span class="shot-num">3</span><span class="shot-dur">3s</span></div>
+      <div class="shot-block shot-act2" style="flex: 2;"><span class="shot-num">4</span><span class="shot-dur">2s</span></div>
+      <div class="shot-block shot-act2" style="flex: 2;"><span class="shot-num">5</span><span class="shot-dur">2s</span></div>
+      <div class="shot-block shot-act2" style="flex: 1;"><span class="shot-num">6</span><span class="shot-dur">1s</span></div>
+      <div class="shot-block shot-act2" style="flex: 1.5;"><span class="shot-num">7</span><span class="shot-dur">1.5</span></div>
+      <div class="shot-block shot-act2" style="flex: 1.5;"><span class="shot-num">8</span><span class="shot-dur">1.5</span></div>
+      <div class="shot-block shot-act2" style="flex: 2;"><span class="shot-num">9</span><span class="shot-dur">2s</span></div>
+      <div class="shot-block shot-act3" style="flex: 2;"><span class="shot-num">10</span><span class="shot-dur">2s</span></div>
+      <div class="shot-block shot-act3" style="flex: 2;"><span class="shot-num">11</span><span class="shot-dur">2s</span></div>
+      <div class="shot-block shot-act3" style="flex: 2.5;"><span class="shot-num">12</span><span class="shot-dur">2.5</span></div>
+      <div class="shot-block shot-act3" style="flex: 2;"><span class="shot-num">13</span><span class="shot-dur">2s</span></div>
+      <div class="shot-block shot-act3" style="flex: 3;"><span class="shot-num">14</span><span class="shot-dur">3s</span></div>
+      <div class="shot-block shot-act3" style="flex: 2;"><span class="shot-num">15</span><span class="shot-dur">2s</span></div>
+      <div class="shot-block shot-act4" style="flex: 1;"><span class="shot-num">16</span><span class="shot-dur">1s</span></div>
+      <div class="shot-block shot-act4" style="flex: 3;"><span class="shot-num">17</span><span class="shot-dur">3s</span></div>
+      <div class="shot-block shot-act4" style="flex: 3;"><span class="shot-num">18</span><span class="shot-dur">3s</span></div>
+      <div class="shot-block shot-act4" style="flex: 1.5;"><span class="shot-num">19</span><span class="shot-dur">1.5</span></div>
+      <div class="shot-block shot-act4" style="flex: 2.5;"><span class="shot-num">20</span><span class="shot-dur">2.5</span></div>
+      <div class="shot-block shot-act5" style="flex: 1.5;"><span class="shot-num">21</span><span class="shot-dur">1.5</span></div>
+      <div class="shot-block shot-act5" style="flex: 3;"><span class="shot-num">22</span><span class="shot-dur">3s</span></div>
+    </div>
+  </div>
+
+  <!-- MUSIC DENSITY -->
+  <div class="density-section">
+    <h3>Densidade Musical (camadas)</h3>
+    <div class="density-bar">
+      <div class="density-segment layers-silence" style="flex: 1;" title="Shot 1 - inicio em silencio">SFX</div>
+      <div class="density-segment layers-1" style="flex: 1;" title="Shot 1 - pad entra">1</div>
+      <div class="density-segment layers-2" style="flex: 2.5;" title="Shot 2">2</div>
+      <div class="density-segment layers-3" style="flex: 3;" title="Shot 3">3</div>
+      <div class="density-segment layers-3" style="flex: 2;" title="Shot 4">3</div>
+      <div class="density-segment layers-4" style="flex: 2;" title="Shot 5">4</div>
+      <div class="density-segment layers-4" style="flex: 1;" title="Shot 6">4</div>
+      <div class="density-segment layers-4" style="flex: 1.5;" title="Shot 7">4</div>
+      <div class="density-segment layers-4" style="flex: 1.5;" title="Shot 8">4</div>
+      <div class="density-segment layers-4" style="flex: 2;" title="Shot 9">4</div>
+      <div class="density-segment layers-silence" style="flex: 0.5;" title="Shot 10 - silencio">SFX</div>
+      <div class="density-segment layers-5" style="flex: 1.5;" title="Shot 10">5</div>
+      <div class="density-segment layers-5" style="flex: 2;" title="Shot 11">5</div>
+      <div class="density-segment layers-5" style="flex: 2.5;" title="Shot 12">5</div>
+      <div class="density-segment layers-5" style="flex: 2;" title="Shot 13">5</div>
+      <div class="density-segment layers-6" style="flex: 3;" title="Shot 14">6</div>
+      <div class="density-segment layers-6" style="flex: 2;" title="Shot 15">6</div>
+      <div class="density-segment layers-6" style="flex: 1;" title="Shot 16">6</div>
+      <div class="density-segment layers-max" style="flex: 3;" title="Shot 17 - CLIMAX">MAX</div>
+      <div class="density-segment layers-max" style="flex: 3;" title="Shot 18">MAX</div>
+      <div class="density-segment layers-max" style="flex: 1.5;" title="Shot 19">MAX</div>
+      <div class="density-segment layers-6" style="flex: 2.5;" title="Shot 20 - descendo">6</div>
+      <div class="density-segment layers-3" style="flex: 1.5;" title="Shot 21">3</div>
+      <div class="density-segment layers-1" style="flex: 2;" title="Shot 22 - dissolve">1</div>
+      <div class="density-segment layers-silence" style="flex: 1;" title="Shot 22 - final">SFX</div>
+    </div>
+    <div class="density-labels">
+      <span>silencio / natureza</span>
+      <span>pad + textura</span>
+      <span>+ percussao</span>
+      <span>+ melodia + vocal</span>
+      <span>todas as camadas</span>
+      <span>dissolve</span>
+    </div>
+  </div>
+
+  <!-- SHOT DETAIL LIST -->
+  <div class="shots-section">
+    <h3>Mapa Shot a Shot</h3>
+    <div class="shots-detail">
+
+      <!-- ACT 1 -->
+      <div class="shot-detail-row act-divider act-divider-1">
+        <span class="act-divider-label">Ato 1 - O Despertar (0:00 - 0:07.5)</span>
+      </div>
+      <div class="shot-detail-row">
+        <span class="sd-time">0:00</span>
+        <span class="sd-num">01</span>
+        <span class="sd-name">Awakening</span>
+        <span class="sd-dur">2s</span>
+        <span class="sd-mood">Silencio > pad etereo. Vento leve, passaros distantes.</span>
+        <span class="sd-music music-off">SFX > MUSICA</span>
+      </div>
+      <div class="shot-detail-row">
+        <span class="sd-time">0:02</span>
+        <span class="sd-num">02</span>
+        <span class="sd-name">Walking between vineyards</span>
+        <span class="sd-dur">2.5s</span>
+        <span class="sd-mood">Folhas, passos na terra, vegetacao crescendo. Melodia nasce.</span>
+        <span class="sd-music music-on">MUSICA</span>
+      </div>
+      <div class="shot-detail-row">
+        <span class="sd-time">0:04.5</span>
+        <span class="sd-num">03</span>
+        <span class="sd-name">Walking towards tower</span>
+        <span class="sd-dur">3s</span>
+        <span class="sd-mood">Ritmo de passos acelera. Percussao entra. Build.</span>
+        <span class="sd-music music-on">MUSICA</span>
+      </div>
+
+      <!-- ACT 2 -->
+      <div class="shot-detail-row act-divider act-divider-2">
+        <span class="act-divider-label">Ato 2 - Descoberta & Energia (0:07.5 - 0:17.5)</span>
+      </div>
+      <div class="shot-detail-row">
+        <span class="sd-time">0:07.5</span>
+        <span class="sd-num">04</span>
+        <span class="sd-name">Running between vineyards</span>
+        <span class="sd-dur">2s</span>
+        <span class="sd-mood">High speed, petalas no ar, energia crescente.</span>
+        <span class="sd-music music-on">MUSICA</span>
+      </div>
+      <div class="shot-detail-row">
+        <span class="sd-time">0:09.5</span>
+        <span class="sd-num">05</span>
+        <span class="sd-name">Crossing arch / entering tower</span>
+        <span class="sd-dur">2s</span>
+        <span class="sd-mood">Slow motion, petalas no vento, transicao natureza > arquitetura.</span>
+        <span class="sd-music shimmer">SHIMMER</span>
+      </div>
+      <div class="shot-detail-row">
+        <span class="sd-time">0:11.5</span>
+        <span class="sd-num">06</span>
+        <span class="sd-name">Pool 1</span>
+        <span class="sd-dur">1s</span>
+        <span class="sd-mood">Splash! Impacto. Grito de alegria. Energia sobe.</span>
+        <span class="sd-music music-on">MUSICA</span>
+      </div>
+      <div class="shot-detail-row">
+        <span class="sd-time">0:12.5</span>
+        <span class="sd-num">07</span>
+        <span class="sd-name">Pool 2</span>
+        <span class="sd-dur">1.5s</span>
+        <span class="sd-mood">Underwater > superficie. Sons abafados > ar livre.</span>
+        <span class="sd-music music-on">MUSICA</span>
+      </div>
+      <div class="shot-detail-row">
+        <span class="sd-time">0:14</span>
+        <span class="sd-num">08</span>
+        <span class="sd-name">Pool 3</span>
+        <span class="sd-dur">1.5s</span>
+        <span class="sd-mood">Underwater. Bolhas, movimento aquatico, muffled.</span>
+        <span class="sd-music music-on">MUSICA</span>
+      </div>
+      <div class="shot-detail-row">
+        <span class="sd-time">0:15.5</span>
+        <span class="sd-num">09</span>
+        <span class="sd-name">Pool 4</span>
+        <span class="sd-dur">2s</span>
+        <span class="sd-mood">Agua calma, conversa distante, greenery growing.</span>
+        <span class="sd-music music-on">MUSICA</span>
+      </div>
+
+      <!-- ACT 3 -->
+      <div class="shot-detail-row act-divider act-divider-3">
+        <span class="act-divider-label">Ato 3 - Comunidade & Conexao (0:17.5 - 0:31)</span>
+      </div>
+      <div class="shot-detail-row">
+        <span class="sd-time">0:17.5</span>
+        <span class="sd-num">10</span>
+        <span class="sd-name">Close up</span>
+        <span class="sd-dur">2s</span>
+        <span class="sd-mood">Momento de pausa. Light flare. Contemplacao.</span>
+        <span class="sd-music shimmer">SFX > SHIMMER</span>
+      </div>
+      <div class="shot-detail-row">
+        <span class="sd-time">0:19.5</span>
+        <span class="sd-num">11</span>
+        <span class="sd-name">Family 1</span>
+        <span class="sd-dur">2s</span>
+        <span class="sd-mood">Risadas de criancas, brincadeira, organico. Melodia retorna.</span>
+        <span class="sd-music music-on">MUSICA</span>
+      </div>
+      <div class="shot-detail-row">
+        <span class="sd-time">0:21.5</span>
+        <span class="sd-num">12</span>
+        <span class="sd-name">Family 2</span>
+        <span class="sd-dur">2.5s</span>
+        <span class="sd-mood">Intimidade familiar. Abracos. Calor humano.</span>
+        <span class="sd-music music-on">MUSICA</span>
+      </div>
+      <div class="shot-detail-row">
+        <span class="sd-time">0:24</span>
+        <span class="sd-num">13</span>
+        <span class="sd-name">Outside apartment render</span>
+        <span class="sd-dur">2s</span>
+        <span class="sd-mood">Texturas ambientais. Greenery brotando no predio.</span>
+        <span class="sd-music music-on">MUSICA</span>
+      </div>
+      <div class="shot-detail-row">
+        <span class="sd-time">0:26</span>
+        <span class="sd-num">14</span>
+        <span class="sd-name">Inside Apt - Grape growing</span>
+        <span class="sd-dur">3s</span>
+        <span class="sd-mood">Acustica de arco. Uvas brotando. Dubai ao fundo. Harmonia cresce.</span>
+        <span class="sd-music music-on">MUSICA</span>
+      </div>
+      <div class="shot-detail-row">
+        <span class="sd-time">0:29</span>
+        <span class="sd-num">15</span>
+        <span class="sd-name">Inside Apt - Kitchen</span>
+        <span class="sd-dur">2s</span>
+        <span class="sd-mood">Domesticidade. Suco de laranja. Arvore dentro de casa.</span>
+        <span class="sd-music music-on">MUSICA</span>
+      </div>
+
+      <!-- ACT 4 -->
+      <div class="shot-detail-row act-divider act-divider-4">
+        <span class="act-divider-label">Ato 4 - Celebracao & Climax (0:31 - 0:42)</span>
+      </div>
+      <div class="shot-detail-row">
+        <span class="sd-time">0:31</span>
+        <span class="sd-num">16</span>
+        <span class="sd-name">Male close up</span>
+        <span class="sd-dur">1s</span>
+        <span class="sd-mood">Lens flare. Folhas crescendo. Build pro climax.</span>
+        <span class="sd-music shimmer">SHIMMER</span>
+      </div>
+      <div class="shot-detail-row">
+        <span class="sd-time">0:32</span>
+        <span class="sd-num">17</span>
+        <span class="sd-name">Outdoor Gathering</span>
+        <span class="sd-dur">3s</span>
+        <span class="sd-mood">CLIMAX. Todas as camadas. Mesa, amigos, Dubai, vines. Maxima abundancia.</span>
+        <span class="sd-music music-on" style="color: #1a8a3a; font-weight: 600;">CLIMAX</span>
+      </div>
+      <div class="shot-detail-row">
+        <span class="sd-time">0:35</span>
+        <span class="sd-num">18</span>
+        <span class="sd-name">Outdoor close ups</span>
+        <span class="sd-dur">3s</span>
+        <span class="sd-mood">Casal candido. Lens flare sutil. Pico sustentado.</span>
+        <span class="sd-music shimmer">SHIMMER</span>
+      </div>
+      <div class="shot-detail-row">
+        <span class="sd-time">0:38</span>
+        <span class="sd-num">19</span>
+        <span class="sd-name">Master view render</span>
+        <span class="sd-dur">1.5s</span>
+        <span class="sd-mood">Greenery toma o predio inteiro. Fullness sonora. Inicio da descida.</span>
+        <span class="sd-music music-on">MUSICA</span>
+      </div>
+      <div class="shot-detail-row">
+        <span class="sd-time">0:39.5</span>
+        <span class="sd-num">20</span>
+        <span class="sd-name">Balcony</span>
+        <span class="sd-dur">2.5s</span>
+        <span class="sd-mood">Frutas brotando. Transicao exterior > interior. Energia desce.</span>
+        <span class="sd-music shimmer">SHIMMER</span>
+      </div>
+
+      <!-- ACT 5 -->
+      <div class="shot-detail-row act-divider act-divider-5">
+        <span class="act-divider-label">Ato 5 - Retorno ao Sonho (0:42 - 0:46.5)</span>
+      </div>
+      <div class="shot-detail-row">
+        <span class="sd-time">0:42</span>
+        <span class="sd-num">21</span>
+        <span class="sd-name">Bedroom</span>
+        <span class="sd-dur">1.5s</span>
+        <span class="sd-mood">Silencio crescente. Passos suaves. Intimidade.</span>
+        <span class="sd-music music-on">MUSICA (dissolve)</span>
+      </div>
+      <div class="shot-detail-row">
+        <span class="sd-time">0:43.5</span>
+        <span class="sd-num">22</span>
+        <span class="sd-name">Laying in bed / crossing scene</span>
+        <span class="sd-dur">3s</span>
+        <span class="sd-mood">Tudo se dissolve. Greenery envolve a cama. Retorno ao shot 1. LOOP.</span>
+        <span class="sd-music music-off">MUSICA > SFX > SILENCIO</span>
+      </div>
+
+    </div>
+
+    <!-- Legend -->
+    <div class="legend">
+      <div class="legend-item"><div class="legend-dot dot-music"></div>Musica continua (80%)</div>
+      <div class="legend-item"><div class="legend-dot dot-silence"></div>Silencio / SFX puro (20%)</div>
+      <div class="legend-item"><div class="legend-dot dot-shimmer"></div>Shimmer (transicao light flare)</div>
+    </div>
+  </div>
+
+  <div class="footer">
+    BEYOND - City of Arabia / Aranchia Yards RFP - Sound Design Timeline Map - Abril 2026
+  </div>
+
+</div>
+</body>
+</html>

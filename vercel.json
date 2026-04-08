@@ -1,0 +1,18 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "cleanUrls": true,
+  "rewrites": [
+    {
+      "source": "/",
+      "destination": "/forma-landing"
+    },
+    {
+      "source": "/floraoasis",
+      "destination": "/city-of-arabia/coa-pitch-deck"
+    },
+    {
+      "source": "/floraoasis/",
+      "destination": "/city-of-arabia/coa-pitch-deck"
+    }
+  ]
+}

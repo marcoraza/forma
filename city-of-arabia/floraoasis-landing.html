@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flora Oasis — Forma Audio Solutions</title>
+<meta name="description" content="Something is growing. Flora Oasis by Forma Audio Solutions.">
+<meta property="og:title" content="Flora Oasis — Forma Audio Solutions">
+<meta property="og:description" content="Something is growing.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #28282D;
+    --bg-deep: #1E1E22;
+    --surface: #323237;
+    --surface-light: #3A3A40;
+    --border: #3A3A40;
+    --text: #CDD2D7;
+    --text-dim: #9DA4AA;
+    --text-muted: #6A7078;
+    --text-ghost: #404046;
+    --accent: #E6FF50;
+    --accent-dim: rgba(230, 255, 80, 0.12);
+    --accent-glow: rgba(230, 255, 80, 0.06);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    height: 100%;
+    overflow: hidden;
+    background: var(--bg-deep);
+    font-family: 'Space Grotesk', sans-serif;
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  canvas#waveCanvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 0;
+  }
+
+  .overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: clamp(24px, 5vw, 80px);
+    pointer-events: none;
+  }
+
+  .overlay * { pointer-events: auto; }
+
+  /* Top bar */
+  .top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .logo-group {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    opacity: 0;
+    animation: fadeSlideDown 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
+  }
+
+  .logo-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .status-pill {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+    padding: 6px 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    opacity: 0;
+    animation: fadeSlideDown 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.5s forwards;
+  }
+
+  .status-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: pulse 2.4s ease-in-out infinite;
+  }
+
+  /* Center content */
+  .center-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0;
+  }
+
+  .hero-title {
+    font-size: clamp(42px, 8vw, 96px);
+    font-weight: 700;
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    color: var(--text);
+    opacity: 0;
+    animation: fadeScaleUp 1.6s cubic-bezier(0.16, 1, 0.3, 1) 0.8s forwards;
+  }
+
+  .hero-title .accent {
+    color: var(--accent);
+    position: relative;
+  }
+
+  .hero-sub {
+    font-size: clamp(13px, 1.8vw, 16px);
+    font-weight: 300;
+    color: var(--text-muted);
+    margin-top: clamp(16px, 2vw, 28px);
+    letter-spacing: 0.02em;
+    max-width: 420px;
+    line-height: 1.5;
+    opacity: 0;
+    animation: fadeSlideUp 1.4s cubic-bezier(0.16, 1, 0.3, 1) 1.2s forwards;
+  }
+
+  .divider-line {
+    width: 40px;
+    height: 2px;
+    background: var(--accent);
+    margin: clamp(20px, 3vw, 36px) auto 0;
+    opacity: 0;
+    animation: fadeGrow 1.2s cubic-bezier(0.16, 1, 0.3, 1) 1.5s forwards;
+  }
+
+  .cta-hint {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-ghost);
+    margin-top: clamp(16px, 2vw, 24px);
+    opacity: 0;
+    animation: fadeSlideUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 1.8s forwards;
+    transition: color 0.3s;
+    cursor: default;
+  }
+
+  .cta-hint:hover {
+    color: var(--text-muted);
+  }
+
+  /* Bottom bar */
+  .bottom-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+
+  .bottom-left {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    opacity: 0;
+    animation: fadeSlideUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 2s forwards;
+  }
+
+  .bottom-left span {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--text-ghost);
+    letter-spacing: 0.1em;
+  }
+
+  .bottom-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    opacity: 0;
+    animation: fadeSlideUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 2s forwards;
+  }
+
+  .bottom-right .line {
+    width: 40px;
+    height: 1px;
+    background: var(--accent);
+    opacity: 0.3;
+  }
+
+  .bottom-right span {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--text-ghost);
+  }
+
+  /* Flag mark SVG */
+  .flag-mark {
+    position: fixed;
+    z-index: 0;
+    opacity: 0;
+    animation: fadeIn 3s cubic-bezier(0.16, 1, 0.3, 1) 0.4s forwards;
+  }
+
+  .flag-center {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: clamp(200px, 35vw, 480px);
+    height: auto;
+  }
+
+  .flag-center polygon {
+    fill: var(--accent);
+    opacity: 0.03;
+  }
+
+  /* Animations */
+  @keyframes fadeSlideDown {
+    from { opacity: 0; transform: translateY(-16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeSlideUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeScaleUp {
+    from { opacity: 0; transform: scale(0.94) translateY(20px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  @keyframes fadeGrow {
+    from { opacity: 0; width: 0; }
+    to { opacity: 1; width: 40px; }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.85); }
+  }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .status-pill { display: none; }
+    .bottom-left { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Background flag mark -->
+<svg class="flag-mark flag-center" viewBox="0 0 300 180">
+  <polygon points="0,0 300,0 253,87 0,87"/>
+  <polygon points="0,93 253,93 300,180 0,180"/>
+</svg>
+
+<!-- Animated waveform canvas -->
+<canvas id="waveCanvas"></canvas>
+
+<!-- Content overlay -->
+<div class="overlay">
+
+  <!-- Top -->
+  <div class="top-bar">
+    <div class="logo-group">
+      <svg viewBox="0 0 300 180" width="36" height="22">
+        <polygon points="0,0 300,0 253,87 0,87" fill="var(--accent)"/>
+        <polygon points="0,93 253,93 300,180 0,180" fill="var(--accent)"/>
+      </svg>
+      <span class="logo-label">Forma</span>
+    </div>
+    <div class="status-pill">
+      <span class="status-dot"></span>
+      <span>In production</span>
+    </div>
+  </div>
+
+  <!-- Center -->
+  <div class="center-content">
+    <div class="hero-title">
+      Flora<br><span class="accent">Oasis</span>
+    </div>
+    <div class="hero-sub">
+      The sound of magical realism. A sonic world where architecture breathes and nature composes.
+    </div>
+    <div class="divider-line"></div>
+    <div class="cta-hint">Coming soon</div>
+  </div>
+
+  <!-- Bottom -->
+  <div class="bottom-bar">
+    <div class="bottom-left">
+      <span>Forma Audio Solutions</span>
+      <span>Sound Design &amp; Strategy</span>
+    </div>
+    <div class="bottom-right">
+      <div class="line"></div>
+      <span>2026</span>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ==============================
+// Waveform + Particle System
+// ==============================
+const canvas = document.getElementById('waveCanvas');
+const ctx = canvas.getContext('2d');
+let W, H, t = 0;
+let mouse = { x: -1000, y: -1000 };
+let particles = [];
+
+function resize() {
+  const dpr = window.devicePixelRatio || 1;
+  W = window.innerWidth;
+  H = window.innerHeight;
+  canvas.width = W * dpr;
+  canvas.height = H * dpr;
+  ctx.scale(dpr, dpr);
+  canvas.style.width = W + 'px';
+  canvas.style.height = H + 'px';
+}
+
+window.addEventListener('resize', resize);
+resize();
+
+// Track mouse for subtle interaction
+document.addEventListener('mousemove', (e) => {
+  mouse.x = e.clientX;
+  mouse.y = e.clientY;
+});
+
+// Particle class
+class Particle {
+  constructor() {
+    this.reset();
+  }
+  reset() {
+    this.x = Math.random() * W;
+    this.y = Math.random() * H;
+    this.size = Math.random() * 1.8 + 0.3;
+    this.speedX = (Math.random() - 0.5) * 0.15;
+    this.speedY = (Math.random() - 0.5) * 0.12;
+    this.opacity = Math.random() * 0.3 + 0.05;
+    this.phase = Math.random() * Math.PI * 2;
+    this.pulseSpeed = Math.random() * 0.008 + 0.003;
+  }
+  update(t) {
+    this.x += this.speedX;
+    this.y += this.speedY;
+
+    // Subtle attraction to mouse
+    const dx = mouse.x - this.x;
+    const dy = mouse.y - this.y;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+    if (dist < 200 && dist > 1) {
+      this.x += dx * 0.0004;
+      this.y += dy * 0.0004;
+    }
+
+    // Wrap edges
+    if (this.x < -10) this.x = W + 10;
+    if (this.x > W + 10) this.x = -10;
+    if (this.y < -10) this.y = H + 10;
+    if (this.y > H + 10) this.y = -10;
+
+    // Pulsing opacity
+    this.currentOpacity = this.opacity * (0.6 + 0.4 * Math.sin(t * this.pulseSpeed + this.phase));
+  }
+  draw(ctx) {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(230, 255, 80, ${this.currentOpacity})`;
+    ctx.fill();
+  }
+}
+
+// Init particles
+const particleCount = Math.min(Math.floor(W * H / 8000), 120);
+for (let i = 0; i < particleCount; i++) {
+  particles.push(new Particle());
+}
+
+// Draw layered waveforms
+function drawWave(yBase, amplitude, frequency, speed, lineWidth, opacity, offset) {
+  ctx.beginPath();
+  ctx.strokeStyle = `rgba(230, 255, 80, ${opacity})`;
+  ctx.lineWidth = lineWidth;
+
+  for (let x = 0; x <= W; x += 2) {
+    const normalX = x / W;
+
+    // Compound sine for organic feel
+    const wave1 = Math.sin(normalX * frequency + t * speed + offset);
+    const wave2 = Math.sin(normalX * frequency * 1.7 + t * speed * 0.6 + offset * 2) * 0.4;
+    const wave3 = Math.sin(normalX * frequency * 0.3 + t * speed * 1.3 + offset * 0.5) * 0.25;
+
+    // Envelope: fade edges
+    const env = Math.sin(normalX * Math.PI);
+    const y = yBase + (wave1 + wave2 + wave3) * amplitude * env;
+
+    if (x === 0) ctx.moveTo(x, y);
+    else ctx.lineTo(x, y);
+  }
+  ctx.stroke();
+}
+
+// Square wave accent (SHARK motif)
+function drawSquareWave(yBase, segW, segH, opacity, speed) {
+  ctx.beginPath();
+  ctx.strokeStyle = `rgba(230, 255, 80, ${opacity})`;
+  ctx.lineWidth = 1;
+
+  const offset = (t * speed) % (segW * 2);
+  let up = true;
+  for (let x = -offset; x <= W + segW; x += segW) {
+    const y = up ? yBase - segH / 2 : yBase + segH / 2;
+    if (x === -offset) ctx.moveTo(x, y);
+    else {
+      ctx.lineTo(x, y);
+      const nextY = up ? yBase + segH / 2 : yBase - segH / 2;
+      ctx.lineTo(x, nextY);
+    }
+    up = !up;
+  }
+  ctx.stroke();
+}
+
+// Main animation loop
+function animate() {
+  t++;
+  ctx.clearRect(0, 0, W, H);
+
+  // Background gradient pulse
+  const gradientOpacity = 0.015 + 0.008 * Math.sin(t * 0.008);
+  const grad = ctx.createRadialGradient(W / 2, H / 2, 0, W / 2, H / 2, W * 0.6);
+  grad.addColorStop(0, `rgba(230, 255, 80, ${gradientOpacity})`);
+  grad.addColorStop(1, 'transparent');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, W, H);
+
+  // Waveforms: layered, different speeds and amplitudes
+  drawWave(H * 0.38, 25, 4.5, 0.012, 1.2, 0.06, 0);
+  drawWave(H * 0.42, 18, 6, 0.018, 0.8, 0.04, 1.5);
+  drawWave(H * 0.50, 35, 3, 0.008, 1.5, 0.07, 3);
+  drawWave(H * 0.55, 20, 7, 0.022, 0.6, 0.03, 4.5);
+  drawWave(H * 0.62, 28, 5, 0.015, 1, 0.05, 6);
+
+  // Square wave accents (subtle, SHARK-style)
+  drawSquareWave(H * 0.75, 80, 12, 0.025, 0.3);
+  drawSquareWave(H * 0.80, 60, 8, 0.018, 0.2);
+
+  // Particles
+  particles.forEach(p => {
+    p.update(t);
+    p.draw(ctx);
+  });
+
+  // Connecting lines between close particles
+  for (let i = 0; i < particles.length; i++) {
+    for (let j = i + 1; j < particles.length; j++) {
+      const dx = particles[i].x - particles[j].x;
+      const dy = particles[i].y - particles[j].y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < 100) {
+        const lineOpacity = (1 - dist / 100) * 0.04;
+        ctx.beginPath();
+        ctx.strokeStyle = `rgba(230, 255, 80, ${lineOpacity})`;
+        ctx.lineWidth = 0.5;
+        ctx.moveTo(particles[i].x, particles[i].y);
+        ctx.lineTo(particles[j].x, particles[j].y);
+        ctx.stroke();
+      }
+    }
+  }
+
+  requestAnimationFrame(animate);
+}
+
+// Start after slight delay for smooth entry
+setTimeout(animate, 100);
+
+// Resize particles on window resize
+window.addEventListener('resize', () => {
+  resize();
+  const newCount = Math.min(Math.floor(W * H / 8000), 120);
+  while (particles.length < newCount) particles.push(new Particle());
+  while (particles.length > newCount) particles.pop();
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Forma — City of Arabia</title>
+<script src="https://player.vimeo.com/api/player.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:#080808;font-family:'Space Grotesk',sans-serif}
+  .slide{width:1440px;height:810px;margin:40px auto;position:relative;overflow:hidden}
+
+  [data-theme="original"]{
+    --bg:#0c0c0e; --bg-alt:#0e0e10;
+    --surface:#141414; --surface-light:#1a1a1a; --surface-deep:#111110; --surface-mid:#161616;
+    --border:#1e1e1e; --border-mid:#252525;
+    --text:#f0eee8; --text-dim:#8a8a8a; --text-muted:#6b6b6b; --text-ghost:#3a3a3a;
+    --gold:#8b7355; --gold-dim:rgba(139,115,85,0.15);
+    --num-01:#222; --num-02:#282828; --num-03:#303030; --num-04:#3a3530; --num-05:#222;
+  }
+
+  [data-theme="shark"]{
+    --bg:#28282D; --bg-alt:#2E2E33;
+    --surface:#323237; --surface-light:#3A3A40; --surface-deep:#222227; --surface-mid:#303035;
+    --border:#3A3A40; --border-mid:#48484E;
+    --text:#CDD2D7; --text-dim:#9DA4AA; --text-muted:#6A7078; --text-ghost:#404046;
+    --gold:#E6FF50; --gold-dim:rgba(230,255,80,0.12);
+    --num-01:#333338; --num-02:#38383D; --num-03:#3E3E43; --num-04:#424248; --num-05:#333338;
+  }
+
+  [data-theme="light"]{
+    --bg:#FFFFFF; --bg-alt:#F8F8F6;
+    --surface:#EAEAE7; --surface-light:#E2E2DF; --surface-deep:#F0F0ED; --surface-mid:#E6E6E3;
+    --border:#D8D8D4; --border-mid:#CCCCC8;
+    --text:#1A1A1F; --text-dim:#55555A; --text-muted:#7A7A80; --text-ghost:#C0C0BC;
+    --gold:#8b7355; --gold-dim:rgba(139,115,85,0.10);
+    --num-01:#F0F0ED; --num-02:#EAEAE7; --num-03:#E4E4E0; --num-04:#DEDEDA; --num-05:#F0F0ED;
+  }
+
+  .slide{background:var(--bg);color:var(--text)}
+  .slide:nth-child(odd){background:var(--bg-alt)}
+  .sn{position:absolute;bottom:36px;right:80px;font-family:'Space Mono',monospace;font-size:11px;color:var(--text-ghost)}
+  .sl{font-family:'Space Mono',monospace;font-size:11px;color:var(--gold);letter-spacing:0.2em;text-transform:uppercase}
+  .h1{font-size:52px;font-weight:700;line-height:58px;letter-spacing:-0.02em;color:var(--text)}
+  .bd{font-size:15px;font-weight:300;color:var(--text-dim);line-height:22px}
+  .lu{font-size:14px;font-weight:600;color:var(--text);text-transform:uppercase;letter-spacing:0.08em}
+  .mn{font-family:'Space Mono',monospace}
+
+  /* Theme toggle */
+  #theme-toggle button{
+    padding:6px 12px;font-size:9px;font-family:'Space Mono',monospace;
+    letter-spacing:0.12em;text-transform:uppercase;border:none;cursor:pointer;
+    background:none;color:var(--text-muted);transition:background .15s,color .15s;
+  }
+  #theme-toggle button.active{
+    background:var(--gold);color:var(--bg);font-weight:700;
+  }
+
+  /* ===== MOBILE RESPONSIVE ===== */
+  @media (max-width: 820px) {
+    html { scroll-behavior: smooth; }
+    body {
+      overflow-x: hidden;
+      background: var(--bg) !important;
+    }
+
+    /* --- Global slide reset --- */
+    .slide {
+      width: 100% !important;
+      height: auto !important;
+      min-height: auto;
+      margin: 0 !important;
+      padding: 48px 20px 40px !important;
+      overflow: visible !important;
+      border-bottom: 1px solid var(--border);
+    }
+    .slide:last-of-type { border-bottom: none; }
+    .slide > svg[viewBox="0 0 1440 810"] { display: none; }
+    .slide > div[style*="radial-gradient"] { display: none !important; }
+
+    /* --- Typography: lighter, more breathable --- */
+    .h1 { font-size: 28px !important; line-height: 34px !important; letter-spacing: -0.01em !important; }
+    .bd { font-size: 13px !important; line-height: 21px !important; color: var(--text-dim) !important; }
+    .sl { font-size: 10px !important; }
+    .lu { font-size: 12px !important; }
+    .sn { right: 20px !important; bottom: 16px !important; font-size: 10px !important; }
+
+    /* --- Theme toggle: compact pill --- */
+    #theme-toggle {
+      top: 10px !important; right: 10px !important;
+      border-radius: 20px !important;
+    }
+    #theme-toggle button { padding: 4px 8px !important; font-size: 7px !important; }
+
+    /* --- S01: Cover --- */
+    #s01 {
+      display: flex !important; flex-direction: column;
+      justify-content: flex-end;
+      padding: 60px 20px 48px !important;
+      min-height: 75dvh;
+      border-bottom: none !important;
+    }
+    #s01 > svg { display: none !important; }
+    #s01 > div[style*="top:60px"] {
+      position: relative !important; top: auto !important; left: auto !important;
+      margin-bottom: auto; padding-top: 16px;
+    }
+    #s01 > div[style*="top:60px"] svg { width: 32px !important; height: 20px !important; }
+    #s01 > div[style*="top:60px"] .sl { font-size: 9px !important; }
+    #s01 > div[style*="bottom:60px"] {
+      position: relative !important; bottom: auto !important; left: auto !important;
+    }
+    #s01 > div[style*="bottom:60px"] .h1 {
+      font-size: 32px !important; line-height: 38px !important;
+    }
+    #s01 > div[style*="bottom:60px"] .bd { font-size: 12px !important; }
+    #s01 > div[style*="bottom:36px"] {
+      position: relative !important; bottom: auto !important; right: auto !important;
+      margin-top: 24px;
+    }
+
+    /* --- S02: Philosophy (3 cols -> stack) --- */
+    #s02 > div[style*="padding:72px"] { padding: 0 0 16px !important; }
+    #s02 > div[style*="gap:40px"] {
+      flex-direction: column !important;
+      padding: 16px 0 0 !important;
+      gap: 20px !important;
+    }
+    #s02 > div[style*="gap:40px"] > div {
+      border-left-width: 2px !important;
+      padding-left: 16px !important;
+    }
+    #s02 > div[style*="gap:40px"] .lu { font-size: 11px !important; margin-bottom: 6px !important; }
+
+    /* --- S03: The Constraint --- */
+    #s03 > div[style*="padding:60px 80px"] { padding: 0 !important; }
+    #s03 > div[style*="padding:60px 80px"] > div[style*="gap:60px"] {
+      flex-direction: column !important;
+      align-items: flex-start !important;
+      gap: 12px !important;
+      padding-top: 16px !important;
+    }
+    #s03 .mn[style*="font-size:280px"] {
+      font-size: 96px !important; line-height: 80px !important;
+    }
+    #s03 > div[style*="padding:60px 80px"] > div[style*="gap:60px"] > div:last-child > div[style*="font-size:32px"] {
+      font-size: 22px !important; line-height: 26px !important;
+    }
+    #s03 > div[style*="padding:60px 80px"] > div[style*="padding-top:80px"] {
+      flex-direction: row !important;
+      flex-wrap: wrap !important;
+      gap: 16px !important;
+      padding-top: 28px !important;
+    }
+    #s03 > div[style*="padding:60px 80px"] > div[style*="padding-top:80px"] > div {
+      border-left-width: 2px !important;
+      padding-left: 12px !important;
+    }
+    #s03 > div[style*="padding:60px 80px"] > div[style*="padding-top:80px"] .mn[style*="font-size:28px"] {
+      font-size: 20px !important;
+    }
+
+    /* --- S04: Sonic Territory (2x2 -> single col) --- */
+    #s04 > div[style*="padding:72px"] { padding: 0 0 12px !important; }
+    #s04 > div[style*="flex-wrap:wrap"] {
+      flex-direction: column !important;
+      padding: 8px 0 0 !important;
+      gap: 0 !important;
+    }
+    #s04 > div[style*="flex-wrap:wrap"] > div {
+      width: 100% !important;
+      margin: 0 !important;
+      padding: 16px !important;
+      border: none !important;
+      border-bottom: 1px solid var(--border) !important;
+    }
+    #s04 > div[style*="flex-wrap:wrap"] > div:last-child { border-bottom: none !important; }
+    #s04 > div[style*="flex-wrap:wrap"] > div .mn { font-size: 32px !important; }
+
+    /* --- S05: Translation (2 col + arrows -> stacked) --- */
+    #s05 > div[style*="padding:72px"] { padding: 0 0 12px !important; }
+    #s05 > div[style*="padding:32px 80px"] {
+      flex-direction: column !important;
+      padding: 12px 0 0 !important;
+      gap: 0 !important;
+    }
+    #s05 > div[style*="padding:32px 80px"] > div[style*="width:80px"] {
+      display: none !important;
+    }
+    #s05 > div[style*="padding:32px 80px"] > div[style*="padding-right:60px"] {
+      padding: 0 0 20px !important;
+    }
+    #s05 > div[style*="padding:32px 80px"] > div[style*="padding-left:60px"] {
+      padding: 20px 0 0 !important;
+      border-left: none !important;
+      border-top: 1px solid var(--border) !important;
+    }
+    #s05 div[style*="font-size:22px"] { font-size: 17px !important; }
+    #s05 div[style*="padding-left:44px"] { padding-left: 0 !important; margin-top: 4px; }
+    #s05 div[style*="width:32px;height:3px"] { width: 20px !important; }
+
+    /* --- S06: Emotional Arc (5 bars -> compact list) --- */
+    #s06 > div[style*="padding:72px"] { padding: 0 0 8px !important; }
+    #s06 > div[style*="padding:40px 80px"] { padding: 8px 0 0 !important; }
+    #s06 > div[style*="padding:40px 80px"] > div[style*="gap:8px"] {
+      flex-direction: column !important; gap: 0 !important;
+    }
+    #s06 > div[style*="padding:40px 80px"] > div[style*="gap:8px"] > div {
+      height: auto !important;
+      padding: 14px 0 !important;
+      border-bottom: 1px solid var(--border);
+    }
+    #s06 > div[style*="padding:40px 80px"] > div[style*="gap:8px"] > div:last-child { border-bottom: none; }
+    #s06 > div[style*="padding:40px 80px"] > div[style*="gap:8px"] > div > div[style*="margin-bottom:8px"] {
+      display: none !important;
+    }
+    #s06 > div[style*="padding:40px 80px"] > div[style*="gap:8px"] > div > div[style*="padding:12px"] {
+      padding: 0 !important;
+      display: flex; align-items: baseline; gap: 12px;
+    }
+    #s06 > div[style*="padding:40px 80px"] > div[style*="gap:8px"] > div > div[style*="padding:12px"] .mn {
+      font-size: 20px !important; min-width: 32px; color: var(--text-ghost) !important;
+    }
+    #s06 > div[style*="padding:40px 80px"] > div[style*="gap:8px"] > div > div[style*="padding:12px"] > div[style*="font-size:15px"] {
+      font-size: 14px !important;
+    }
+
+    /* --- S07: The Echo --- */
+    #s07 > div[style*="padding:72px"] { padding: 0 0 8px !important; }
+    #s07 > div[style*="padding:16px 80px"] { padding: 8px 0 !important; }
+    #s07 > div[style*="padding:16px 80px"] > div[style*="font-size:28px"] {
+      font-size: 20px !important; line-height: 28px !important;
+    }
+    #s07 > div[style*="padding:16px 80px"] > div[style*="max-width:560px"] {
+      max-width: 100% !important; gap: 16px !important;
+    }
+
+    /* --- S08: Execution (3 cols -> stack) --- */
+    #s08 > div[style*="padding:72px"] { padding: 0 0 12px !important; }
+    #s08 > div[style*="gap:24px;padding:28px"] {
+      flex-direction: column !important;
+      padding: 8px 0 0 !important;
+      gap: 12px !important;
+    }
+    #s08 > div[style*="gap:24px;padding:28px"] > div {
+      padding: 20px !important;
+    }
+    #s08 > div[style*="gap:24px;padding:28px"] > div > div[style*="font-size:18px"] {
+      font-size: 16px !important;
+    }
+
+    /* --- S09: Moods / Video (the big fix) --- */
+    #s09 { padding-bottom: 24px !important; }
+    #s09 > div[style*="padding:60px 80px"] { padding: 0 0 12px !important; }
+    #s09 > div[style*="position:absolute;top:148px"] {
+      position: relative !important;
+      top: auto !important; left: auto !important;
+      right: auto !important; bottom: auto !important;
+      padding: 0 !important;
+      display: flex !important; flex-direction: column !important; gap: 12px !important;
+    }
+    #s09 > div[style*="position:absolute;top:148px"] > div[style*="flex:1"] {
+      flex: none !important;
+    }
+    #s09 > div[style*="position:absolute;top:148px"] > div[style*="flex:1"] > div[style*="width:900px"] {
+      width: 100% !important;
+      height: auto !important;
+      aspect-ratio: 16/9;
+      max-width: 100%;
+      padding-bottom: 0 !important;
+    }
+    #s09 > div[style*="position:absolute;top:148px"] > div[style*="flex:1"] > div[style*="width:900px"] iframe {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    }
+    #s09 > div[style*="position:absolute;top:148px"] > div[style*="gap:12px"] {
+      flex-direction: column !important;
+      gap: 8px !important;
+    }
+    #s09 > div[style*="position:absolute;top:148px"] > div[style*="gap:12px"] button {
+      padding: 10px 14px !important;
+    }
+    #s09 > div[style*="position:absolute;top:148px"] > div[style*="gap:12px"] button > div:last-child {
+      display: none;
+    }
+
+    /* --- S10: Fee Estimate --- */
+    #s10 > div[style*="padding:60px 80px"] { padding: 0 !important; height: auto !important; }
+    #s10 > div[style*="padding:60px 80px"] > div[style*="justify-content:space-between"] {
+      flex-direction: column !important; gap: 12px !important;
+    }
+    #s10 > div[style*="padding:60px 80px"] > div[style*="justify-content:space-between"] > div[style*="text-align:right"] {
+      text-align: left !important;
+    }
+    #s10 > div[style*="padding:60px 80px"] > div[style*="justify-content:space-between"] > div[style*="text-align:right"] .sl {
+      font-size: 12px !important;
+    }
+    #s10 div[style*="grid-template-columns"] {
+      grid-template-columns: 1fr auto !important;
+      gap: 0 !important;
+    }
+    #s10 div[style*="grid-template-columns"] > :nth-child(2),
+    #s10 div[style*="grid-template-columns"] > :nth-child(3) { display: none !important; }
+    #s10 div[style*="grid-template-columns"] > :nth-child(4) { text-align: right; }
+    #s10 > div[style*="padding:60px 80px"] > div[style*="justify-content:flex-end"] {
+      margin-top: 20px !important;
+    }
+    #s10 > div[style*="padding:60px 80px"] > div[style*="justify-content:flex-end"] > div {
+      min-width: auto !important; width: 100% !important;
+    }
+
+    /* --- S11: Close --- */
+    #s11 {
+      min-height: 50dvh;
+      display: flex !important; align-items: center; justify-content: center;
+      border-bottom: none !important;
+    }
+    #s11 > svg { display: none !important; }
+    #s11 > div[style*="align-items:center"] svg { width: 60px !important; height: 36px !important; }
+    #s11 > div[style*="align-items:center"] > div[style*="font-size:22px"] {
+      font-size: 15px !important; letter-spacing: .06em !important;
+    }
+    #s11 > div[style*="align-items:center"] > div[style*="font-size:12px"] {
+      font-size: 9px !important; text-align: center; padding: 0 16px;
+      line-height: 16px !important;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- Theme toggle -->
+<div id="theme-toggle" style="position:fixed;top:24px;right:24px;z-index:200;display:flex;border:1px solid var(--border-mid);border-radius:3px;overflow:hidden;font-family:'Space Mono',monospace">
+  <button id="t1" onclick="setTheme('light')">Light</button>
+  <button id="t2" onclick="setTheme('original')">Dark</button>
+  <button id="t3" onclick="setTheme('shark')">Shark</button>
+</div>
+
+<!-- FLAG MARK V3 (triangle inward) reusable:
+  <polygon points="0,0 300,0 253,87 0,87" fill="..."/>
+  <polygon points="0,93 253,93 300,180 0,180" fill="..."/>
+-->
+
+<!-- ===== SLIDE 01: COVER ===== -->
+<div id="s01" class="slide" style="background:var(--bg)">
+  <svg style="position:absolute;top:0;left:0;width:1440px;height:810px" viewBox="0 0 1440 810">
+    <!-- BG: Rectangle with inward V-notch (flag V3 scaled) -->
+    <polygon points="680,60 1400,60 1350,372 680,372" fill="var(--surface-deep)"/>
+    <polygon points="680,438 1350,438 1400,750 680,750" fill="var(--surface-deep)"/>
+  </svg>
+  <div style="position:absolute;bottom:0;left:0;width:660px;height:120px;background-image:radial-gradient(circle,var(--surface-light) 1.2px,transparent 1.2px);background-size:30px 20px;opacity:.6"></div>
+  <div style="position:absolute;top:60px;left:80px;display:flex;align-items:center;gap:14px">
+    <svg viewBox="0 0 300 180" width="44" height="26"><polygon points="0,0 300,0 253,87 0,87" fill="var(--gold)"/><polygon points="0,93 253,93 300,180 0,180" fill="var(--gold)"/></svg>
+    <span class="sl" style="color:var(--gold)">Forma Audio Solutions</span>
+  </div>
+  <div style="position:absolute;bottom:60px;left:80px;display:flex;flex-direction:column;gap:0">
+    <div style="width:60px;height:2px;background:var(--gold);margin:0 0 24px"></div>
+    <div class="h1" style="font-size:58px;line-height:64px;letter-spacing:-0.03em;margin-bottom:20px">The Sound of<br>Magical Realism</div>
+    <div class="bd" style="color:var(--text-muted);font-size:14px">Sound Design Strategy & Action Plan</div>
+    <div class="bd" style="color:var(--text-ghost);font-size:13px;margin-top:4px">Flora Oasis Campaign</div>
+  </div>
+  <div style="position:absolute;bottom:36px;right:80px;display:flex;align-items:center;gap:12px">
+    <div style="width:40px;height:1px;background:var(--gold);opacity:.3"></div>
+    <span class="mn" style="font-size:11px;color:var(--text-ghost)">01 / 11</span>
+  </div>
+</div>
+
+<!-- ===== SLIDE 02: PHILOSOPHY ===== -->
+<div id="s02" class="slide">
+  <!-- BG: Three stacked square waves instead of DREAM watermark -->
+  <svg style="position:absolute;top:0;left:0;width:1440px;height:810px" viewBox="0 0 1440 810">
+    <!-- Square wave 1 -->
+    <path d="M60,480 L180,480 L180,440 L300,440 L300,480 L420,480 L420,440 L540,440 L540,480 L660,480 L660,440 L780,440 L780,480 L900,480 L900,440 L1020,440 L1020,480 L1140,480 L1140,440 L1260,440 L1260,480 L1380,480" fill="none" stroke="var(--surface-mid)" stroke-width="3"/>
+    <!-- Square wave 2 (offset) -->
+    <path d="M60,560 L140,560 L140,520 L260,520 L260,560 L380,560 L380,520 L500,520 L500,560 L620,560 L620,520 L740,520 L740,560 L860,560 L860,520 L980,520 L980,560 L1100,560 L1100,520 L1220,520 L1220,560 L1380,560" fill="none" stroke="var(--surface)" stroke-width="2.5"/>
+    <!-- Square wave 3 -->
+    <path d="M60,640 L200,640 L200,600 L340,600 L340,640 L480,640 L480,600 L620,600 L620,640 L760,640 L760,600 L900,600 L900,640 L1040,640 L1040,600 L1180,600 L1180,640 L1380,640" fill="none" stroke="var(--surface)" stroke-width="2"/>
+    <!-- Corner bracket -->
+    <rect x="1340" y="60" width="40" height="2" fill="var(--gold)" opacity=".3"/>
+    <rect x="1378" y="60" width="2" height="40" fill="var(--gold)" opacity=".3"/>
+    <line x1="80" y1="168" x2="1360" y2="168" stroke="var(--surface-light)" stroke-width="1"/>
+  </svg>
+  <div style="padding:72px 80px;display:flex;flex-direction:column;gap:16px">
+    <span class="sl">Philosophy</span>
+    <div class="h1" style="max-width:700px">Between Dream and Reality.</div>
+  </div>
+  <div style="display:flex;gap:40px;padding:32px 80px 0">
+    <div style="flex:1;border-left:2px solid var(--gold);padding-left:24px">
+      <div class="lu" style="margin-bottom:12px">The Register</div>
+      <div class="bd">Magical realism. Not strict documentary, not pure fantasy. Sound exists in the space where both feel true at once.</div>
+    </div>
+    <div style="flex:1;border-left:2px solid var(--gold);padding-left:24px">
+      <div class="lu" style="margin-bottom:12px">The Frontier</div>
+      <div class="bd">Sound design must inhabit the liminal space between the tangible and the dreamlike. Every texture carries both weight and wonder.</div>
+    </div>
+    <div style="flex:1;border-left:2px solid var(--gold);padding-left:24px">
+      <div class="lu" style="margin-bottom:12px">The Approach</div>
+      <div class="bd">Grounded enough to groove. Weightless enough to float. The balance is the craft.</div>
+    </div>
+  </div>
+  <span class="sn">02 / 11</span>
+</div>
+
+<!-- ===== SLIDE 03: THE CONSTRAINT ===== -->
+<div id="s03" class="slide" style="background:var(--bg)">
+  <svg style="position:absolute;top:0;left:0;width:1440px;height:810px" viewBox="0 0 1440 810">
+    <text x="-30" y="660" font-family="Space Mono,monospace" font-weight="700" font-size="720" fill="var(--surface)" letter-spacing="-40">45</text>
+    <path d="M0,405 L120,405 L120,360 L240,360 L240,405 L360,405 L360,360 L480,360 L480,405 L600,405 L600,360 L720,360 L720,405 L840,405 L840,360 L960,360 L960,405 L1080,405 L1080,360 L1200,360 L1200,405 L1320,405 L1320,360 L1440,360" fill="none" stroke="var(--gold)" stroke-width="1.5" opacity=".15"/>
+  </svg>
+  <div style="position:absolute;top:120px;right:80px;width:400px;height:120px;background-image:radial-gradient(circle,var(--surface-light) 1.5px,transparent 1.5px);background-size:40px 40px;opacity:.5"></div>
+  <div style="padding:60px 80px;position:relative;z-index:1">
+    <span class="sl">The Constraint</span>
+    <div style="display:flex;align-items:center;gap:60px;padding-top:40px">
+      <span class="mn" style="font-size:280px;font-weight:700;line-height:240px;letter-spacing:-0.06em">45</span>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="font-size:32px;font-weight:700;line-height:36px">seconds to tell<br>the whole story.</div>
+        <div class="bd" style="max-width:420px;color:var(--text-muted)">No room for conventional buildups. Every sonic gesture carries immediate weight. A complex narrative of abundance condensed into a single breath.</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:60px;padding-top:80px">
+      <div style="border-left:3px solid var(--gold);padding-left:20px">
+        <span class="mn" style="font-size:28px;font-weight:700">42-45s</span>
+        <div class="bd" style="font-size:13px;color:var(--text-muted);margin-top:4px">Total Duration</div>
+      </div>
+      <div style="border-left:3px solid var(--gold);padding-left:20px">
+        <span class="mn" style="font-size:28px;font-weight:700">5 Acts</span>
+        <div class="bd" style="font-size:13px;color:var(--text-muted);margin-top:4px">Emotional Arc</div>
+      </div>
+      <div style="border-left:3px solid var(--gold);padding-left:20px">
+        <span class="mn" style="font-size:28px;font-weight:700">0 filler</span>
+        <div class="bd" style="font-size:13px;color:var(--text-muted);margin-top:4px">Absolute Efficiency</div>
+      </div>
+    </div>
+  </div>
+  <span class="sn">03 / 11</span>
+</div>
+
+<!-- ===== SLIDE 04: SONIC TERRITORY ===== -->
+<div id="s04" class="slide">
+  <svg style="position:absolute;top:0;left:0;width:1440px;height:810px" viewBox="0 0 1440 810">
+    <line x1="720" y1="180" x2="720" y2="680" stroke="var(--surface-mid)" stroke-width="1"/>
+    <line x1="80" y1="430" x2="1360" y2="430" stroke="var(--surface-mid)" stroke-width="1"/>
+    <rect x="1340" y="60" width="40" height="2" fill="var(--gold)" opacity=".3"/>
+    <rect x="1378" y="60" width="2" height="40" fill="var(--gold)" opacity=".3"/>
+    <rect x="60" y="748" width="40" height="2" fill="var(--gold)" opacity=".3"/>
+    <rect x="60" y="710" width="2" height="40" fill="var(--gold)" opacity=".3"/>
+  </svg>
+  <div style="padding:72px 80px;display:flex;flex-direction:column;gap:16px">
+    <span class="sl">Sonic Territory</span>
+    <div class="h1">A Sonic Geography</div>
+  </div>
+  <div style="display:flex;flex-wrap:wrap;gap:0;padding:24px 80px 0">
+    <div style="width:calc(50% - 20px);margin:0 20px 24px 0;padding:28px;border:1px solid var(--border);position:relative">
+      <span class="mn" style="position:absolute;top:16px;right:20px;font-size:48px;font-weight:700;color:var(--surface-light)">01</span>
+      <div class="lu" style="font-size:15px;margin-bottom:10px">Visual Territory</div>
+      <div class="bd" style="font-size:14px;max-width:85%">A purely Mediterranean aesthetic transposed to a luxurious desert setting. Sun-drenched architecture, warm terracotta, lush botanical contrasts.</div>
+    </div>
+    <div style="width:calc(50% - 20px);margin:0 0 24px 0;padding:28px;border:1px solid var(--border);position:relative">
+      <span class="mn" style="position:absolute;top:16px;right:20px;font-size:48px;font-weight:700;color:var(--surface-light)">02</span>
+      <div class="lu" style="font-size:15px;margin-bottom:10px">Sonic Moodboard</div>
+      <div class="bd" style="font-size:14px;max-width:85%">Balearic indie, sun-drenched grooves and warm analog production. A rhythm that never disappears, only shifts intensity. Refs: Poolside, Khruangbin, Bonobo, Tycho, Portishead.</div>
+    </div>
+    <div style="width:calc(50% - 20px);margin:0 20px 0 0;padding:28px;border:1px solid var(--border);position:relative">
+      <span class="mn" style="position:absolute;top:16px;right:20px;font-size:48px;font-weight:700;color:var(--surface-light)">03</span>
+      <div class="lu" style="font-size:15px;margin-bottom:10px">Organic Instrumentation</div>
+      <div class="bd" style="font-size:14px;max-width:85%">Clean electric guitar with spring reverb, warm Rhodes piano, immersive analog pads. Every instrument chosen for warmth and tactile presence.</div>
+    </div>
+    <div style="width:calc(50% - 20px);padding:28px;border:1px solid var(--border);position:relative">
+      <span class="mn" style="position:absolute;top:16px;right:20px;font-size:48px;font-weight:700;color:var(--surface-light)">04</span>
+      <div class="lu" style="font-size:15px;margin-bottom:10px">Tactile Percussion</div>
+      <div class="bd" style="font-size:14px;max-width:85%">Soft brushed drums and warm synth bass anchoring a laid-back groove. Percussion present but never heavy, the pulse of a Mediterranean afternoon.</div>
+    </div>
+  </div>
+  <span class="sn">04 / 11</span>
+</div>
+
+<!-- ===== SLIDE 05: TRANSLATION ===== -->
+<div id="s05" class="slide" style="background:var(--bg)">
+  <!-- BG: Large arrow graphic -->
+  <svg style="position:absolute;top:0;left:0;width:1440px;height:810px" viewBox="0 0 1440 810">
+    <path d="M680,200 L740,405 L680,610" fill="none" stroke="var(--surface-light)" stroke-width="2"/>
+    <circle cx="740" cy="405" r="4" fill="var(--gold)" opacity=".4"/>
+  </svg>
+  <div style="padding:72px 80px;display:flex;flex-direction:column;gap:16px">
+    <span class="sl">Translation</span>
+    <div class="h1">Translating Image<br>into Sound</div>
+  </div>
+  <!-- Two-column layout: left = visual, right = sonic -->
+  <div style="display:flex;padding:32px 80px 0;gap:0">
+    <!-- LEFT: Visual Stimuli -->
+    <div style="flex:1;padding-right:60px">
+      <div class="sl" style="font-size:10px;margin-bottom:28px">Visual Stimulus</div>
+      <div style="margin-bottom:40px">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
+          <div style="width:32px;height:3px;background:var(--gold)"></div>
+          <span style="font-size:22px;font-weight:600">Light Flares</span>
+        </div>
+        <div class="bd" style="font-size:14px;padding-left:44px">Visual transitions between spaces and states of consciousness.</div>
+      </div>
+      <div>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
+          <div style="width:32px;height:3px;background:var(--gold)"></div>
+          <span style="font-size:22px;font-weight:600">Botanical Growth</span>
+        </div>
+        <div class="bd" style="font-size:14px;padding-left:44px">The central character. Plants, vines and flowers blooming progressively throughout the film.</div>
+      </div>
+    </div>
+    <!-- CENTER: Arrow column -->
+    <div style="width:80px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:80px">
+      <svg viewBox="0 0 40 20" width="40" height="20"><path d="M0,10 L30,10 M24,4 L30,10 L24,16" fill="none" stroke="var(--gold)" stroke-width="2"/></svg>
+      <svg viewBox="0 0 40 20" width="40" height="20"><path d="M0,10 L30,10 M24,4 L30,10 L24,16" fill="none" stroke="var(--gold)" stroke-width="2"/></svg>
+    </div>
+    <!-- RIGHT: Sonic Responses -->
+    <div style="flex:1;padding-left:60px;border-left:1px solid var(--border)">
+      <div class="sl" style="font-size:10px;margin-bottom:28px">Sonic Response</div>
+      <div style="margin-bottom:40px">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
+          <div style="width:32px;height:3px;background:var(--text)"></div>
+          <span style="font-size:22px;font-weight:600">Swells & Shimmers</span>
+        </div>
+        <div class="bd" style="font-size:14px;padding-left:44px">A recurring sonic wash (synthesized texture) that cleanses between scenes. The audible signature of transition.</div>
+      </div>
+      <div>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
+          <div style="width:32px;height:3px;background:var(--text)"></div>
+          <span style="font-size:22px;font-weight:600">Harmonic Accumulation</span>
+        </div>
+        <div class="bd" style="font-size:14px;padding-left:44px">Layering complexity. Musical and structural density grows organically in parallel with the flora.</div>
+      </div>
+    </div>
+  </div>
+  <span class="sn">05 / 11</span>
+</div>
+
+<!-- ===== SLIDE 06: THE ARC ===== -->
+<div id="s06" class="slide">
+  <div style="padding:72px 80px 0;display:flex;flex-direction:column;gap:16px;position:relative;z-index:2">
+    <span class="sl">Emotional Arc</span>
+    <div class="h1">The 5-Act Emotional Arc</div>
+  </div>
+  <div style="padding:40px 80px 0;position:relative">
+    <div style="display:flex;gap:8px">
+      <div style="flex:1;display:flex;flex-direction:column;justify-content:flex-end;height:420px">
+        <div style="background:var(--surface-light);height:80px;margin-bottom:8px;border-top:3px solid var(--gold);opacity:.6"></div>
+        <div style="padding:12px 16px">
+          <span class="mn" style="font-size:36px;font-weight:700;color:var(--num-01)">01</span>
+          <div style="font-size:15px;font-weight:600;margin:8px 0 6px">Breathing</div>
+          <div class="bd" style="font-size:13px">A pulse beneath stillness. Warmth rising before the groove arrives.</div>
+        </div>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;justify-content:flex-end;height:420px">
+        <div style="background:var(--surface-light);height:160px;margin-bottom:8px;border-top:3px solid var(--gold);opacity:.7"></div>
+        <div style="padding:12px 16px">
+          <span class="mn" style="font-size:36px;font-weight:700;color:var(--num-02)">02</span>
+          <div style="font-size:15px;font-weight:600;margin:8px 0 6px">The Awakening</div>
+          <div class="bd" style="font-size:13px">The groove lands. Rhythm and bass claim the space.</div>
+        </div>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;justify-content:flex-end;height:420px">
+        <div style="background:var(--surface-light);height:240px;margin-bottom:8px;border-top:3px solid var(--text);opacity:.8"></div>
+        <div style="padding:12px 16px">
+          <span class="mn" style="font-size:36px;font-weight:700;color:var(--num-03)">03</span>
+          <div style="font-size:15px;font-weight:600;margin:8px 0 6px">Human Warmth</div>
+          <div class="bd" style="font-size:13px">The melody emerges. Harmony gains body.</div>
+        </div>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;justify-content:flex-end;height:420px">
+        <div style="background:var(--gold-dim);height:320px;margin-bottom:8px;border-top:3px solid var(--gold);border-left:1px solid var(--gold-dim);border-right:1px solid var(--gold-dim)"></div>
+        <div style="padding:12px 16px">
+          <span class="mn" style="font-size:36px;font-weight:700;color:var(--num-04)">04</span>
+          <div style="font-size:15px;font-weight:600;margin:8px 0 6px">Climax</div>
+          <div class="bd" style="font-size:13px">Maximum abundance. All elements converge.</div>
+        </div>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;justify-content:flex-end;height:420px">
+        <div style="background:var(--surface-light);height:60px;margin-bottom:8px;border-top:3px solid var(--gold);opacity:.5"></div>
+        <div style="padding:12px 16px">
+          <span class="mn" style="font-size:36px;font-weight:700;color:var(--num-05)">05</span>
+          <div style="font-size:15px;font-weight:600;margin:8px 0 6px">Dissolution</div>
+          <div class="bd" style="font-size:13px">The groove unravels. One new note lingers.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <span class="sn">06 / 11</span>
+</div>
+
+<!-- ===== SLIDE 07: THE ECHO ===== -->
+<div id="s07" class="slide" style="background:var(--bg)">
+  <!-- BG: Redesigned circle — more visual, illustrative -->
+  <svg style="position:absolute;top:0;left:0;width:1440px;height:810px" viewBox="0 0 1440 810">
+    <!-- LOOP SYMBOL: Square made of 4 thick bars with a gap -->
+    <!-- Top bar -->
+    <rect x="940" y="260" width="240" height="20" fill="var(--gold)" opacity=".4"/>
+    <!-- Right bar -->
+    <rect x="1160" y="280" width="20" height="200" fill="var(--gold)" opacity=".4"/>
+    <!-- Bottom bar -->
+    <rect x="940" y="460" width="240" height="20" fill="var(--gold)" opacity=".4"/>
+    <!-- Left bar -->
+    <rect x="940" y="260" width="20" height="220" fill="var(--gold)" opacity=".4"/>
+    <!-- THE GAP: top-right corner open -->
+    <rect x="1170" y="260" width="8" height="8" fill="var(--text)" opacity=".6"/>
+    <rect x="1160" y="248" width="8" height="8" fill="var(--gold)" opacity=".8"/>
+    <!-- Labels: start/end -->
+    <text x="1190" y="268" font-family="Space Mono,monospace" font-size="9" fill="var(--gold)" opacity=".5" letter-spacing="1">START</text>
+    <text x="1178" y="248" font-family="Space Mono,monospace" font-size="9" fill="var(--gold)" opacity=".5" letter-spacing="1">END +1</text>
+    <!-- Concentric square ripples -->
+    <rect x="900" y="220" width="320" height="320" fill="none" stroke="var(--gold)" stroke-width=".8" opacity=".12"/>
+    <rect x="860" y="180" width="400" height="400" fill="none" stroke="var(--gold)" stroke-width=".5" opacity=".06"/>
+    <!-- Concept words on each side of the square -->
+    <text x="1060" y="248" font-family="Space Grotesk,sans-serif" font-size="12" fill="var(--gold)" opacity=".5" letter-spacing="4" text-anchor="middle" font-weight="600">DREAM</text>
+    <text x="1060" y="500" font-family="Space Grotesk,sans-serif" font-size="12" fill="var(--gold)" opacity=".5" letter-spacing="4" text-anchor="middle" font-weight="600">REAL</text>
+    <text x="928" y="378" font-family="Space Grotesk,sans-serif" font-size="12" fill="var(--gold)" opacity=".5" letter-spacing="4" text-anchor="end" font-weight="600" transform="rotate(-90,928,378)">SILENCE</text>
+    <text x="1192" y="378" font-family="Space Grotesk,sans-serif" font-size="12" fill="var(--gold)" opacity=".5" letter-spacing="4" text-anchor="start" font-weight="600" transform="rotate(90,1192,378)">SOUND</text>
+    <!-- Horizontal rule -->
+    <line x1="0" y1="620" x2="680" y2="620" stroke="var(--surface-light)" stroke-width="1"/>
+  </svg>
+
+  <div style="padding:72px 80px;display:flex;flex-direction:column;gap:16px;position:relative;z-index:1">
+    <span class="sl">The Echo</span>
+    <div class="h1">The Final Echo</div>
+  </div>
+  <div style="padding:16px 80px;position:relative;z-index:1">
+    <div style="font-size:28px;font-weight:300;font-style:italic;line-height:38px;margin-bottom:40px">"Was it a dream, or was it real?"</div>
+    <div style="display:flex;flex-direction:column;gap:24px;max-width:560px">
+      <div style="border-left:2px solid var(--gold);padding-left:20px">
+        <div style="font-size:15px;font-weight:600;margin-bottom:6px">The Loop</div>
+        <div class="bd" style="font-size:14px">Circular structure. The film opens and closes with the exact same image. The score mirrors this return.</div>
+      </div>
+      <div style="border-left:2px solid var(--gold);padding-left:20px">
+        <div style="font-size:15px;font-weight:600;margin-bottom:6px">The Ambiguous Resolution</div>
+        <div class="bd" style="font-size:14px">The score returns to the starting point but carries one extra note. A harmony that refuses to fully resolve. The gap in the circle.</div>
+      </div>
+    </div>
+  </div>
+  <span class="sn">07 / 11</span>
+</div>
+
+<!-- ===== SLIDE 08: EXECUTION ===== -->
+<div id="s08" class="slide">
+  <svg style="position:absolute;top:0;left:0;width:1440px;height:810px" viewBox="0 0 1440 810">
+    <rect x="80" y="560" width="55" height="55" fill="var(--surface)"/>
+    <rect x="143" y="560" width="55" height="55" fill="var(--surface)"/>
+    <rect x="206" y="560" width="120" height="55" fill="var(--surface)"/>
+    <rect x="80" y="623" width="120" height="55" fill="var(--surface)"/>
+    <rect x="208" y="623" width="55" height="55" fill="var(--surface)"/>
+    <rect x="80" y="686" width="55" height="55" fill="var(--surface)"/>
+    <rect x="143" y="686" width="183" height="55" fill="var(--surface)"/>
+    <rect x="1200" y="560" width="55" height="55" fill="var(--surface)"/>
+    <rect x="1263" y="560" width="120" height="55" fill="var(--surface)"/>
+    <rect x="1200" y="623" width="120" height="55" fill="var(--surface)"/>
+    <rect x="1328" y="623" width="55" height="55" fill="var(--surface)"/>
+    <rect x="1200" y="686" width="183" height="55" fill="var(--surface)"/>
+  </svg>
+  <div style="position:absolute;bottom:80px;left:400px;width:640px;height:80px;background-image:radial-gradient(circle,var(--surface-light) 1.2px,transparent 1.2px);background-size:30px 20px;opacity:.5"></div>
+  <div style="padding:72px 80px;display:flex;flex-direction:column;gap:16px">
+    <span class="sl">Execution</span>
+    <div class="h1">Action Plan</div>
+  </div>
+  <div style="display:flex;gap:24px;padding:28px 80px 0">
+    <div style="flex:1;padding:28px 28px 32px;border:1px solid var(--border);position:relative">
+      <span class="mn" style="font-size:11px;color:var(--gold);letter-spacing:.15em">PHASE 01</span>
+      <div style="font-size:18px;font-weight:600;margin:10px 0 16px">Composition &<br>Arrangement</div>
+      <div style="width:40px;height:2px;background:var(--gold);margin-bottom:18px"></div>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div class="bd" style="font-size:13px">Build the dynamic skeleton for the 5-act arc (45s).</div>
+        <div class="bd" style="font-size:13px">Develop harmonic accumulation progression to mirror botanical growth.</div>
+        <div class="bd" style="font-size:13px">Build core sound palette: clean electric guitar, warm synth bass, Rhodes piano, soft brushed drums.</div>
+      </div>
+    </div>
+    <div style="flex:1;padding:28px 28px 32px;border:1px solid var(--border);position:relative">
+      <span class="mn" style="font-size:11px;color:var(--gold);letter-spacing:.15em">PHASE 02</span>
+      <div style="font-size:18px;font-weight:600;margin:10px 0 16px">Sound Design &<br>Textures</div>
+      <div style="width:40px;height:2px;background:var(--gold);margin-bottom:18px"></div>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div class="bd" style="font-size:13px">Synthesize bespoke shimmers and washes (synthesized textures) for light flare transitions.</div>
+        <div class="bd" style="font-size:13px">Build the organic ambience for Act 1 and design the final echo for Act 5.</div>
+      </div>
+    </div>
+    <div style="flex:1;padding:28px 28px 32px;border:1px solid var(--border);position:relative">
+      <span class="mn" style="font-size:11px;color:var(--gold);letter-spacing:.15em">PHASE 03</span>
+      <div style="font-size:18px;font-weight:600;margin:10px 0 16px">Mixing &<br>Finalization</div>
+      <div style="width:40px;height:2px;background:var(--gold);margin-bottom:18px"></div>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div class="bd" style="font-size:13px">Ensure the balearic warmth and sun-drenched quality throughout.</div>
+        <div class="bd" style="font-size:13px">Precisely balance the frontier between organic real elements and ethereal processing (digital effects).</div>
+      </div>
+    </div>
+  </div>
+  <span class="sn">08 / 11</span>
+</div>
+
+<!-- ===== SLIDE 09: MOODS ===== -->
+<div id="s09" class="slide" style="background:var(--bg)">
+  <!-- BG: geometric blocks + dot pattern framing the player -->
+  <svg style="position:absolute;top:0;left:0;width:1440px;height:810px" viewBox="0 0 1440 810">
+    <!-- Corner brackets -->
+    <rect x="1340" y="60" width="40" height="2" fill="var(--gold)" opacity=".3"/>
+    <rect x="1378" y="60" width="2" height="40" fill="var(--gold)" opacity=".3"/>
+    <rect x="60" y="748" width="40" height="2" fill="var(--gold)" opacity=".3"/>
+    <rect x="60" y="710" width="2" height="40" fill="var(--gold)" opacity=".3"/>
+    <!-- Block cluster: top-right -->
+    <rect x="1200" y="60" width="55" height="55" fill="var(--surface)"/>
+    <rect x="1263" y="60" width="55" height="55" fill="var(--surface)"/>
+    <rect x="1200" y="123" width="120" height="40" fill="var(--surface)"/>
+    <!-- Block cluster: bottom-left -->
+    <rect x="80" y="700" width="120" height="40" fill="var(--surface)"/>
+    <rect x="80" y="748" width="55" height="30" fill="var(--surface)"/>
+    <rect x="143" y="748" width="80" height="30" fill="var(--surface)"/>
+    <!-- Small blocks: mid-left -->
+    <rect x="80" y="440" width="40" height="40" fill="var(--surface)" opacity=".5"/>
+    <rect x="128" y="440" width="40" height="40" fill="var(--surface)" opacity=".4"/>
+    <rect x="80" y="488" width="90" height="28" fill="var(--surface)" opacity=".3"/>
+  </svg>
+  <!-- Dot pattern: left column beside player -->
+  <div style="position:absolute;top:180px;left:80px;width:160px;height:440px;background-image:radial-gradient(circle,var(--surface-light) 1.2px,transparent 1.2px);background-size:24px 20px;opacity:.4"></div>
+  <!-- Dot pattern: bottom-right -->
+  <div style="position:absolute;bottom:90px;right:80px;width:200px;height:30px;background-image:radial-gradient(circle,var(--surface-light) 1.2px,transparent 1.2px);background-size:24px 15px;opacity:.35"></div>
+
+  <!-- Header section -->
+  <div style="padding:60px 80px 0;display:flex;flex-direction:column;gap:14px;position:relative;z-index:1">
+    <span class="sl">Sound Previews</span>
+    <div class="h1" style="font-size:40px;line-height:46px">Mood Direction</div>
+  </div>
+
+  <!-- Player area -->
+  <div style="position:absolute;top:148px;left:80px;right:80px;bottom:80px;display:flex;flex-direction:column;gap:16px;z-index:1">
+
+    <!-- Video container: fixed 16:9 from available height, centered -->
+    <div style="flex:1;display:flex;align-items:center;justify-content:center;overflow:hidden">
+      <div style="position:relative;width:900px;height:506px;max-width:100%;background:#000;border:1px solid var(--border);flex-shrink:0">
+        <iframe id="vimeo-player"
+          src="https://player.vimeo.com/video/1181340236?title=0&byline=0&portrait=0&badge=0&dnt=1&transparent=0"
+          style="position:absolute;top:0;left:0;width:100%;height:100%;border:none"
+          allow="autoplay; fullscreen; picture-in-picture"
+          allowfullscreen>
+        </iframe>
+      </div>
+    </div>
+
+    <!-- Mood tabs -->
+    <div style="display:flex;gap:12px;flex-shrink:0">
+      <button id="tab-1" onclick="switchMood(1)" style="flex:1;padding:14px 20px;border:1px solid var(--gold);background:var(--gold);color:var(--bg);font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;text-align:left;transition:all .2s">
+        <div style="font-weight:700;margin-bottom:4px">Mood 01</div>
+        <div style="font-size:11px;font-weight:400;opacity:.8;font-family:'Space Grotesk',sans-serif;text-transform:none;letter-spacing:0">Main / Mediterranean</div>
+        <div style="font-size:10px;font-weight:300;opacity:.6;font-family:'Space Grotesk',sans-serif;text-transform:none;letter-spacing:0;margin-top:3px">Sun-drenched balearic groove. The core direction.</div>
+      </button>
+      <button id="tab-2" onclick="switchMood(2)" style="flex:1;padding:14px 20px;border:1px solid var(--border-mid);background:none;color:var(--text-muted);font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;text-align:left;transition:all .2s">
+        <div style="font-weight:700;margin-bottom:4px">Mood 02</div>
+        <div style="font-size:11px;font-weight:400;opacity:.8;font-family:'Space Grotesk',sans-serif;text-transform:none;letter-spacing:0">Cinematic</div>
+        <div style="font-size:10px;font-weight:300;opacity:.6;font-family:'Space Grotesk',sans-serif;text-transform:none;letter-spacing:0;margin-top:3px">Wider, more atmospheric. Film score energy.</div>
+      </button>
+      <button id="tab-3" onclick="switchMood(3)" style="flex:1;padding:14px 20px;border:1px solid var(--border-mid);background:none;color:var(--text-muted);font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;text-align:left;transition:all .2s">
+        <div style="font-weight:700;margin-bottom:4px">Mood 03</div>
+        <div style="font-size:11px;font-weight:400;opacity:.8;font-family:'Space Grotesk',sans-serif;text-transform:none;letter-spacing:0">Italo / Indie</div>
+        <div style="font-size:10px;font-weight:300;opacity:.6;font-family:'Space Grotesk',sans-serif;text-transform:none;letter-spacing:0;margin-top:3px">Rhythmic, playful. Italo warmth meets indie cool.</div>
+      </button>
+    </div>
+  </div>
+
+  <span class="sn">09 / 11</span>
+</div>
+
+<!-- ===== SLIDE 10: FEE ESTIMATE ===== -->
+<div id="s10" class="slide" style="background:var(--bg)">
+  <div style="padding:60px 80px;height:100%;display:flex;flex-direction:column;position:relative;z-index:1">
+
+    <!-- Header -->
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:28px">
+      <!-- Left: logo + name -->
+      <div style="display:flex;align-items:center;gap:14px">
+        <svg viewBox="0 0 300 180" width="36" height="22"><polygon points="0,0 300,0 253,87 0,87" fill="var(--gold)"/><polygon points="0,93 253,93 300,180 0,180" fill="var(--gold)"/></svg>
+        <span class="sl">Forma Audio Solutions</span>
+      </div>
+      <!-- Right: doc info -->
+      <div style="text-align:right;display:flex;flex-direction:column;gap:4px">
+        <span class="sl" style="font-size:14px;letter-spacing:0.25em">Fee Estimate</span>
+        <span class="mn" style="font-size:11px;color:var(--text-muted)">#EST-009</span>
+        <span class="mn" style="font-size:11px;color:var(--text-muted)">08 April 2026</span>
+      </div>
+    </div>
+
+    <!-- Divider -->
+    <div style="width:100%;height:1px;background:var(--border-mid);margin-bottom:28px"></div>
+
+    <!-- Table header -->
+    <div style="display:grid;grid-template-columns:1fr 120px 120px 120px;gap:0;margin-bottom:12px">
+      <span class="mn" style="font-size:9px;letter-spacing:.15em;color:var(--text-muted);text-transform:uppercase">Description</span>
+      <span class="mn" style="font-size:9px;letter-spacing:.15em;color:var(--text-muted);text-transform:uppercase;text-align:right">Units</span>
+      <span class="mn" style="font-size:9px;letter-spacing:.15em;color:var(--text-muted);text-transform:uppercase;text-align:right">Rate</span>
+      <span class="mn" style="font-size:9px;letter-spacing:.15em;color:var(--text-muted);text-transform:uppercase;text-align:right">Amount</span>
+    </div>
+    <div style="width:100%;height:1px;background:var(--border);margin-bottom:16px"></div>
+
+    <!-- Section: Confirmed -->
+    <div style="margin-bottom:8px">
+      <span class="mn" style="font-size:9px;letter-spacing:.2em;color:var(--gold);text-transform:uppercase">Confirmed</span>
+    </div>
+
+    <!-- Row: Mon 06 Apr -->
+    <div style="display:grid;grid-template-columns:1fr 120px 120px 120px;gap:0;padding:10px 0;border-bottom:1px solid var(--border)">
+      <div>
+        <span style="font-size:14px;font-weight:500;color:var(--text)">Mon 06 Apr</span>
+        <span class="bd" style="font-size:12px;color:var(--text-dim);margin-left:10px">Full day session</span>
+      </div>
+      <span class="mn" style="font-size:13px;color:var(--text);text-align:right;align-self:center">1</span>
+      <span class="mn" style="font-size:13px;color:var(--text);text-align:right;align-self:center">£200</span>
+      <span class="mn" style="font-size:13px;color:var(--text);text-align:right;align-self:center">£200</span>
+    </div>
+
+    <!-- Row: Tue 07 Apr -->
+    <div style="display:grid;grid-template-columns:1fr 120px 120px 120px;gap:0;padding:10px 0;border-bottom:1px solid var(--border)">
+      <div>
+        <span style="font-size:14px;font-weight:500;color:var(--text)">Tue 07 Apr</span>
+        <span class="bd" style="font-size:12px;color:var(--text-dim);margin-left:10px">Full day session</span>
+      </div>
+      <span class="mn" style="font-size:13px;color:var(--text);text-align:right;align-self:center">1</span>
+      <span class="mn" style="font-size:13px;color:var(--text);text-align:right;align-self:center">£200</span>
+      <span class="mn" style="font-size:13px;color:var(--text);text-align:right;align-self:center">£200</span>
+    </div>
+
+    <!-- Row: Wed 08 Apr half day -->
+    <div style="display:grid;grid-template-columns:1fr 120px 120px 120px;gap:0;padding:10px 0;border-bottom:1px solid var(--border);margin-bottom:16px">
+      <div>
+        <span style="font-size:14px;font-weight:500;color:var(--text)">Wed 08 Apr</span>
+        <span class="bd" style="font-size:12px;color:var(--text-dim);margin-left:10px">Half day session</span>
+      </div>
+      <span class="mn" style="font-size:13px;color:var(--text);text-align:right;align-self:center">0.5</span>
+      <span class="mn" style="font-size:13px;color:var(--text);text-align:right;align-self:center">£200</span>
+      <span class="mn" style="font-size:13px;color:var(--text);text-align:right;align-self:center">£100</span>
+    </div>
+
+    <!-- Confirmed subtotal -->
+    <div style="display:grid;grid-template-columns:1fr 120px 120px 120px;gap:0;margin-bottom:20px">
+      <span></span><span></span>
+      <span class="mn" style="font-size:10px;color:var(--text-muted);text-align:right;align-self:center;letter-spacing:.1em;text-transform:uppercase">Subtotal</span>
+      <span class="mn" style="font-size:13px;font-weight:700;color:var(--gold);text-align:right">£500</span>
+    </div>
+
+    <!-- Section: Estimated -->
+    <div style="margin-bottom:8px">
+      <span class="mn" style="font-size:9px;letter-spacing:.2em;color:var(--gold);text-transform:uppercase">Estimated</span>
+    </div>
+
+    <!-- Row: TBD est 1 -->
+    <div style="display:grid;grid-template-columns:1fr 120px 120px 120px;gap:0;padding:10px 0;border-bottom:1px solid var(--border)">
+      <div style="display:flex;align-items:center;gap:10px">
+        <span style="font-size:14px;font-weight:500;color:var(--text-muted)">TBD</span>
+        <span style="font-size:9px;padding:2px 6px;border:1px solid var(--gold);color:var(--gold);font-family:'Space Mono',monospace;letter-spacing:.1em;border-radius:2px;text-transform:uppercase">est.</span>
+        <span class="bd" style="font-size:12px;color:var(--text-muted)">Full day session</span>
+      </div>
+      <span class="mn" style="font-size:13px;color:var(--text-muted);text-align:right;align-self:center">1</span>
+      <span class="mn" style="font-size:13px;color:var(--text-muted);text-align:right;align-self:center">£200</span>
+      <span class="mn" style="font-size:13px;color:var(--text-muted);text-align:right;align-self:center">£200</span>
+    </div>
+
+    <!-- Row: TBD est 2 -->
+    <div style="display:grid;grid-template-columns:1fr 120px 120px 120px;gap:0;padding:10px 0;border-bottom:1px solid var(--border);margin-bottom:16px">
+      <div style="display:flex;align-items:center;gap:10px">
+        <span style="font-size:14px;font-weight:500;color:var(--text-muted)">TBD</span>
+        <span style="font-size:9px;padding:2px 6px;border:1px solid var(--gold);color:var(--gold);font-family:'Space Mono',monospace;letter-spacing:.1em;border-radius:2px;text-transform:uppercase">est.</span>
+        <span class="bd" style="font-size:12px;color:var(--text-muted)">Full day session</span>
+      </div>
+      <span class="mn" style="font-size:13px;color:var(--text-muted);text-align:right;align-self:center">1</span>
+      <span class="mn" style="font-size:13px;color:var(--text-muted);text-align:right;align-self:center">£200</span>
+      <span class="mn" style="font-size:13px;color:var(--text-muted);text-align:right;align-self:center">£200</span>
+    </div>
+
+    <!-- Estimated subtotal -->
+    <div style="display:grid;grid-template-columns:1fr 120px 120px 120px;gap:0;margin-bottom:20px">
+      <span></span><span></span>
+      <span class="mn" style="font-size:10px;color:var(--text-muted);text-align:right;align-self:center;letter-spacing:.1em;text-transform:uppercase">Subtotal</span>
+      <span class="mn" style="font-size:13px;font-weight:700;color:var(--text-muted);text-align:right">£400</span>
+    </div>
+
+    <!-- Total block -->
+    <div style="display:flex;justify-content:flex-end;margin-top:auto">
+      <div style="border-top:2px solid var(--gold);padding-top:16px;min-width:300px;text-align:right">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;gap:40px;margin-bottom:6px">
+          <span class="mn" style="font-size:10px;color:var(--text-muted);letter-spacing:.15em;text-transform:uppercase">Confirmed</span>
+          <span class="mn" style="font-size:14px;color:var(--text)">£500</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:baseline;gap:40px;margin-bottom:14px">
+          <span class="mn" style="font-size:10px;color:var(--text-muted);letter-spacing:.15em;text-transform:uppercase">Estimated</span>
+          <span class="mn" style="font-size:14px;color:var(--text-muted)">£400</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:baseline;gap:40px">
+          <span class="mn" style="font-size:11px;color:var(--gold);letter-spacing:.2em;text-transform:uppercase;font-weight:700">Total</span>
+          <span class="mn" style="font-size:22px;font-weight:700;color:var(--gold)">£900</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <span class="sn">10 / 11</span>
+</div>
+
+<!-- ===== SLIDE 11: CLOSE ===== -->
+<div id="s11" class="slide" style="background:var(--bg)">
+  <svg style="position:absolute;top:0;left:0;width:1440px;height:810px" viewBox="0 0 1440 810">
+    <!-- BG: Rectangle with inward V-notch (flag V3 scaled) -->
+    <polygon points="520,160 960,160 910,372 520,372" fill="var(--surface-deep)"/>
+    <polygon points="520,438 910,438 960,650 520,650" fill="var(--surface-deep)"/>
+    <!-- Crude blocks -->
+    <rect x="60" y="690" width="50" height="50" fill="var(--surface)"/>
+    <rect x="118" y="690" width="50" height="50" fill="var(--surface)"/>
+    <rect x="176" y="690" width="110" height="50" fill="var(--surface)"/>
+    <rect x="1230" y="60" width="50" height="50" fill="var(--surface)"/>
+    <rect x="1288" y="60" width="110" height="50" fill="var(--surface)"/>
+    <rect x="1230" y="118" width="110" height="50" fill="var(--surface)"/>
+  </svg>
+  <div style="position:absolute;bottom:40px;left:340px;width:760px;height:30px;background-image:radial-gradient(circle,var(--surface-light) 1.2px,transparent 1.2px);background-size:30px 30px;opacity:.4"></div>
+  <div style="position:absolute;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0">
+    <!-- Flag V3 mark only, centered, warm white -->
+    <svg viewBox="0 0 300 180" width="100" height="60" style="margin-bottom:40px"><polygon points="0,0 300,0 253,87 0,87" fill="var(--text)"/><polygon points="0,93 253,93 300,180 0,180" fill="var(--text)"/></svg>
+    <div style="width:50px;height:2px;background:var(--gold);margin-bottom:28px"></div>
+    <div style="font-size:22px;font-weight:400;color:var(--text);letter-spacing:.1em" class="mn">forma.audio</div>
+    <div style="font-size:12px;font-weight:300;color:var(--text-ghost);margin-top:28px;letter-spacing:.08em">Audio Solutions / Sound Design / Composition / Mixing / Mastering</div>
+  </div>
+  <span class="sn">11 / 11</span>
+</div>
+
+<script>
+function setTheme(t){
+  document.documentElement.setAttribute('data-theme',t);
+  ['t1','t2','t3'].forEach(id=>{
+    const btn=document.getElementById(id);
+    btn.style.background='';
+    btn.style.color='';
+    btn.style.fontWeight='';
+    btn.classList.remove('active');
+  });
+  const map={light:'t1',original:'t2',shark:'t3'};
+  const btn=document.getElementById(map[t]);
+  btn.style.background='var(--gold)';
+  btn.style.color='var(--bg)';
+  btn.style.fontWeight='700';
+  btn.classList.add('active');
+  document.body.style.background = t === 'light' ? '#E8E7E3' : '#080808';
+}
+document.addEventListener('DOMContentLoaded',()=>{
+  setTheme('light');
+  document.getElementById('vimeo-player').addEventListener('load', initVimeoSDK);
+});
+
+const moods = {
+  1: '1181340236',
+  2: '1181340317',
+  3: '1181340375'
+};
+
+const VIMEO_PARAMS = '?title=0&byline=0&portrait=0&badge=0&dnt=1&transparent=0';
+
+let _vp = null;
+function initVimeoSDK() {
+  if (!window.Vimeo) return;
+  if (_vp) { try { _vp.off('ended'); } catch(e){} }
+  _vp = new Vimeo.Player(document.getElementById('vimeo-player'));
+  _vp.on('ended', () => _vp.setCurrentTime(0).then(() => _vp.pause()));
+}
+
+function switchMood(n) {
+  const frame = document.getElementById('vimeo-player');
+  frame.src = 'https://player.vimeo.com/video/' + moods[n] + VIMEO_PARAMS;
+  frame.onload = initVimeoSDK;
+
+  [1,2,3].forEach(i => {
+    const tab = document.getElementById('tab-'+i);
+    const isActive = i === n;
+    tab.style.border = isActive ? '1px solid var(--gold)' : '1px solid var(--border-mid)';
+    tab.style.background = isActive ? 'var(--gold)' : 'none';
+    tab.style.color = isActive ? 'var(--bg)' : 'var(--text-muted)';
+  });
+}
+</script>
+
+</body>
+</html>

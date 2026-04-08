@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1440">
+<title>Forma — The Sound of Magical Realism</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+
+  :root{
+    --bg:#000000;--bg-alt:#080808;--surface:#111111;--surface-light:#1a1a1a;
+    --border:#222222;--text:#FFFFFF;--text-dim:#999999;--text-muted:#555555;
+    --text-ghost:#272727;--gold:#7D39EB;--gold-dim:rgba(125,57,235,0.10);
+    --lime:#C6FF33;
+    --svg-surface:#111111;--svg-subtle:#181818;--svg-line:#222222;--svg-dot:#1a1a1a;
+  }
+
+  [data-theme="light"]{
+    --bg:#FFFFFF;--bg-alt:#F5F5F5;--surface:#EBEBEB;--surface-light:#E0E0E0;
+    --border:#D0D0D0;--text:#000000;--text-dim:#555555;--text-muted:#888888;
+    --text-ghost:#CCCCCC;--gold:#7D39EB;--gold-dim:rgba(125,57,235,0.08);
+    --lime:#C6FF33;
+    --svg-surface:#EBEBEB;--svg-subtle:#E2E2E2;--svg-line:#D0D0D0;--svg-dot:#C8C8C8;
+  }
+
+  body{background:var(--bg);font-family:'Space Grotesk',sans-serif;transition:background 0.35s}
+  .slide{
+    width:1440px;height:810px;margin:40px auto;position:relative;overflow:hidden;
+    background:var(--bg);color:var(--text);
+    transition:background 0.35s,color 0.35s;
+  }
+  .slide:nth-child(odd){background:var(--bg-alt)}
+
+  .sn{position:absolute;bottom:36px;right:80px;font-family:'Space Mono',monospace;font-size:11px;color:var(--text-ghost)}
+  .sl{font-family:'Space Mono',monospace;font-size:11px;color:var(--gold);letter-spacing:0.2em;text-transform:uppercase}
+  .h1{font-size:52px;font-weight:700;line-height:58px;letter-spacing:-0.02em;color:var(--text)}
+  .bd{font-size:15px;font-weight:300;color:var(--text-dim);line-height:22px}
+  .lu{font-size:14px;font-weight:600;color:var(--text);text-transform:uppercase;letter-spacing:0.08em}
+  .mn{font-family:'Space Mono',monospace}
+
+  /* Lime in dark → Violet in light (for text uses) */
+  .lime-text{color:var(--lime)}
+  [data-theme="light"] .lime-text{color:var(--gold)}
+
+  /* Closing flag mark: lime on dark, black on light */
+  .flag-closing{fill:var(--lime)}
+  [data-theme="light"] .flag-closing{fill:var(--text)}
+
+  /* Climax bar: lime accent on dark, violet on light */
+  .climax-bar{
+    background:rgba(198,255,51,0.08) !important;
+    border-top:3px solid var(--lime) !important;
+    border-left:1px solid rgba(198,255,51,0.2) !important;
+    border-right:1px solid rgba(198,255,51,0.2) !important;
+  }
+  [data-theme="light"] .climax-bar{
+    background:var(--gold-dim) !important;
+    border-top:3px solid var(--gold) !important;
+    border-left:1px solid rgba(125,57,235,0.2) !important;
+    border-right:1px solid rgba(125,57,235,0.2) !important;
+  }
+
+  /* Theme switch */
+  .theme-toggle{
+    position:fixed;top:20px;right:20px;z-index:9999;
+    background:#7D39EB;color:#FFFFFF;
+    font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.18em;
+    padding:10px 20px;cursor:pointer;border:none;outline:none;
+    text-transform:uppercase;display:flex;align-items:center;gap:10px;
+  }
+  .theme-toggle:hover{background:#6828D8}
+
+  /* SVG element transitions */
+  .slide svg *{transition:fill 0.35s,stroke 0.35s}
+</style>
+</head>
+<body>
+
+<button class="theme-toggle" id="themeToggle" onclick="toggleTheme()">
+  <svg viewBox="0 0 14 14" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="7" r="6"/><path d="M7 1v12M1 7h6"/></svg>
+  <span id="themeLabel">LIGHT</span>
+</button>
+
+<!-- ===== SLIDE 01: COVER ===== -->
+<div class="slide" style="background:var(--bg)">
+  <svg style="position:absolute;top:0;left:0;width:1440px;height:810px" viewBox="0 0 1440 810">
+    <polygon points="680,60 1400,60 1350,372 680,372" style="fill:var(--svg-surface)"/>
+    <polygon points="680,438 1350,438 1400,750 680,750" style="fill:var(--svg-surface)"/>
+  </svg>
+  <div style="position:absolute;bottom:0;left:0;width:660px;height:120px;background-image:radial-gradient(circle,var(--svg-dot) 1.2px,transparent 1.2px);background-size:30px 20px;opacity:.7"></div>
+  <div style="position:absolute;top:60px;left:80px;display:flex;align-items:center;gap:14px">
+    <svg viewBox="0 0 300 180" width="44" height="26"><polygon points="0,0 300,0 253,87 0,87" style="fill:var(--gold)"/><polygon points="0,93 253,93 300,180 0,180" style="fill:var(--gold)"/></svg>
+    <span class="sl">Forma Audio Solutions</span>
+  </div>
+  <div style="position:absolute;bottom:60px;left:80px;display:flex;flex-direction:column;gap:0">
+    <svg viewBox="0 0 4550 882" width="420" height="53" style="fill:currentColor"><g transform="scale(1,-1) translate(0,-881.89)"><path d="M14 606.3H592.74V881.89H14ZM289.59 0V303.15H895.89V578.74H14V0Z"/><path d="M14 578.74V0H289.59V.19H620.3V0H895.89V578.74ZM289.59 275.78V303.15H620.3V275.78Z" transform="translate(910,0)"/><path d="M895.89 578.74H14V0H289.59V303.15H895.89Z" transform="translate(1820,0)"/><path d="M14 578.74V0H289.59V303.15H317.15V0H592.74V303.15H620.3V0H895.89V578.74Z" transform="translate(2730,0)"/><path d="M14 578.74V0H592.74V275.59H289.59V303.15H620.3V0H895.89V578.74Z" transform="translate(3640,0)"/></g></svg>
+    <div style="width:60px;height:2px;background:var(--lime);margin:28px 0 24px"></div>
+    <div class="h1" style="font-size:58px;line-height:64px;letter-spacing:-0.03em;margin-bottom:20px">The Sound of<br>Magical Realism</div>
+    <div class="bd" style="color:var(--text-muted);font-size:14px">Sound Design Strategy & Action Plan</div>
+    <div class="bd" style="color:var(--text-ghost);font-size:13px;margin-top:4px">Flora Oasis Campaign</div>
+  </div>
+  <div style="position:absolute;bottom:36px;right:80px;display:flex;align-items:center;gap:12px">
+    <div style="width:40px;height:1px;background:var(--gold);opacity:.4"></div>
+    <span class="mn" style="font-size:11px;color:var(--text-ghost)">01 / 09</span>
+  </div>
+</div>
+
+<!-- ===== SLIDE 02: PHILOSOPHY ===== -->
+<div class="slide">
+  <svg style="position:absolute;top:0;left:0;width:1440px;height:810px" viewBox="0 0 1440 810">
+    <path d="M60,480 L180,480 L180,440 L300,440 L300,480 L420,480 L420,440 L540,440 L540,480 L660,480 L660,440 L780,440 L780,480 L900,480 L900,440 L1020,440 L1020,480 L1140,480 L1140,440 L1260,440 L1260,480 L1380,480" fill="none" style="stroke:var(--svg-line)" stroke-width="3"/>
+    <path d="M60,560 L140,560 L140,520 L260,520 L260,560 L380,560 L380,520 L500,520 L500,560 L620,560 L620,520 L740,520 L740,560 L860,560 L860,520 L980,520 L980,560 L1100,560 L1100,520 L1220,520 L1220,560 L1380,560" fill="none" style="stroke:var(--svg-subtle)" stroke-width="2.5"/>
+    <path d="M60,640 L200,640 L200,600 L340,600 L340,640 L480,640 L480,600 L620,600 L620,640 L760,640 L760,600 L900,600 L900,640 L1040,640 L1040,600 L1180,600 L1180,640 L1380,640" fill="none" style="stroke:var(--svg-subtle)" stroke-width="2"/>
+    <rect x="1340" y="60" width="40" height="2" style="fill:var(--gold)" opacity=".35"/>
+    <rect x="1378" y="60" width="2" height="40" style="fill:var(--gold)" opacity=".35"/>
+    <line x1="80" y1="168" x2="1360" y2="168" style="stroke:var(--svg-line)" stroke-width="1"/>
+  </svg>
+  <div style="padding:72px 80px;display:flex;flex-direction:column;gap:16px">
+    <span class="sl">Philosophy</span>
+    <div class="h1" style="max-width:700px">Between Dream and Reality.</div>
+  </div>
+  <div style="display:flex;gap:40px;padding:32px 80px 0">
+    <div style="flex:1;border-left:2px solid var(--gold);padding-left:24px">
+      <div class="lu" style="margin-bottom:12px">The Register</div>
+      <div class="bd">Magical realism. Not strict documentary, not pure fantasy. Sound exists in the space where both feel true at once.</div>
+    </div>
+    <div style="flex:1;border-left:2px solid var(--gold);padding-left:24px">
+      <div class="lu" style="margin-bottom:12px">The Frontier</div>
+      <div class="bd">Sound design must inhabit the liminal space between the tangible and the dreamlike. Every texture carries both weight and wonder.</div>
+    </div>
+    <div style="flex:1;border-left:2px solid var(--gold);padding-left:24px">
+      <div class="lu" style="margin-bottom:12px">The Approach</div>
+      <div class="bd">Organic enough to feel viscerally real. Ethereal enough to evoke dream logic. The balance is the craft.</div>
+    </div>
+  </div>
+  <span class="sn">02 / 09</span>
+</div>
+
+<!-- ===== SLIDE 03: THE CONSTRAINT ===== -->
+<div class="slide" style="background:var(--bg)">
+  <svg style="position:absolute;top:0;left:0;width:1440px;height:810px" viewBox="0 0 1440 810">
+    <text x="-30" y="660" font-family="Space Mono,monospace" font-weight="700" font-size="720" style="fill:var(--svg-subtle)" letter-spacing="-40">45</text>
+    <path d="M0,405 L120,405 L120,360 L240,360 L240,405 L360,405 L360,360 L480,360 L480,405 L600,405 L600,360 L720,360 L720,405 L840,405 L840,360 L960,360 L960,405 L1080,405 L1080,360 L1200,360 L1200,405 L1320,405 L1320,360 L1440,360" fill="none" stroke="#7D39EB" stroke-width="1.5" opacity=".18"/>
+  </svg>
+  <div style="position:absolute;top:120px;right:80px;width:400px;height:120px;background-image:radial-gradient(circle,var(--svg-dot) 1.5px,transparent 1.5px);background-size:40px 40px;opacity:.6"></div>
+  <div style="padding:60px 80px;position:relative;z-index:1">
+    <span class="sl">The Constraint</span>
+    <div style="display:flex;align-items:center;gap:60px;padding-top:40px">
+      <span class="mn lime-text" style="font-size:280px;font-weight:700;line-height:240px;letter-spacing:-0.06em">45</span>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="font-size:32px;font-weight:700;line-height:36px">seconds to tell<br>the whole story.</div>
+        <div class="bd" style="max-width:420px;color:var(--text-muted)">No room for conventional buildups. Every sonic gesture carries immediate weight. A complex narrative of abundance condensed into a single breath.</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:60px;padding-top:80px">
+      <div style="border-left:3px solid var(--gold);padding-left:20px">
+        <span class="mn" style="font-size:28px;font-weight:700">42-45s</span>
+        <div class="bd" style="font-size:13px;color:var(--text-muted);margin-top:4px">Total Duration</div>
+      </div>
+      <div style="border-left:3px solid var(--gold);padding-left:20px">
+        <span class="mn" style="font-size:28px;font-weight:700">5 Acts</span>
+        <div class="bd" style="font-size:13px;color:var(--text-muted);margin-top:4px">Emotional Arc</div>
+      </div>
+      <div style="border-left:3px solid var(--gold);padding-left:20px">
+        <span class="mn" style="font-size:28px;font-weight:700">0 filler</span>
+        <div class="bd" style="font-size:13px;color:var(--text-muted);margin-top:4px">Absolute Efficiency</div>
+      </div>
+    </div>
+  </div>
+  <span class="sn">03 / 09</span>
+</div>
+
+<!-- ===== SLIDE 04: SONIC TERRITORY ===== -->
+<div class="slide">
+  <svg style="position:absolute;top:0;left:0;width:1440px;height:810px" viewBox="0 0 1440 810">
+    <line x1="720" y1="180" x2="720" y2="680" style="stroke:var(--svg-line)" stroke-width="1"/>
+    <line x1="80" y1="430" x2="1360" y2="430" style="stroke:var(--svg-line)" stroke-width="1"/>
+    <rect x="1340" y="60" width="40" height="2" style="fill:var(--gold)" opacity=".35"/>
+    <rect x="1378" y="60" width="2" height="40" style="fill:var(--gold)" opacity=".35"/>
+    <rect x="60" y="748" width="40" height="2" style="fill:var(--gold)" opacity=".35"/>
+    <rect x="60" y="710" width="2" height="40" style="fill:var(--gold)" opacity=".35"/>
+  </svg>
+  <div style="padding:72px 80px;display:flex;flex-direction:column;gap:16px">
+    <span class="sl">Sonic Territory</span>
+    <div class="h1">A Sonic Geography</div>
+  </div>
+  <div style="display:flex;flex-wrap:wrap;gap:0;padding:24px 80px 0">
+    <div style="width:calc(50% - 20px);margin:0 20px 24px 0;padding:28px;border:1px solid var(--border);position:relative">
+      <span class="mn" style="position:absolute;top:16px;right:20px;font-size:48px;font-weight:700;color:var(--surface)">01</span>
+      <div class="lu" style="font-size:15px;margin-bottom:10px">Visual Territory</div>
+      <div class="bd" style="font-size:14px;max-width:85%">A purely Mediterranean aesthetic transposed to a luxurious desert setting. Sun-drenched architecture, warm terracotta, lush botanical contrasts.</div>
+    </div>
+    <div style="width:calc(50% - 20px);margin:0 0 24px 0;padding:28px;border:1px solid var(--border);position:relative">
+      <span class="mn" style="position:absolute;top:16px;right:20px;font-size:48px;font-weight:700;color:var(--surface)">02</span>
+      <div class="lu" style="font-size:15px;margin-bottom:10px">Sonic Moodboard</div>
+      <div class="bd" style="font-size:14px;max-width:85%">Dreampop indie, warm analog textures (synthesizer layers) and smooth grooves. Refs: Nils Frahm, Olafur Arnalds, Khruangbin, Ryuichi Sakamoto, Portishead, Four Tet.</div>
+    </div>
+    <div style="width:calc(50% - 20px);margin:0 20px 0 0;padding:28px;border:1px solid var(--border);position:relative">
+      <span class="mn" style="position:absolute;top:16px;right:20px;font-size:48px;font-weight:700;color:var(--surface)">03</span>
+      <div class="lu" style="font-size:15px;margin-bottom:10px">Organic Instrumentation</div>
+      <div class="bd" style="font-size:14px;max-width:85%">Warm nylon strings (classical guitar), immersive atmospheric pads (synthesizer textures). Every instrument chosen for tactile presence.</div>
+    </div>
+    <div style="width:calc(50% - 20px);padding:28px;border:1px solid var(--border);position:relative">
+      <span class="mn" style="position:absolute;top:16px;right:20px;font-size:48px;font-weight:700;color:var(--surface)">04</span>
+      <div class="lu" style="font-size:15px;margin-bottom:10px">Tactile Percussion</div>
+      <div class="bd" style="font-size:14px;max-width:85%">Earthy hand percussion: darbuka (hand drum), frame drum (circular percussion), with subtle elegant touches of oud (stringed instrument).</div>
+    </div>
+  </div>
+  <span class="sn">04 / 09</span>
+</div>
+
+<!-- ===== SLIDE 05: TRANSLATION ===== -->
+<div class="slide" style="background:var(--bg)">
+  <svg style="position:absolute;top:0;left:0;width:1440px;height:810px" viewBox="0 0 1440 810">
+    <path d="M680,200 L740,405 L680,610" fill="none" style="stroke:var(--svg-line)" stroke-width="2"/>
+    <circle cx="740" cy="405" r="4" style="fill:var(--gold)" opacity=".5"/>
+  </svg>
+  <div style="padding:72px 80px;display:flex;flex-direction:column;gap:16px">
+    <span class="sl">Translation</span>
+    <div class="h1">Translating Image<br>into Sound</div>
+  </div>
+  <div style="display:flex;padding:32px 80px 0;gap:0">
+    <div style="flex:1;padding-right:60px">
+      <div class="sl" style="font-size:10px;margin-bottom:28px">Visual Stimulus</div>
+      <div style="margin-bottom:40px">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
+          <div style="width:32px;height:3px;background:var(--gold)"></div>
+          <span style="font-size:22px;font-weight:600">Light Flares</span>
+        </div>
+        <div class="bd" style="font-size:14px;padding-left:44px">Visual transitions between spaces and states of consciousness.</div>
+      </div>
+      <div>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
+          <div style="width:32px;height:3px;background:var(--gold)"></div>
+          <span style="font-size:22px;font-weight:600">Botanical Growth</span>
+        </div>
+        <div class="bd" style="font-size:14px;padding-left:44px">The central character. Plants, vines and flowers blooming progressively throughout the film.</div>
+      </div>
+    </div>
+    <div style="width:80px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:80px">
+      <svg viewBox="0 0 40 20" width="40" height="20"><path d="M0,10 L30,10 M24,4 L30,10 L24,16" fill="none" stroke="#7D39EB" stroke-width="2"/></svg>
+      <svg viewBox="0 0 40 20" width="40" height="20"><path d="M0,10 L30,10 M24,4 L30,10 L24,16" fill="none" stroke="#7D39EB" stroke-width="2"/></svg>
+    </div>
+    <div style="flex:1;padding-left:60px;border-left:1px solid var(--border)">
+      <div class="sl" style="font-size:10px;margin-bottom:28px">Sonic Response</div>
+      <div style="margin-bottom:40px">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
+          <div style="width:32px;height:3px;background:var(--text)"></div>
+          <span style="font-size:22px;font-weight:600">Swells & Shimmers</span>
+        </div>
+        <div class="bd" style="font-size:14px;padding-left:44px">A recurring sonic wash (synthesized texture) that cleanses between scenes. The audible signature of transition.</div>
+      </div>
+      <div>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
+          <div style="width:32px;height:3px;background:var(--text)"></div>
+          <span style="font-size:22px;font-weight:600">Harmonic Accumulation</span>
+        </div>
+        <div class="bd" style="font-size:14px;padding-left:44px">Layering complexity. Musical and structural density grows organically in parallel with the flora.</div>
+      </div>
+    </div>
+  </div>
+  <span class="sn">05 / 09</span>
+</div>
+
+<!-- ===== SLIDE 06: THE ARC ===== -->
+<div class="slide">
+  <div style="padding:72px 80px 0;display:flex;flex-direction:column;gap:16px;position:relative;z-index:2">
+    <span class="sl">Emotional Arc</span>
+    <div class="h1">The 5-Act Emotional Arc</div>
+  </div>
+  <div style="padding:40px 80px 0;position:relative">
+    <div style="display:flex;gap:8px">
+      <div style="flex:1;display:flex;flex-direction:column;justify-content:flex-end;height:420px">
+        <div style="background:var(--surface-light);height:80px;margin-bottom:8px;border-top:3px solid var(--gold);opacity:.6"></div>
+        <div style="padding:12px 16px">
+          <span class="mn" style="font-size:36px;font-weight:700;color:var(--text-ghost)">01</span>
+          <div style="font-size:15px;font-weight:600;margin:8px 0 6px">Breathing</div>
+          <div class="bd" style="font-size:13px">Near silence. Nature textures. The film breathes.</div>
+        </div>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;justify-content:flex-end;height:420px">
+        <div style="background:var(--surface-light);height:160px;margin-bottom:8px;border-top:3px solid var(--gold);opacity:.7"></div>
+        <div style="padding:12px 16px">
+          <span class="mn" style="font-size:36px;font-weight:700;color:var(--text-ghost)">02</span>
+          <div style="font-size:15px;font-weight:600;margin:8px 0 6px">The Awakening</div>
+          <div class="bd" style="font-size:13px">The groove enters. Organic percussion takes over.</div>
+        </div>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;justify-content:flex-end;height:420px">
+        <div style="background:var(--surface-light);height:240px;margin-bottom:8px;border-top:3px solid var(--text);opacity:.8"></div>
+        <div style="padding:12px 16px">
+          <span class="mn" style="font-size:36px;font-weight:700;color:var(--text-ghost)">03</span>
+          <div style="font-size:15px;font-weight:600;margin:8px 0 6px">Human Warmth</div>
+          <div class="bd" style="font-size:13px">The melody emerges. Harmony gains body.</div>
+        </div>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;justify-content:flex-end;height:420px">
+        <div class="climax-bar" style="height:320px;margin-bottom:8px"></div>
+        <div style="padding:12px 16px">
+          <span class="mn lime-text" style="font-size:36px;font-weight:700">04</span>
+          <div style="font-size:15px;font-weight:600;margin:8px 0 6px">Climax</div>
+          <div class="bd" style="font-size:13px">Maximum abundance. All elements converge.</div>
+        </div>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;justify-content:flex-end;height:420px">
+        <div style="background:var(--surface-light);height:60px;margin-bottom:8px;border-top:3px solid var(--gold);opacity:.5"></div>
+        <div style="padding:12px 16px">
+          <span class="mn" style="font-size:36px;font-weight:700;color:var(--text-ghost)">05</span>
+          <div style="font-size:15px;font-weight:600;margin:8px 0 6px">Dissolution</div>
+          <div class="bd" style="font-size:13px">Everything dissolves. Return to silence.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <span class="sn">06 / 09</span>
+</div>
+
+<!-- ===== SLIDE 07: THE ECHO ===== -->
+<div class="slide" style="background:var(--bg)">
+  <svg style="position:absolute;top:0;left:0;width:1440px;height:810px" viewBox="0 0 1440 810">
+    <rect x="940" y="260" width="240" height="20" style="fill:var(--gold)" opacity=".4"/>
+    <rect x="1160" y="280" width="20" height="200" style="fill:var(--gold)" opacity=".4"/>
+    <rect x="940" y="460" width="240" height="20" style="fill:var(--gold)" opacity=".4"/>
+    <rect x="940" y="260" width="20" height="220" style="fill:var(--gold)" opacity=".4"/>
+    <!-- THE GAP: top-right corner open — matches bg -->
+    <rect x="1170" y="260" width="8" height="8" style="fill:var(--bg)" opacity=".8"/>
+    <rect x="1160" y="248" width="8" height="8" style="fill:var(--gold)" opacity=".9"/>
+    <text x="1190" y="268" font-family="Space Mono,monospace" font-size="9" fill="#7D39EB" opacity=".5" letter-spacing="1">START</text>
+    <text x="1178" y="248" font-family="Space Mono,monospace" font-size="9" fill="#7D39EB" opacity=".5" letter-spacing="1">END +1</text>
+    <rect x="900" y="220" width="320" height="320" fill="none" stroke="#7D39EB" stroke-width=".8" opacity=".14"/>
+    <rect x="860" y="180" width="400" height="400" fill="none" stroke="#7D39EB" stroke-width=".5" opacity=".07"/>
+    <text x="1060" y="248" font-family="Space Grotesk,sans-serif" font-size="12" fill="#7D39EB" opacity=".5" letter-spacing="4" text-anchor="middle" font-weight="600">DREAM</text>
+    <text x="1060" y="500" font-family="Space Grotesk,sans-serif" font-size="12" fill="#7D39EB" opacity=".5" letter-spacing="4" text-anchor="middle" font-weight="600">REAL</text>
+    <text x="928" y="378" font-family="Space Grotesk,sans-serif" font-size="12" fill="#7D39EB" opacity=".5" letter-spacing="4" text-anchor="end" font-weight="600" transform="rotate(-90,928,378)">SILENCE</text>
+    <text x="1192" y="378" font-family="Space Grotesk,sans-serif" font-size="12" fill="#7D39EB" opacity=".5" letter-spacing="4" text-anchor="start" font-weight="600" transform="rotate(90,1192,378)">SOUND</text>
+    <line x1="0" y1="620" x2="680" y2="620" style="stroke:var(--svg-line)" stroke-width="1"/>
+  </svg>
+  <div style="padding:72px 80px;display:flex;flex-direction:column;gap:16px;position:relative;z-index:1">
+    <span class="sl">The Echo</span>
+    <div class="h1">The Final Echo</div>
+  </div>
+  <div style="padding:16px 80px;position:relative;z-index:1">
+    <div style="font-size:28px;font-weight:300;font-style:italic;line-height:38px;margin-bottom:40px">"Was it a dream, or was it real?"</div>
+    <div style="display:flex;flex-direction:column;gap:24px;max-width:560px">
+      <div style="border-left:2px solid var(--gold);padding-left:20px">
+        <div style="font-size:15px;font-weight:600;margin-bottom:6px">The Loop</div>
+        <div class="bd" style="font-size:14px">Circular structure. The film opens and closes with the exact same image. The score mirrors this return.</div>
+      </div>
+      <div style="border-left:2px solid var(--gold);padding-left:20px">
+        <div style="font-size:15px;font-weight:600;margin-bottom:6px">The Ambiguous Resolution</div>
+        <div class="bd" style="font-size:14px">The score returns to the starting point but carries one extra note. A harmony that refuses to fully resolve. The gap in the circle.</div>
+      </div>
+    </div>
+  </div>
+  <span class="sn">07 / 09</span>
+</div>
+
+<!-- ===== SLIDE 08: EXECUTION ===== -->
+<div class="slide">
+  <svg style="position:absolute;top:0;left:0;width:1440px;height:810px" viewBox="0 0 1440 810">
+    <rect x="80" y="560" width="55" height="55" style="fill:var(--svg-surface)"/>
+    <rect x="143" y="560" width="55" height="55" style="fill:var(--svg-surface)"/>
+    <rect x="206" y="560" width="120" height="55" style="fill:var(--svg-surface)"/>
+    <rect x="80" y="623" width="120" height="55" style="fill:var(--svg-surface)"/>
+    <rect x="208" y="623" width="55" height="55" style="fill:var(--svg-surface)"/>
+    <rect x="80" y="686" width="55" height="55" style="fill:var(--svg-surface)"/>
+    <rect x="143" y="686" width="183" height="55" style="fill:var(--svg-surface)"/>
+    <rect x="1200" y="560" width="55" height="55" style="fill:var(--svg-surface)"/>
+    <rect x="1263" y="560" width="120" height="55" style="fill:var(--svg-surface)"/>
+    <rect x="1200" y="623" width="120" height="55" style="fill:var(--svg-surface)"/>
+    <rect x="1328" y="623" width="55" height="55" style="fill:var(--svg-surface)"/>
+    <rect x="1200" y="686" width="183" height="55" style="fill:var(--svg-surface)"/>
+  </svg>
+  <div style="position:absolute;bottom:80px;left:400px;width:640px;height:80px;background-image:radial-gradient(circle,var(--svg-dot) 1.2px,transparent 1.2px);background-size:30px 20px;opacity:.6"></div>
+  <div style="padding:72px 80px;display:flex;flex-direction:column;gap:16px">
+    <span class="sl">Execution</span>
+    <div class="h1">Action Plan</div>
+  </div>
+  <div style="display:flex;gap:24px;padding:28px 80px 0">
+    <div style="flex:1;padding:28px 28px 32px;border:1px solid var(--border);position:relative">
+      <span class="mn" style="font-size:11px;color:var(--gold);letter-spacing:.15em">PHASE 01</span>
+      <div style="font-size:18px;font-weight:600;margin:10px 0 16px">Composition &<br>Arrangement</div>
+      <div style="width:40px;height:2px;background:var(--gold);margin-bottom:18px"></div>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div class="bd" style="font-size:13px">Build the dynamic skeleton for the 5-act arc (45s).</div>
+        <div class="bd" style="font-size:13px">Develop harmonic accumulation progression to mirror botanical growth.</div>
+        <div class="bd" style="font-size:13px">Record core organic instrumentation: nylon strings (classical guitar), darbuka (hand drum), frame drum (circular percussion).</div>
+      </div>
+    </div>
+    <div style="flex:1;padding:28px 28px 32px;border:1px solid var(--border);position:relative">
+      <span class="mn" style="font-size:11px;color:var(--gold);letter-spacing:.15em">PHASE 02</span>
+      <div style="font-size:18px;font-weight:600;margin:10px 0 16px">Sound Design &<br>Textures</div>
+      <div style="width:40px;height:2px;background:var(--gold);margin-bottom:18px"></div>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div class="bd" style="font-size:13px">Synthesize bespoke shimmers and washes (synthesized textures) for light flare transitions.</div>
+        <div class="bd" style="font-size:13px">Build the organic ambience for Act 1 and design the final echo for Act 5.</div>
+      </div>
+    </div>
+    <div style="flex:1;padding:28px 28px 32px;border:1px solid var(--border);position:relative">
+      <span class="mn" style="font-size:11px;color:var(--gold);letter-spacing:.15em">PHASE 03</span>
+      <div style="font-size:18px;font-weight:600;margin:10px 0 16px">Mixing &<br>Finalization</div>
+      <div style="width:40px;height:2px;background:var(--gold);margin-bottom:18px"></div>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div class="bd" style="font-size:13px">Ensure the dreampop aesthetic with warm analog textures throughout.</div>
+        <div class="bd" style="font-size:13px">Precisely balance the frontier between organic real elements and ethereal processing (digital effects).</div>
+      </div>
+    </div>
+  </div>
+  <span class="sn">08 / 09</span>
+</div>
+
+<!-- ===== SLIDE 09: CLOSE ===== -->
+<div class="slide" style="background:var(--bg)">
+  <svg style="position:absolute;top:0;left:0;width:1440px;height:810px" viewBox="0 0 1440 810">
+    <polygon points="520,160 960,160 910,372 520,372" style="fill:var(--svg-surface)"/>
+    <polygon points="520,438 910,438 960,650 520,650" style="fill:var(--svg-surface)"/>
+    <rect x="60" y="690" width="50" height="50" style="fill:var(--svg-subtle)"/>
+    <rect x="118" y="690" width="50" height="50" style="fill:var(--svg-subtle)"/>
+    <rect x="176" y="690" width="110" height="50" style="fill:var(--svg-subtle)"/>
+    <rect x="1230" y="60" width="50" height="50" style="fill:var(--svg-subtle)"/>
+    <rect x="1288" y="60" width="110" height="50" style="fill:var(--svg-subtle)"/>
+    <rect x="1230" y="118" width="110" height="50" style="fill:var(--svg-subtle)"/>
+  </svg>
+  <div style="position:absolute;bottom:40px;left:340px;width:760px;height:30px;background-image:radial-gradient(circle,var(--svg-dot) 1.2px,transparent 1.2px);background-size:30px 30px;opacity:.5"></div>
+  <div style="position:absolute;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0">
+    <svg viewBox="0 0 300 180" width="100" height="60" style="margin-bottom:40px">
+      <polygon points="0,0 300,0 253,87 0,87" class="flag-closing"/>
+      <polygon points="0,93 253,93 300,180 0,180" class="flag-closing"/>
+    </svg>
+    <div style="width:50px;height:2px;background:var(--gold);margin-bottom:28px"></div>
+    <div style="font-size:22px;font-weight:400;color:var(--text);letter-spacing:.1em" class="mn">forma.audio</div>
+    <div style="font-size:12px;font-weight:300;color:var(--text-ghost);margin-top:28px;letter-spacing:.08em">Audio Solutions / Sound Design / Composition / Mixing / Mastering</div>
+  </div>
+</div>
+
+<script>
+  function toggleTheme() {
+    const html = document.documentElement;
+    const isDark = html.getAttribute('data-theme') === 'dark';
+    const next = isDark ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    document.getElementById('themeLabel').textContent = isDark ? 'DARK' : 'LIGHT';
+    localStorage.setItem('forma-theme', next);
+  }
+  // Restore saved preference
+  const saved = localStorage.getItem('forma-theme');
+  if (saved) {
+    document.documentElement.setAttribute('data-theme', saved);
+    document.getElementById('themeLabel').textContent = saved === 'dark' ? 'LIGHT' : 'DARK';
+  }
+</script>
+</body>
+</html>
