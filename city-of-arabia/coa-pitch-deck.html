@@ -262,7 +262,7 @@
     .fb-status { padding: 0 20px; }
     .fb-icon { top: 4px; right: 4px; width: 20px; height: 20px; }
 
-    /* --- S09: Moods / Video (the big fix) --- */
+    /* --- S09: Moods / Video --- */
     #s09 { padding-bottom: 24px !important; }
     #s09 > div[style*="padding:60px 80px"] { padding: 0 0 12px !important; }
     #s09 > div[style*="position:absolute;top:148px"] {
@@ -275,25 +275,30 @@
     #s09 > div[style*="position:absolute;top:148px"] > div[style*="flex:1"] {
       flex: none !important;
     }
-    #s09 > div[style*="position:absolute;top:148px"] > div[style*="flex:1"] > div[style*="width:900px"] {
+    #s09 > div[style*="position:absolute;top:148px"] > div[style*="flex:1"] > div[style*="aspect-ratio"] {
       width: 100% !important;
       height: auto !important;
       aspect-ratio: 16/9;
       max-width: 100%;
-      padding-bottom: 0 !important;
     }
-    #s09 > div[style*="position:absolute;top:148px"] > div[style*="flex:1"] > div[style*="width:900px"] iframe {
+    #s09 > div[style*="position:absolute;top:148px"] > div[style*="flex:1"] > div[style*="aspect-ratio"] iframe {
       position: absolute; top: 0; left: 0; width: 100%; height: 100%;
     }
-    #s09 > div[style*="position:absolute;top:148px"] > div[style*="gap:12px"] {
-      flex-direction: column !important;
-      gap: 8px !important;
+    #s09 > div[style*="grid-template-columns"] {
+      grid-template-columns: repeat(2, 1fr) !important;
+      gap: 6px !important;
     }
-    #s09 > div[style*="position:absolute;top:148px"] > div[style*="gap:12px"] button {
-      padding: 10px 14px !important;
+    #s09 > div[style*="grid-template-columns"] button {
+      min-height: auto !important;
+      padding: 8px 10px !important;
+      font-size: 8px !important;
+      letter-spacing: .08em !important;
     }
-    #s09 > div[style*="position:absolute;top:148px"] > div[style*="gap:12px"] button > div:last-child {
+    #s09 > div[style*="grid-template-columns"] button > div:last-child {
       display: none;
+    }
+    #s09 > div[style*="grid-template-columns"] button > div:nth-child(3) {
+      font-size: 9px !important;
     }
 
     /* --- S10: Fee Estimate --- */
