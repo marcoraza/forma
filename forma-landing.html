@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FORMA SOLUTIONS</title>
+<title>FORMA | Sound Design &amp; Solutions</title>
 <meta name="description" content="FORMA AUDIO SOLUTIONS">
 <meta name="application-name" content="FORMA AUDIO SOLUTIONS">
 <meta name="apple-mobile-web-app-title" content="FORMA AUDIO SOLUTIONS">
@@ -255,7 +255,7 @@
         <polygon points="0,0 300,0 253,87 0,87" fill="var(--accent)"/>
         <polygon points="0,93 253,93 300,180 0,180" fill="var(--accent)"/>
       </svg>
-      <span class="logo-label">Forma Solutions</span>
+      <span class="logo-label">FORMA AUDIO SOLUTIONS</span>
     </div>
     <div class="top-right">
       <button class="pill" onclick="openModal()">
@@ -356,15 +356,38 @@ function openModal() { document.getElementById('mb').classList.add('open'); }
 function closeModal() { document.getElementById('mb').classList.remove('open'); }
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
+const FORM_URL = 'https://script.google.com/macros/s/AKfycbyL59q0C-Zzu1Vougkb3HAC6OLkj0FBN9gGE-AxxhIvNfqPphWuj6aTWDOqsVDqaRZa/exec';
+
 function handleSubmit(e) {
   e.preventDefault();
   const f = e.target;
-  const subj = encodeURIComponent(`Project inquiry from ${f.name.value}${f.company.value ? ' @ '+f.company.value : ''}`);
-  const body = encodeURIComponent(
-    `Name: ${f.name.value}\nCompany: ${f.company.value||'—'}\nEmail: ${f.email.value}\nService: ${f.service.value||'—'}\nBudget: ${f.budget.value||'—'}\nTimeline: ${f.timeline.value||'—'}\n\nBrief:\n${f.brief.value||'—'}`
-  );
-  window.location.href = `mailto:hello@formasound.co?subject=${subj}&body=${body}`;
-  document.getElementById('fn').textContent = 'Opening your email client...';
+  const note = document.getElementById('fn');
+
+  const payload = {
+    type: 'inquiry',
+    name: f.name.value,
+    company: f.company.value || '',
+    email: f.email.value,
+    service: f.service.value || '',
+    budget: f.budget.value || '',
+    timeline: f.timeline.value || '',
+    brief: f.brief.value || '',
+    timestamp: new Date().toISOString()
+  };
+
+  note.textContent = 'Sending...';
+  fetch(FORM_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  }).then(() => {
+    note.textContent = 'Sent! We\'ll get back within 48h.';
+    f.reset();
+    setTimeout(closeModal, 2000);
+  }).catch(() => {
+    note.textContent = 'Failed to send. Please try again.';
+  });
 }
 
 // ====== CANVAS: SOUND TERRAIN ======
