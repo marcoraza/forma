@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Forma — Feedback Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+
+  :root{
+    --bg:#FFFFFF;--bg-alt:#F8F8F6;
+    --surface:#EAEAE7;--surface-light:#E2E2DF;--surface-deep:#F0F0ED;
+    --border:#D8D8D4;--border-mid:#CCCCC8;
+    --text:#1A1A1F;--text-dim:#55555A;--text-muted:#7A7A80;--text-ghost:#C0C0BC;
+    --gold:#8b7355;--gold-dim:rgba(139,115,85,.10);
+  }
+
+  body{background:var(--bg-alt);font-family:'Space Grotesk',sans-serif;color:var(--text);min-height:100vh}
+
+  /* ===== LOGIN ===== */
+  .login-wrap{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:var(--bg-alt);z-index:100}
+  .login-wrap.hidden{display:none}
+  .login-card{width:360px;max-width:90vw;text-align:center}
+  .login-logo{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:48px}
+  .login-logo span{font-family:'Space Mono',monospace;font-size:10px;color:var(--gold);letter-spacing:.2em;text-transform:uppercase}
+  .login-field{position:relative;margin-bottom:24px}
+  .login-input{width:100%;padding:12px 0;border:none;border-bottom:1px solid var(--border);background:none;font-family:'Space Mono',monospace;font-size:13px;letter-spacing:.15em;color:var(--text);outline:none;text-align:center;transition:border-color .2s}
+  .login-input:focus{border-color:var(--gold)}
+  .login-input::placeholder{color:var(--text-ghost);letter-spacing:.1em}
+  .login-btn{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;padding:12px 40px;border:1px solid var(--gold);background:var(--gold);color:var(--bg);cursor:pointer;transition:opacity .2s}
+  .login-btn:hover{opacity:.85}
+  .login-error{font-size:11px;color:#b44;margin-top:12px;min-height:16px;font-weight:300}
+
+  /* ===== SHELL ===== */
+  .shell{display:none;max-width:1200px;margin:0 auto;padding:40px 32px 80px}
+  .shell.active{display:block}
+
+  /* Header */
+  .header{display:flex;align-items:center;justify-content:space-between;padding-bottom:24px;border-bottom:1px solid var(--border);margin-bottom:32px}
+  .header-left{display:flex;align-items:center;gap:14px}
+  .header-label{font-family:'Space Mono',monospace;font-size:10px;color:var(--gold);letter-spacing:.2em;text-transform:uppercase}
+  .header-title{font-size:22px;font-weight:600;letter-spacing:-.02em;margin-top:2px}
+  .header-right{display:flex;align-items:center;gap:16px}
+  .header-count{font-family:'Space Mono',monospace;font-size:11px;color:var(--text-muted)}
+  .btn-logout{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;padding:8px 16px;border:1px solid var(--border-mid);background:none;color:var(--text-muted);cursor:pointer;transition:all .2s}
+  .btn-logout:hover{border-color:var(--text-muted);color:var(--text)}
+  .btn-refresh{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;padding:8px 16px;border:1px solid var(--gold);background:var(--gold);color:var(--bg);cursor:pointer;transition:opacity .2s}
+  .btn-refresh:hover{opacity:.85}
+
+  /* Filters */
+  .filters{display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap}
+  .filter-btn{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;padding:6px 14px;border:1px solid var(--border);background:none;color:var(--text-muted);cursor:pointer;transition:all .2s}
+  .filter-btn:hover{border-color:var(--text-muted);color:var(--text)}
+  .filter-btn.active{border-color:var(--gold);background:var(--gold);color:var(--bg)}
+
+  /* Table */
+  .table-wrap{width:100%;overflow-x:auto}
+  .table-head{display:grid;grid-template-columns:140px 120px 1fr 1fr 1fr;gap:0;padding:0 16px 12px;border-bottom:1px solid var(--border)}
+  .table-head span{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.15em;color:var(--text-muted);text-transform:uppercase}
+  .table-body{display:flex;flex-direction:column}
+  .table-row{display:grid;grid-template-columns:140px 120px 1fr 1fr 1fr;gap:0;padding:16px;border-bottom:1px solid var(--surface);transition:background .15s}
+  .table-row:hover{background:var(--surface-deep)}
+  .table-cell{font-size:13px;font-weight:300;color:var(--text-dim);padding-right:16px;line-height:1.45}
+  .table-cell.date{font-family:'Space Mono',monospace;font-size:10px;color:var(--text-ghost);letter-spacing:.04em}
+  .table-cell.mood{font-family:'Space Mono',monospace;font-size:10px;color:var(--gold);letter-spacing:.1em;text-transform:uppercase;font-weight:700}
+  .table-cell.empty{color:var(--text-ghost);font-style:italic;font-size:11px}
+
+  /* Empty state */
+  .empty-state{text-align:center;padding:80px 20px}
+  .empty-state-icon{font-size:32px;color:var(--surface);margin-bottom:16px}
+  .empty-state-text{font-size:14px;color:var(--text-ghost);font-weight:300}
+
+  /* Loading */
+  .loading{text-align:center;padding:60px 20px}
+  .loading-text{font-family:'Space Mono',monospace;font-size:10px;color:var(--text-muted);letter-spacing:.15em;text-transform:uppercase}
+  @keyframes pulse{0%,100%{opacity:.4}50%{opacity:1}}
+  .loading-text{animation:pulse 1.5s ease-in-out infinite}
+
+  /* Mobile */
+  @media(max-width:820px){
+    .shell{padding:24px 16px 60px}
+    .header{flex-direction:column;align-items:flex-start;gap:16px}
+    .header-right{width:100%;justify-content:flex-end}
+    .table-head{display:none}
+    .table-row{grid-template-columns:1fr;gap:8px;padding:16px 12px}
+    .table-row::before{content:attr(data-mood);font-family:'Space Mono',monospace;font-size:10px;color:var(--gold);letter-spacing:.1em;text-transform:uppercase;font-weight:700}
+    .table-cell.date{order:-1}
+    .table-cell.mood{display:none}
+    .table-cell{padding-right:0}
+    .table-cell::before{content:attr(data-label);display:block;font-family:'Space Mono',monospace;font-size:8px;color:var(--text-ghost);letter-spacing:.1em;text-transform:uppercase;margin-bottom:2px}
+    .filters{gap:6px}
+    .filter-btn{font-size:8px;padding:5px 10px}
+  }
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="login-wrap" id="login-wrap">
+  <div class="login-card">
+    <div class="login-logo">
+      <svg viewBox="0 0 300 180" width="36" height="22"><polygon points="0,0 300,0 253,87 0,87" fill="var(--gold)"/><polygon points="0,93 253,93 300,180 0,180" fill="var(--gold)"/></svg>
+      <span>Feedback Admin</span>
+    </div>
+    <div class="login-field">
+      <input class="login-input" id="pw-input" type="password" placeholder="Password" autofocus onkeydown="if(event.key==='Enter')tryLogin()">
+    </div>
+    <button class="login-btn" onclick="tryLogin()">Enter</button>
+    <div class="login-error" id="login-error"></div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div class="shell" id="shell">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-left">
+      <svg viewBox="0 0 300 180" width="32" height="19"><polygon points="0,0 300,0 253,87 0,87" fill="var(--gold)"/><polygon points="0,93 253,93 300,180 0,180" fill="var(--gold)"/></svg>
+      <div>
+        <div class="header-label">City of Arabia</div>
+        <div class="header-title">Feedback</div>
+      </div>
+    </div>
+    <div class="header-right">
+      <span class="header-count" id="entry-count"></span>
+      <button class="btn-refresh" onclick="loadData()">Refresh</button>
+      <button class="btn-logout" onclick="logout()">Logout</button>
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <div class="filters" id="filters">
+    <button class="filter-btn active" onclick="filterBy('all',this)">All</button>
+  </div>
+
+  <!-- Table -->
+  <div class="table-wrap">
+    <div class="table-head">
+      <span>Date</span>
+      <span>Mood</span>
+      <span>Change 1</span>
+      <span>Change 2</span>
+      <span>Change 3</span>
+    </div>
+    <div class="table-body" id="table-body">
+      <div class="loading"><span class="loading-text">Loading feedback...</span></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbyL59q0C-Zzu1Vougkb3HAC6OLkj0FBN9gGE-AxxhIvNfqPphWuj6aTWDOqsVDqaRZa/exec';
+const PW_HASH = '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92'; // sha256 of 123456
+
+let _data = [];
+let _filter = 'all';
+
+async function sha256(str) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+async function tryLogin() {
+  const pw = document.getElementById('pw-input').value;
+  const hash = await sha256(pw);
+  if (hash === PW_HASH) {
+    sessionStorage.setItem('coa-admin', '1');
+    showDashboard();
+  } else {
+    document.getElementById('login-error').textContent = 'Invalid password';
+    document.getElementById('pw-input').value = '';
+    document.getElementById('pw-input').focus();
+  }
+}
+
+function showDashboard() {
+  document.getElementById('login-wrap').classList.add('hidden');
+  document.getElementById('shell').classList.add('active');
+  loadData();
+}
+
+function logout() {
+  sessionStorage.removeItem('coa-admin');
+  document.getElementById('shell').classList.remove('active');
+  document.getElementById('login-wrap').classList.remove('hidden');
+  document.getElementById('pw-input').value = '';
+  document.getElementById('pw-input').focus();
+}
+
+async function loadData() {
+  const body = document.getElementById('table-body');
+  body.innerHTML = '<div class="loading"><span class="loading-text">Loading feedback...</span></div>';
+
+  try {
+    const res = await fetch(SHEET_URL + '?action=list');
+    const json = await res.json();
+    _data = json.data || [];
+    buildFilters();
+    renderTable();
+  } catch (err) {
+    body.innerHTML = '<div class="empty-state"><div class="empty-state-text">Failed to load. Check the Apps Script doGet function.</div></div>';
+  }
+}
+
+function buildFilters() {
+  const moods = [...new Set(_data.map(r => r.mood))].sort();
+  const wrap = document.getElementById('filters');
+  wrap.innerHTML = '<button class="filter-btn active" onclick="filterBy(\'all\',this)">All</button>';
+  moods.forEach(m => {
+    const btn = document.createElement('button');
+    btn.className = 'filter-btn';
+    btn.textContent = m;
+    btn.onclick = function() { filterBy(m, this); };
+    wrap.appendChild(btn);
+  });
+}
+
+function filterBy(mood, btn) {
+  _filter = mood;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderTable();
+}
+
+function fmtDate(iso) {
+  if (!iso) return '';
+  const d = new Date(iso);
+  if (isNaN(d)) return iso;
+  const dd = String(d.getDate()).padStart(2, '0');
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const hh = String(d.getHours()).padStart(2, '0');
+  const min = String(d.getMinutes()).padStart(2, '0');
+  return dd + '/' + mm + ' ' + hh + ':' + min;
+}
+
+function renderTable() {
+  const filtered = _filter === 'all' ? _data : _data.filter(r => r.mood === _filter);
+  const count = document.getElementById('entry-count');
+  count.textContent = filtered.length + ' entr' + (filtered.length === 1 ? 'y' : 'ies');
+
+  const body = document.getElementById('table-body');
+
+  if (!filtered.length) {
+    body.innerHTML = '<div class="empty-state"><div class="empty-state-text">No feedback yet.</div></div>';
+    return;
+  }
+
+  body.innerHTML = filtered.map(r => {
+    const c1 = r.change_1 || '';
+    const c2 = r.change_2 || '';
+    const c3 = r.change_3 || '';
+    return '<div class="table-row" data-mood="' + (r.mood || '') + '">'
+      + '<div class="table-cell date" data-label="Date">' + fmtDate(r.timestamp) + '</div>'
+      + '<div class="table-cell mood">' + (r.mood || '') + '</div>'
+      + '<div class="table-cell' + (c1 ? '' : ' empty') + '" data-label="Change 1">' + (c1 || 'empty') + '</div>'
+      + '<div class="table-cell' + (c2 ? '' : ' empty') + '" data-label="Change 2">' + (c2 || 'empty') + '</div>'
+      + '<div class="table-cell' + (c3 ? '' : ' empty') + '" data-label="Change 3">' + (c3 || 'empty') + '</div>'
+      + '</div>';
+  }).join('');
+}
+
+// Auto-login if session active
+if (sessionStorage.getItem('coa-admin') === '1') {
+  showDashboard();
+}
+</script>
+</body>
+</html>
