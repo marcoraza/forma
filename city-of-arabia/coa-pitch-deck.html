@@ -3,31 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Forma — City of Arabia</title>
+<title>FOrMA SOuND</title>
 <script src="https://player.vimeo.com/api/player.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
   *{margin:0;padding:0;box-sizing:border-box}
-  body{background:#080808;font-family:'Space Grotesk',sans-serif}
+  body{background:#E8E7E3;font-family:'Space Grotesk',sans-serif}
   .slide{width:1440px;height:810px;margin:40px auto;position:relative;overflow:hidden}
-
-  [data-theme="original"]{
-    --bg:#0c0c0e; --bg-alt:#0e0e10;
-    --surface:#141414; --surface-light:#1a1a1a; --surface-deep:#111110; --surface-mid:#161616;
-    --border:#1e1e1e; --border-mid:#252525;
-    --text:#f0eee8; --text-dim:#8a8a8a; --text-muted:#6b6b6b; --text-ghost:#3a3a3a;
-    --gold:#8b7355; --gold-dim:rgba(139,115,85,0.15);
-    --num-01:#222; --num-02:#282828; --num-03:#303030; --num-04:#3a3530; --num-05:#222;
-  }
-
-  [data-theme="shark"]{
-    --bg:#28282D; --bg-alt:#2E2E33;
-    --surface:#323237; --surface-light:#3A3A40; --surface-deep:#222227; --surface-mid:#303035;
-    --border:#3A3A40; --border-mid:#48484E;
-    --text:#CDD2D7; --text-dim:#9DA4AA; --text-muted:#6A7078; --text-ghost:#404046;
-    --gold:#E6FF50; --gold-dim:rgba(230,255,80,0.12);
-    --num-01:#333338; --num-02:#38383D; --num-03:#3E3E43; --num-04:#424248; --num-05:#333338;
-  }
 
   [data-theme="light"]{
     --bg:#FFFFFF; --bg-alt:#F8F8F6;
@@ -47,15 +29,42 @@
   .lu{font-size:14px;font-weight:600;color:var(--text);text-transform:uppercase;letter-spacing:0.08em}
   .mn{font-family:'Space Mono',monospace}
 
-  /* Theme toggle */
-  #theme-toggle button{
-    padding:6px 12px;font-size:9px;font-family:'Space Mono',monospace;
-    letter-spacing:0.12em;text-transform:uppercase;border:none;cursor:pointer;
-    background:none;color:var(--text-muted);transition:background .15s,color .15s;
-  }
-  #theme-toggle button.active{
-    background:var(--gold);color:var(--bg);font-weight:700;
-  }
+  /* ===== FEEDBACK SYSTEM ===== */
+  .fb-icon{position:absolute;top:6px;right:6px;width:22px;height:22px;border:none;background:none;cursor:pointer;padding:2px;border-radius:4px;display:flex;align-items:center;justify-content:center;opacity:.5;transition:opacity .2s,background .2s;z-index:2}
+  .fb-icon:hover{opacity:1;background:rgba(0,0,0,.08)}
+  .fb-icon svg{width:14px;height:14px}
+  .fb-icon.has-comment{opacity:1}
+  .fb-icon.has-comment svg{fill:var(--gold)}
+
+  .fb-overlay{display:none;position:fixed;inset:0;background:rgba(26,26,31,.85);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);z-index:9999;align-items:center;justify-content:center}
+  .fb-overlay.active{display:flex}
+
+  .fb-modal{background:var(--bg);width:520px;max-width:92vw;position:relative;overflow:hidden}
+  .fb-modal-head{padding:28px 32px 0;display:flex;align-items:flex-start;justify-content:space-between}
+  .fb-modal-label{font-family:'Space Mono',monospace;font-size:9px;color:var(--gold);letter-spacing:.2em;text-transform:uppercase}
+  .fb-modal-mood{font-size:15px;font-weight:500;color:var(--text);margin-top:4px;letter-spacing:-.01em}
+  .fb-close{width:28px;height:28px;border:none;background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text-ghost);transition:color .2s}
+  .fb-close:hover{color:var(--text)}
+  .fb-close svg{width:16px;height:16px}
+
+  .fb-divider{height:1px;background:var(--border);margin:20px 32px 0}
+
+  .fb-fields{padding:20px 32px 0;display:flex;flex-direction:column;gap:14px}
+  .fb-field{display:flex;align-items:flex-start;gap:12px}
+  .fb-num{flex-shrink:0;width:20px;height:20px;border:1px solid var(--border-mid);display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:9px;color:var(--text-muted);margin-top:10px;transition:border-color .3s,color .3s}
+  .fb-num.filled{border-color:var(--gold);color:var(--gold)}
+  .fb-input{flex:1;padding:10px 0;border:none;border-bottom:1px solid var(--border);background:none;color:var(--text);font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:300;line-height:1.4;outline:none;transition:border-color .2s}
+  .fb-input:focus{border-color:var(--gold)}
+  .fb-input::placeholder{color:var(--text-ghost);font-weight:300}
+
+  .fb-footer{padding:20px 32px 28px;display:flex;align-items:center;justify-content:space-between}
+  .fb-hint{font-size:10px;color:var(--text-ghost);font-weight:300;letter-spacing:.02em}
+  .fb-send{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;padding:10px 24px;cursor:pointer;transition:all .2s;border:1px solid var(--gold);background:var(--gold);color:var(--bg)}
+  .fb-send:hover{opacity:.88}
+  .fb-send:disabled{opacity:.4;cursor:not-allowed}
+  .fb-status{font-size:11px;font-weight:300;padding:0 32px;min-height:16px;margin-top:-8px}
+  .fb-status.success{color:var(--gold)}
+  .fb-status.error{color:#b44}
 
   /* ===== MOBILE RESPONSIVE ===== */
   @media (max-width: 820px) {
@@ -85,14 +94,6 @@
     .sl { font-size: 10px !important; }
     .lu { font-size: 12px !important; }
     .sn { right: 20px !important; bottom: 16px !important; font-size: 10px !important; }
-
-    /* --- Theme toggle: compact pill --- */
-    #theme-toggle {
-      top: 10px !important; right: 10px !important;
-      border-radius: 20px !important;
-    }
-    #theme-toggle button { padding: 4px 8px !important; font-size: 7px !important; }
-
     /* --- S01: Cover --- */
     #s01 {
       display: flex !important; flex-direction: column;
@@ -250,6 +251,17 @@
       font-size: 16px !important;
     }
 
+    /* --- Feedback modal mobile --- */
+    .fb-modal { max-width: 96vw; }
+    .fb-modal-head { padding: 24px 20px 0; }
+    .fb-modal-mood { font-size: 13px; }
+    .fb-divider { margin: 16px 20px 0; }
+    .fb-fields { padding: 16px 20px 0; gap: 10px; }
+    .fb-input { font-size: 12px; }
+    .fb-footer { padding: 16px 20px 24px; }
+    .fb-status { padding: 0 20px; }
+    .fb-icon { top: 4px; right: 4px; width: 20px; height: 20px; }
+
     /* --- S09: Moods / Video (the big fix) --- */
     #s09 { padding-bottom: 24px !important; }
     #s09 > div[style*="padding:60px 80px"] { padding: 0 0 12px !important; }
@@ -329,13 +341,6 @@
 </head>
 <body>
 
-<!-- Theme toggle -->
-<div id="theme-toggle" style="position:fixed;top:24px;right:24px;z-index:200;display:flex;border:1px solid var(--border-mid);border-radius:3px;overflow:hidden;font-family:'Space Mono',monospace">
-  <button id="t1" onclick="setTheme('light')">Light</button>
-  <button id="t2" onclick="setTheme('original')">Dark</button>
-  <button id="t3" onclick="setTheme('shark')">Shark</button>
-</div>
-
 <!-- FLAG MARK V3 (triangle inward) reusable:
   <polygon points="0,0 300,0 253,87 0,87" fill="..."/>
   <polygon points="0,93 253,93 300,180 0,180" fill="..."/>
@@ -351,7 +356,7 @@
   <div style="position:absolute;bottom:0;left:0;width:660px;height:120px;background-image:radial-gradient(circle,var(--surface-light) 1.2px,transparent 1.2px);background-size:30px 20px;opacity:.6"></div>
   <div style="position:absolute;top:60px;left:80px;display:flex;align-items:center;gap:14px">
     <svg viewBox="0 0 300 180" width="44" height="26"><polygon points="0,0 300,0 253,87 0,87" fill="var(--gold)"/><polygon points="0,93 253,93 300,180 0,180" fill="var(--gold)"/></svg>
-    <span class="sl" style="color:var(--gold)">Forma Audio Solutions</span>
+    <span class="sl" style="color:var(--gold)">FORMA AUDIO SOLUTIONS</span>
   </div>
   <div style="position:absolute;bottom:60px;left:80px;display:flex;flex-direction:column;gap:0">
     <div style="width:60px;height:2px;background:var(--gold);margin:0 0 24px"></div>
@@ -724,13 +729,13 @@
   </div>
 
   <!-- Player area -->
-  <div style="position:absolute;top:148px;left:80px;right:80px;bottom:80px;display:flex;flex-direction:column;gap:16px;z-index:1">
+  <div style="position:absolute;top:148px;left:80px;right:80px;bottom:80px;display:flex;flex-direction:column;gap:10px;z-index:1">
 
     <!-- Video container: fixed 16:9 from available height, centered -->
-    <div style="flex:1;display:flex;align-items:center;justify-content:center;overflow:hidden">
-      <div style="position:relative;width:900px;height:506px;max-width:100%;background:#000;border:1px solid var(--border);flex-shrink:0">
+    <div style="flex:1;min-height:0;display:flex;align-items:center;justify-content:center;overflow:hidden">
+      <div style="position:relative;width:min(100%,820px);aspect-ratio:16/9;max-height:100%;background:#000;border:1px solid var(--border);flex-shrink:0">
         <iframe id="vimeo-player"
-          src="https://player.vimeo.com/video/1181340236?title=0&byline=0&portrait=0&badge=0&dnt=1&transparent=0"
+          src="https://player.vimeo.com/video/1181340317?title=0&byline=0&portrait=0&badge=0&dnt=1&transparent=0"
           style="position:absolute;top:0;left:0;width:100%;height:100%;border:none"
           allow="autoplay; fullscreen; picture-in-picture"
           allowfullscreen>
@@ -739,21 +744,36 @@
     </div>
 
     <!-- Mood tabs -->
-    <div style="display:flex;gap:12px;flex-shrink:0">
-      <button id="tab-1" onclick="switchMood(1)" style="flex:1;padding:14px 20px;border:1px solid var(--gold);background:var(--gold);color:var(--bg);font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;text-align:left;transition:all .2s">
-        <div style="font-weight:700;margin-bottom:4px">Mood 01</div>
-        <div style="font-size:11px;font-weight:400;opacity:.8;font-family:'Space Grotesk',sans-serif;text-transform:none;letter-spacing:0">Main / Mediterranean</div>
-        <div style="font-size:10px;font-weight:300;opacity:.6;font-family:'Space Grotesk',sans-serif;text-transform:none;letter-spacing:0;margin-top:3px">Sun-drenched balearic groove. The core direction.</div>
+    <div style="display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;flex-shrink:0">
+      <button id="tab-2" onclick="switchMood(2)" style="position:relative;min-height:88px;padding:10px 12px;border:1px solid var(--gold);background:var(--gold);color:var(--bg);font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.13em;text-transform:uppercase;cursor:pointer;text-align:left;transition:all .2s">
+        <span class="fb-icon" id="fb-icon-2" onclick="event.stopPropagation();openFeedback(2,'Mood 01')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.2L4 17.2V4h16v12z"/></svg></span>
+        <div style="font-weight:700;margin-bottom:3px">Mood 01</div>
+        <div style="font-size:10px;font-weight:400;opacity:.82;font-family:'Space Grotesk',sans-serif;text-transform:none;letter-spacing:0">Cinematic</div>
+        <div style="font-size:9px;line-height:1.35;font-weight:300;opacity:.68;font-family:'Space Grotesk',sans-serif;text-transform:none;letter-spacing:0;margin-top:2px">Wider, atmospheric film energy.</div>
       </button>
-      <button id="tab-2" onclick="switchMood(2)" style="flex:1;padding:14px 20px;border:1px solid var(--border-mid);background:none;color:var(--text-muted);font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;text-align:left;transition:all .2s">
-        <div style="font-weight:700;margin-bottom:4px">Mood 02</div>
-        <div style="font-size:11px;font-weight:400;opacity:.8;font-family:'Space Grotesk',sans-serif;text-transform:none;letter-spacing:0">Cinematic</div>
-        <div style="font-size:10px;font-weight:300;opacity:.6;font-family:'Space Grotesk',sans-serif;text-transform:none;letter-spacing:0;margin-top:3px">Wider, more atmospheric. Film score energy.</div>
+      <button id="tab-4" onclick="switchMood(4)" style="position:relative;min-height:88px;padding:10px 12px;border:1px solid var(--border-mid);background:none;color:var(--text-muted);font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.13em;text-transform:uppercase;cursor:pointer;text-align:left;transition:all .2s">
+        <span class="fb-icon" id="fb-icon-4" onclick="event.stopPropagation();openFeedback(4,'Mood 01 B')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.2L4 17.2V4h16v12z"/></svg></span>
+        <div style="font-weight:700;margin-bottom:3px">Mood 01 B</div>
+        <div style="font-size:10px;font-weight:400;opacity:.82;font-family:'Space Grotesk',sans-serif;text-transform:none;letter-spacing:0">Cinematic / Fast Pace</div>
+        <div style="font-size:9px;line-height:1.35;font-weight:300;opacity:.68;font-family:'Space Grotesk',sans-serif;text-transform:none;letter-spacing:0;margin-top:2px">Same language, faster pace.</div>
       </button>
-      <button id="tab-3" onclick="switchMood(3)" style="flex:1;padding:14px 20px;border:1px solid var(--border-mid);background:none;color:var(--text-muted);font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;text-align:left;transition:all .2s">
-        <div style="font-weight:700;margin-bottom:4px">Mood 03</div>
-        <div style="font-size:11px;font-weight:400;opacity:.8;font-family:'Space Grotesk',sans-serif;text-transform:none;letter-spacing:0">Italo / Indie</div>
-        <div style="font-size:10px;font-weight:300;opacity:.6;font-family:'Space Grotesk',sans-serif;text-transform:none;letter-spacing:0;margin-top:3px">Rhythmic, playful. Italo warmth meets indie cool.</div>
+      <button id="tab-1" onclick="switchMood(1)" style="position:relative;min-height:88px;padding:10px 12px;border:1px solid var(--border-mid);background:none;color:var(--text-muted);font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.13em;text-transform:uppercase;cursor:pointer;text-align:left;transition:all .2s">
+        <span class="fb-icon" id="fb-icon-1" onclick="event.stopPropagation();openFeedback(1,'Mood 02')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.2L4 17.2V4h16v12z"/></svg></span>
+        <div style="font-weight:700;margin-bottom:3px">Mood 02</div>
+        <div style="font-size:10px;font-weight:400;opacity:.82;font-family:'Space Grotesk',sans-serif;text-transform:none;letter-spacing:0">Main / Mediterranean</div>
+        <div style="font-size:9px;line-height:1.35;font-weight:300;opacity:.68;font-family:'Space Grotesk',sans-serif;text-transform:none;letter-spacing:0;margin-top:2px">Sun-drenched balearic groove.</div>
+      </button>
+      <button id="tab-5" onclick="switchMood(5)" style="position:relative;min-height:88px;padding:10px 12px;border:1px solid var(--border-mid);background:none;color:var(--text-muted);font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.13em;text-transform:uppercase;cursor:pointer;text-align:left;transition:all .2s">
+        <span class="fb-icon" id="fb-icon-5" onclick="event.stopPropagation();openFeedback(5,'Mood 02 B')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.2L4 17.2V4h16v12z"/></svg></span>
+        <div style="font-weight:700;margin-bottom:3px">Mood 02 B</div>
+        <div style="font-size:10px;font-weight:400;opacity:.82;font-family:'Space Grotesk',sans-serif;text-transform:none;letter-spacing:0">Mediterranean / Vocals Add</div>
+        <div style="font-size:9px;line-height:1.35;font-weight:300;opacity:.68;font-family:'Space Grotesk',sans-serif;text-transform:none;letter-spacing:0;margin-top:2px">Variation with vocals pushed forward.</div>
+      </button>
+      <button id="tab-3" onclick="switchMood(3)" style="position:relative;min-height:88px;padding:10px 12px;border:1px solid var(--border-mid);background:none;color:var(--text-muted);font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.13em;text-transform:uppercase;cursor:pointer;text-align:left;transition:all .2s">
+        <span class="fb-icon" id="fb-icon-3" onclick="event.stopPropagation();openFeedback(3,'Mood 03')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.2L4 17.2V4h16v12z"/></svg></span>
+        <div style="font-weight:700;margin-bottom:3px">Mood 03</div>
+        <div style="font-size:10px;font-weight:400;opacity:.82;font-family:'Space Grotesk',sans-serif;text-transform:none;letter-spacing:0">Italo / Indie</div>
+        <div style="font-size:9px;line-height:1.35;font-weight:300;opacity:.68;font-family:'Space Grotesk',sans-serif;text-transform:none;letter-spacing:0;margin-top:2px">Rhythmic, playful, warm.</div>
       </button>
     </div>
   </div>
@@ -770,7 +790,7 @@
       <!-- Left: logo + name -->
       <div style="display:flex;align-items:center;gap:14px">
         <svg viewBox="0 0 300 180" width="36" height="22"><polygon points="0,0 300,0 253,87 0,87" fill="var(--gold)"/><polygon points="0,93 253,93 300,180 0,180" fill="var(--gold)"/></svg>
-        <span class="sl">Forma Audio Solutions</span>
+        <span class="sl">FORMA AUDIO SOLUTIONS</span>
       </div>
       <!-- Right: doc info -->
       <div style="text-align:right;display:flex;flex-direction:column;gap:4px">
@@ -911,43 +931,148 @@
   </svg>
   <div style="position:absolute;bottom:40px;left:340px;width:760px;height:30px;background-image:radial-gradient(circle,var(--surface-light) 1.2px,transparent 1.2px);background-size:30px 30px;opacity:.4"></div>
   <div style="position:absolute;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0">
-    <!-- Flag V3 mark only, centered, warm white -->
-    <svg viewBox="0 0 300 180" width="100" height="60" style="margin-bottom:40px"><polygon points="0,0 300,0 253,87 0,87" fill="var(--text)"/><polygon points="0,93 253,93 300,180 0,180" fill="var(--text)"/></svg>
     <div style="width:50px;height:2px;background:var(--gold);margin-bottom:28px"></div>
-    <div style="font-size:22px;font-weight:400;color:var(--text);letter-spacing:.1em" class="mn">forma.audio</div>
+    <div style="font-size:18px;font-weight:300;color:var(--text-dim);letter-spacing:.16em" class="mn">formasounds.co</div>
     <div style="font-size:12px;font-weight:300;color:var(--text-ghost);margin-top:28px;letter-spacing:.08em">Audio Solutions / Sound Design / Composition / Mixing / Mastering</div>
   </div>
   <span class="sn">11 / 11</span>
 </div>
 
+<!-- Feedback Modal -->
+<div id="fb-overlay" class="fb-overlay" onclick="if(event.target===this)closeFeedback()">
+  <div class="fb-modal">
+    <div class="fb-modal-head">
+      <div>
+        <div class="fb-modal-label">Feedback</div>
+        <div id="fb-mood-name" class="fb-modal-mood"></div>
+      </div>
+      <button class="fb-close" onclick="closeFeedback()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+    </div>
+    <div class="fb-divider"></div>
+    <div class="fb-fields">
+      <div class="fb-field">
+        <span class="fb-num" id="fb-num-1">1</span>
+        <input class="fb-input" id="fb-input-1" type="text" placeholder="First change or suggestion..." oninput="updateFieldState()">
+      </div>
+      <div class="fb-field">
+        <span class="fb-num" id="fb-num-2">2</span>
+        <input class="fb-input" id="fb-input-2" type="text" placeholder="Second change (optional)" oninput="updateFieldState()">
+      </div>
+      <div class="fb-field">
+        <span class="fb-num" id="fb-num-3">3</span>
+        <input class="fb-input" id="fb-input-3" type="text" placeholder="Third change (optional)" oninput="updateFieldState()">
+      </div>
+    </div>
+    <div id="fb-status" class="fb-status"></div>
+    <div class="fb-footer">
+      <span class="fb-hint">At least one field required</span>
+      <button id="fb-send" class="fb-send" onclick="submitFeedback()" disabled>Send</button>
+    </div>
+  </div>
+</div>
+
 <script>
-function setTheme(t){
-  document.documentElement.setAttribute('data-theme',t);
-  ['t1','t2','t3'].forEach(id=>{
-    const btn=document.getElementById(id);
-    btn.style.background='';
-    btn.style.color='';
-    btn.style.fontWeight='';
-    btn.classList.remove('active');
-  });
-  const map={light:'t1',original:'t2',shark:'t3'};
-  const btn=document.getElementById(map[t]);
-  btn.style.background='var(--gold)';
-  btn.style.color='var(--bg)';
-  btn.style.fontWeight='700';
-  btn.classList.add('active');
-  document.body.style.background = t === 'light' ? '#E8E7E3' : '#080808';
-}
 document.addEventListener('DOMContentLoaded',()=>{
-  setTheme('light');
   document.getElementById('vimeo-player').addEventListener('load', initVimeoSDK);
+  initFeedbackIcons();
 });
 
 const moods = {
   1: '1181340236',
   2: '1181340317',
-  3: '1181340375'
+  3: '1181340375',
+  4: '1181416878',
+  5: '1181416832'
 };
+
+const FEEDBACK_URL = 'https://script.google.com/macros/s/AKfycbyL59q0C-Zzu1Vougkb3HAC6OLkj0FBN9gGE-AxxhIvNfqPphWuj6aTWDOqsVDqaRZa/exec';
+let _feedbackMood = null;
+
+function initFeedbackIcons() {
+  const commented = JSON.parse(localStorage.getItem('coa-feedback') || '{}');
+  Object.keys(commented).forEach(id => {
+    const icon = document.getElementById('fb-icon-' + id);
+    if (icon) icon.classList.add('has-comment');
+  });
+}
+
+function getFields() {
+  return [1, 2, 3].map(i => document.getElementById('fb-input-' + i));
+}
+
+function updateFieldState() {
+  const fields = getFields();
+  const hasContent = fields.some(f => f.value.trim());
+  document.getElementById('fb-send').disabled = !hasContent;
+  fields.forEach((f, i) => {
+    const num = document.getElementById('fb-num-' + (i + 1));
+    num.classList.toggle('filled', f.value.trim().length > 0);
+  });
+}
+
+function openFeedback(id, name) {
+  _feedbackMood = { id, name };
+  document.getElementById('fb-mood-name').textContent = name;
+  getFields().forEach(f => { f.value = ''; });
+  [1, 2, 3].forEach(i => document.getElementById('fb-num-' + i).classList.remove('filled'));
+  document.getElementById('fb-status').textContent = '';
+  document.getElementById('fb-status').className = 'fb-status';
+  document.getElementById('fb-send').disabled = true;
+  document.getElementById('fb-send').textContent = 'Send';
+  document.getElementById('fb-overlay').classList.add('active');
+  document.getElementById('fb-input-1').focus();
+}
+
+function closeFeedback() {
+  document.getElementById('fb-overlay').classList.remove('active');
+  _feedbackMood = null;
+}
+
+async function submitFeedback() {
+  const fields = getFields();
+  const changes = fields.map(f => f.value.trim()).filter(Boolean);
+  if (!changes.length || !_feedbackMood) return;
+
+  const btn = document.getElementById('fb-send');
+  const status = document.getElementById('fb-status');
+  btn.disabled = true;
+  btn.textContent = 'Sending...';
+  status.textContent = '';
+  status.className = 'fb-status';
+
+  try {
+    await fetch(FEEDBACK_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        mood: _feedbackMood.name,
+        change_1: changes[0] || '',
+        change_2: changes[1] || '',
+        change_3: changes[2] || '',
+        timestamp: new Date().toISOString()
+      })
+    });
+
+    const commented = JSON.parse(localStorage.getItem('coa-feedback') || '{}');
+    commented[_feedbackMood.id] = true;
+    localStorage.setItem('coa-feedback', JSON.stringify(commented));
+
+    const icon = document.getElementById('fb-icon-' + _feedbackMood.id);
+    if (icon) icon.classList.add('has-comment');
+
+    status.textContent = 'Feedback sent. Thank you!';
+    status.className = 'fb-status success';
+    btn.textContent = 'Send';
+
+    setTimeout(closeFeedback, 1500);
+  } catch (err) {
+    status.textContent = 'Failed to send. Please try again.';
+    status.className = 'fb-status error';
+    btn.disabled = false;
+    btn.textContent = 'Send';
+  }
+}
 
 const VIMEO_PARAMS = '?title=0&byline=0&portrait=0&badge=0&dnt=1&transparent=0';
 
@@ -964,7 +1089,8 @@ function switchMood(n) {
   frame.src = 'https://player.vimeo.com/video/' + moods[n] + VIMEO_PARAMS;
   frame.onload = initVimeoSDK;
 
-  [1,2,3].forEach(i => {
+  Object.keys(moods).forEach(key => {
+    const i = Number(key);
     const tab = document.getElementById('tab-'+i);
     const isActive = i === n;
     tab.style.border = isActive ? '1px solid var(--gold)' : '1px solid var(--border-mid)';
