@@ -1,44 +1,29 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="shark">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FORMA AUDIO SOLUTIONS</title>
+<title>FORMA SOLUTIONS</title>
 <meta name="description" content="FORMA AUDIO SOLUTIONS">
 <meta name="application-name" content="FORMA AUDIO SOLUTIONS">
 <meta name="apple-mobile-web-app-title" content="FORMA AUDIO SOLUTIONS">
 <meta property="og:title" content="FORMA AUDIO SOLUTIONS">
 <meta property="og:description" content="FORMA AUDIO SOLUTIONS">
-<link rel="icon" type="image/svg+xml" href="assets/symbol/forma-symbol-dark-on-light.svg">
-<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="assets/favicon/favicon-16.png">
-<link rel="apple-touch-icon" sizes="192x192" href="assets/favicon/favicon-192.png">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="shortcut icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16.png">
+<link rel="apple-touch-icon" sizes="192x192" href="/assets/favicon/favicon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
-  [data-theme="original"] {
-    --bg:#0c0c0e; --bg-alt:#0e0e10;
-    --surface:#141414; --surface-light:#1a1a1a;
-    --border:#1e1e1e; --border-mid:#252525;
-    --text:#f0eee8; --text-dim:#8a8a8a; --text-muted:#6b6b6b; --text-ghost:#3a3a3a;
-    --accent:#8b7355; --accent-dim:rgba(139,115,85,0.15);
-    --ar:139; --ag:115; --ab:85;
-  }
-  [data-theme="shark"] {
+  :root {
     --bg:#28282D; --bg-alt:#2E2E33;
     --surface:#323237; --surface-light:#3A3A40;
     --border:#3A3A40; --border-mid:#48484E;
     --text:#CDD2D7; --text-dim:#9DA4AA; --text-muted:#6A7078; --text-ghost:#404046;
     --accent:#E6FF50; --accent-dim:rgba(230,255,80,0.12);
     --ar:230; --ag:255; --ab:80;
-  }
-  [data-theme="light"] {
-    --bg:#FFFFFF; --bg-alt:#F8F8F6;
-    --surface:#EAEAE7; --surface-light:#E2E2DF;
-    --border:#D8D8D4; --border-mid:#CCCCC8;
-    --text:#1A1A1F; --text-dim:#55555A; --text-muted:#7A7A80; --text-ghost:#C0C0BC;
-    --accent:#8b7355; --accent-dim:rgba(139,115,85,0.10);
-    --ar:139; --ag:115; --ab:85;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -101,33 +86,6 @@
     display: flex;
     align-items: center;
     gap: 10px;
-  }
-
-  .theme-toggle {
-    display: flex;
-    border: 1px solid var(--border);
-    border-radius: 3px;
-    overflow: hidden;
-    transition: border-color 0.5s;
-  }
-
-  .theme-toggle button {
-    padding: 6px 10px;
-    font-size: 8px;
-    font-family: 'Space Mono', monospace;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    border: none;
-    cursor: pointer;
-    background: none;
-    color: var(--text-muted);
-    transition: background 0.15s, color 0.15s;
-  }
-
-  .theme-toggle button.active {
-    background: var(--accent);
-    color: var(--bg);
-    font-weight: 700;
   }
 
   .pill {
@@ -282,7 +240,6 @@
   @media (max-width: 600px) {
     .fr { grid-template-columns: 1fr; }
     .bottom-bar span:first-child { display: none; }
-    .theme-toggle button { padding: 5px 7px; font-size: 7px; }
     .pill span:last-child { font-size: 8px; }
   }
 </style>
@@ -298,14 +255,9 @@
         <polygon points="0,0 300,0 253,87 0,87" fill="var(--accent)"/>
         <polygon points="0,93 253,93 300,180 0,180" fill="var(--accent)"/>
       </svg>
-      <span class="logo-label">Forma Audio Solutions</span>
+      <span class="logo-label">Forma Solutions</span>
     </div>
     <div class="top-right">
-      <div class="theme-toggle">
-        <button onclick="setTheme('light')">Light</button>
-        <button onclick="setTheme('original')">Dark</button>
-        <button class="active" onclick="setTheme('shark')">Shark</button>
-      </div>
       <button class="pill" onclick="openModal()">
         <span class="dot"></span>
         <span>Get in touch</span>
@@ -399,16 +351,6 @@ function getColors() {
   AB = parseInt(s.getPropertyValue('--ab'));
 }
 
-function setTheme(name) {
-  document.documentElement.setAttribute('data-theme', name);
-  document.querySelectorAll('.theme-toggle button').forEach(b => b.classList.remove('active'));
-  const map = { light:'Light', original:'Dark', shark:'Shark' };
-  document.querySelectorAll('.theme-toggle button').forEach(b => {
-    if (b.textContent === map[name]) b.classList.add('active');
-  });
-  setTimeout(getColors, 60);
-}
-
 // ====== MODAL ======
 function openModal() { document.getElementById('mb').classList.add('open'); }
 function closeModal() { document.getElementById('mb').classList.remove('open'); }
@@ -432,14 +374,44 @@ let W, H, t = 0;
 let mx = -9999, my = -9999, mActive = false;
 let mVx = 0, mVy = 0, prevMx = -9999, prevMy = -9999;
 let mSpeed = 0;
+const FORM_KEYS = ['rounded', 'square', 'triangle', 'saw'];
+const formBlend = { rounded: 1, square: 0, triangle: 0, saw: 0 };
+const formTarget = { rounded: 1, square: 0, triangle: 0, saw: 0 };
+
+// Motion tuning keeps the field reactive without tearing the lines apart.
+const MOTION = {
+  timeStep: 0.0028,
+  spawnRate: { base: 0.014, velocity: 0.26 },
+  liveRadius: 290,
+  liveShift: 18,
+  tangleAmount: 5.8,
+  phaseWarp: 0.95,
+  sculptClamp: 22,
+  lateralSpread: 0.28,
+  tailStrength: 0.12,
+  baseAmp: { min: 4.8, maxBoost: 9.5 },
+  lineLift: { alpha: 0.18 },
+  imprint: {
+    max: 28,
+    decayMin: 0.0021,
+    decayRange: 0.0018,
+    radiusMin: 170,
+    radiusRange: 140,
+    strengthBase: 7,
+    strengthVelocity: 15,
+    strengthRange: 6,
+    spinRange: 0.024,
+    freqMin: 7,
+    freqRange: 14
+  }
+};
 
 // Imprints: traces the mouse leaves behind, each with unique behavior
 const imprints = [];
-const MAX_IMPRINTS = 40;
 let imprintTimer = 0;
 
-// Effect types for variety
-const EFFECTS = ['ripple', 'vortex', 'fracture', 'gravity', 'static'];
+// Keep only the smoother effects so the field feels fluid instead of jagged.
+const EFFECTS = ['ripple', 'vortex', 'gravity'];
 
 function spawnImprint(x, y, speed) {
   const type = EFFECTS[Math.floor(Math.random() * EFFECTS.length)];
@@ -447,14 +419,14 @@ function spawnImprint(x, y, speed) {
     x, y, type,
     birth: t,
     life: 1,
-    decay: 0.003 + Math.random() * 0.004,
-    radius: 120 + Math.random() * 140,
-    strength: 15 + speed * 25 + Math.random() * 15,
+    decay: MOTION.imprint.decayMin + Math.random() * MOTION.imprint.decayRange,
+    radius: MOTION.imprint.radiusMin + Math.random() * MOTION.imprint.radiusRange,
+    strength: MOTION.imprint.strengthBase + speed * MOTION.imprint.strengthVelocity + Math.random() * MOTION.imprint.strengthRange,
     phase: Math.random() * Math.PI * 2,
-    spin: (Math.random() - 0.5) * 0.06,
-    freq: 8 + Math.random() * 30
+    spin: (Math.random() - 0.5) * MOTION.imprint.spinRange,
+    freq: MOTION.imprint.freqMin + Math.random() * MOTION.imprint.freqRange
   });
-  if (imprints.length > MAX_IMPRINTS) imprints.shift();
+  if (imprints.length > MOTION.imprint.max) imprints.shift();
 }
 
 function resize() {
@@ -467,14 +439,14 @@ function resize() {
 document.addEventListener('mousemove', e => {
   mx = e.clientX; my = e.clientY; mActive = true;
   mVx = mx - prevMx; mVy = my - prevMy;
-  mSpeed = Math.min(Math.sqrt(mVx * mVx + mVy * mVy) / 20, 1);
+  mSpeed = Math.min(Math.sqrt(mVx * mVx + mVy * mVy) / 30, 1);
   prevMx = mx; prevMy = my;
 });
 document.addEventListener('mouseleave', () => { mActive = false; });
 document.addEventListener('touchmove', e => {
   mx = e.touches[0].clientX; my = e.touches[0].clientY; mActive = true;
   mVx = mx - prevMx; mVy = my - prevMy;
-  mSpeed = Math.min(Math.sqrt(mVx * mVx + mVy * mVy) / 20, 1);
+  mSpeed = Math.min(Math.sqrt(mVx * mVx + mVy * mVy) / 30, 1);
   prevMx = mx; prevMy = my;
 }, { passive: true });
 document.addEventListener('touchend', () => { mActive = false; });
@@ -484,11 +456,6 @@ window.addEventListener('resize', resize);
 
 const LINE_COUNT = 55;
 const STEP = 3;
-
-// Simple hash for pseudo-random per-point variation
-function hash(a, b) {
-  return Math.sin(a * 12.9898 + b * 78.233) * 43758.5453 % 1;
-}
 
 function calcImprint(imp, x, baseY, linePhase) {
   const dx = x - imp.x;
@@ -503,44 +470,219 @@ function calcImprint(imp, x, baseY, linePhase) {
 
   switch (imp.type) {
     case 'ripple': {
-      // Expanding concentric rings
-      const ring = Math.sin(dist * 0.08 - age * 8 + imp.phase) * fade * str * 0.7;
+      const ring = Math.sin(dist * 0.055 - age * 6.5 + imp.phase) * fade * str * 0.42;
       return ring;
     }
     case 'vortex': {
-      // Swirling displacement
-      const angle = Math.atan2(dy, dx) + age * imp.spin * 20;
-      const swirl = Math.sin(angle * 3 + dist * 0.05) * fade * fade * str;
+      const angle = Math.atan2(dy, dx) + age * imp.spin * 18;
+      const swirl = Math.sin(angle * 2.4 + dist * 0.03) * fade * fade * str * 0.7;
       return swirl;
     }
-    case 'fracture': {
-      // Sharp, jagged distortion
-      const jagged = Math.sin(x * imp.freq * 0.01 + imp.phase) *
-                     Math.sin(baseY * 0.03 + imp.phase * 2);
-      return jagged * fade * fade * str * 1.2;
-    }
     case 'gravity': {
-      // Pull toward center, warps space
-      const pull = (dy > 0 ? 1 : -1) * fade * fade * fade * str * 1.5;
-      const wobble = Math.sin(age * 6 + dist * 0.04 + linePhase) * fade * str * 0.3;
+      const pull = (dy > 0 ? 1 : -1) * fade * fade * fade * str * 0.8;
+      const wobble = Math.sin(age * 4.6 + dist * 0.028 + linePhase) * fade * str * 0.16;
       return pull + wobble;
-    }
-    case 'static': {
-      // Noise burst, TV static feel
-      const n = hash(Math.floor(x * 0.15), Math.floor(baseY * 0.15) + age * 100);
-      return (n - 0.5) * fade * str * 1.8;
     }
     default: return 0;
   }
 }
 
+function getLineProfile(i) {
+  return {
+    slowFreq: 4.5 + Math.sin(i * 0.17) * 0.9,
+    slowWeight: 0.42 + Math.cos(i * 0.11) * 0.08,
+    midFreq: 8.8 + Math.cos(i * 0.29 + 0.6) * 1.8,
+    midWeight: 0.22 + Math.sin(i * 0.23 + 1.4) * 0.07,
+    detailFreq: 12.5 + Math.sin(i * 0.41 + 0.8) * 2.2,
+    detailWeight: 0.045 + (0.5 + 0.5 * Math.cos(i * 0.37)) * 0.05,
+    drift: i * 0.16 + Math.sin(i * 0.09) * 0.35,
+    tilt: Math.sin(i * 0.13 + 0.4) * 0.22
+  };
+}
+
+function smoothstep01(v) {
+  const x = Math.max(0, Math.min(1, v));
+  return x * x * (3 - 2 * x);
+}
+
+function triangleWave(phase) {
+  return (2 / Math.PI) * Math.asin(Math.sin(phase));
+}
+
+function squareWave(phase) {
+  return Math.tanh(Math.sin(phase) * 4.2);
+}
+
+function sawWave(phase) {
+  const turn = phase / (Math.PI * 2);
+  return 2 * (turn - Math.floor(turn + 0.5));
+}
+
+function getGestureState() {
+  const velocityLen = Math.hypot(mVx, mVy);
+  const safeLen = Math.max(1, velocityLen);
+  const dirX = mActive ? mVx / safeLen : 0;
+  const dirY = mActive ? mVy / safeLen : 0;
+  const horiz = Math.abs(dirX);
+  const vert = Math.abs(dirY);
+  const diag = 1 - Math.abs(horiz - vert);
+  const speed = smoothstep01(mSpeed);
+  const difference = horiz - vert;
+  let dominantForm = 'rounded';
+  let secondaryForm = 'rounded';
+
+  if (speed < 0.14) {
+    dominantForm = 'rounded';
+    secondaryForm = diag > 0.55 ? 'saw' : (horiz > vert ? 'square' : 'triangle');
+  } else if (difference > 0.18) {
+    dominantForm = 'square';
+    secondaryForm = diag > 0.45 ? 'saw' : 'rounded';
+  } else if (difference < -0.18) {
+    dominantForm = 'triangle';
+    secondaryForm = diag > 0.45 ? 'saw' : 'rounded';
+  } else {
+    dominantForm = 'saw';
+    secondaryForm = horiz > vert ? 'square' : 'triangle';
+  }
+
+  for (const key of FORM_KEYS) formTarget[key] = 0;
+  formTarget[dominantForm] = 0.8;
+  formTarget[secondaryForm] += 0.2;
+
+  return {
+    dirX,
+    dirY,
+    speed,
+    dominantForm,
+    secondaryForm,
+    formAmp: 12 + speed * 16
+  };
+}
+
+function sampleForm(kind, phaseA, phaseB) {
+  switch (kind) {
+    case 'square':
+      return squareWave(phaseA) * 0.78 + squareWave(phaseB * 0.7) * 0.22;
+    case 'triangle':
+      return triangleWave(phaseA * 1.08) * 0.84 + triangleWave(phaseB * 0.62) * 0.16;
+    case 'saw':
+      return sawWave(phaseA * 0.92) * 0.72 + sawWave(phaseB * 0.8) * 0.28;
+    case 'rounded':
+    default:
+      return Math.sin(phaseA) * 0.82 + Math.sin(phaseB) * 0.18;
+  }
+}
+
+function calcGestureForm(x, baseY, wavePhase, gesture, depthEnergy) {
+  if (!mActive || depthEnergy < 0.015) return 0;
+
+  const dx = x - mx;
+  const dy = baseY - my;
+  const radius = MOTION.liveRadius;
+  const fx = smoothstep01(1 - Math.abs(dx) / (radius * 1.08));
+  const fy = smoothstep01(1 - Math.abs(dy) / (radius * 0.82));
+  const env = fx * fy;
+  if (env <= 0) return 0;
+
+  const dirX = gesture.dirX || 1;
+  const dirY = gesture.dirY || 0;
+  const along = (dx * dirX + dy * dirY) / radius;
+  const across = (-dx * dirY + dy * dirX) / radius;
+  const phaseMain = across * Math.PI * (2.2 + gesture.speed * 1.7) + wavePhase * 0.95;
+  const phaseAlt = along * Math.PI * (1.5 + gesture.speed * 1.35) - wavePhase * 0.38;
+  const phaseDetail = (across * 1.25 + along * 0.52) * Math.PI * 1.95 + wavePhase * 0.22;
+  const roundedShape =
+    Math.sin(phaseMain) * 0.72 +
+    Math.sin(phaseAlt * 0.82) * 0.18 +
+    Math.sin(phaseDetail * 0.38) * 0.1;
+
+  const squareTerrace =
+    squareWave(phaseMain * 0.84) * 0.62 +
+    squareWave(phaseDetail * 0.52) * 0.22 +
+    sawWave(phaseAlt * 0.46) * 0.16;
+
+  const triangleCrest =
+    triangleWave(phaseMain * 1.08) * 0.7 +
+    triangleWave(phaseAlt * 0.64) * 0.18 +
+    Math.sign(Math.sin(phaseDetail * 0.42)) * 0.12;
+
+  const sawRamp =
+    sawWave(phaseMain * 0.9) * 0.56 +
+    sawWave(phaseAlt * 1.16) * 0.24 +
+    triangleWave(phaseDetail * 0.58) * 0.2;
+
+  const mixed =
+    roundedShape * formBlend.rounded +
+    squareTerrace * formBlend.square +
+    triangleCrest * formBlend.triangle +
+    sawRamp * formBlend.saw;
+
+  const envelope = Math.pow(env, 0.8) * (0.42 + env * 0.58);
+  return mixed * depthEnergy * gesture.formAmp * envelope;
+}
+
+function calcDepthPush(x, baseY, cx, cy, radius, strength) {
+  const dx = x - cx;
+  const dy = baseY - cy;
+  const ax = Math.abs(dx);
+  const ay = Math.abs(dy);
+  if (ax > radius || ay > radius * 0.95) {
+    return { shift: 0, energy: 0, phase: 0, tangle: 0 };
+  }
+
+  const fx = smoothstep01(1 - ax / radius);
+  const fy = smoothstep01(1 - ay / (radius * 0.95));
+  const lateralFx = smoothstep01(1 - ax / (radius * (1 + MOTION.lateralSpread)));
+  const influence = fx * fy;
+  const spread = lateralFx * fy;
+  const ridge = Math.pow(influence, 2.1);
+  const shoulder = Math.pow(fx, 1.45) * Math.pow(fy, 1.18);
+  const tail = Math.pow(spread, 1.6);
+  const twist = Math.sin(dx * 0.03 + t * 5.2 + cy * 0.0015) * shoulder;
+  const fold = Math.sin(dx * 0.065 - dy * 0.028 + t * 3.6) * ridge;
+  const contour = Math.sin(dx * 0.018 + t * 2.8 + baseY * 0.003) * shoulder;
+  const drift = Math.sin(dx * 0.012 - t * 1.9 + baseY * 0.0024) * tail;
+  const gesture = getGestureState();
+  const dirX = gesture.dirX;
+  const dirY = gesture.dirY;
+  const along = (dx * dirX + dy * dirY) / radius;
+  const across = (-dx * dirY + dy * dirX) / radius;
+  const motionBlend = 0.3 + gesture.speed * 0.7;
+  const bloom = Math.cos(across * Math.PI * 0.9) * ridge;
+  const saddle = Math.sin(across * Math.PI * 1.6 + t * 1.7) * shoulder * motionBlend;
+  const wake = Math.sin(along * Math.PI * 1.2 - t * 1.5) * tail * (0.24 + motionBlend * 0.32);
+  const pinch = Math.sin((across + along * 0.45) * Math.PI * 2.1 + t * 0.8) * ridge * (0.12 + motionBlend * 0.16);
+  const sign = dy === 0 ? 1 : Math.sign(dy);
+  const force = strength * (1 + mSpeed * 0.75);
+  const energy = Math.max(ridge, shoulder * 0.9, tail * 0.7);
+  const sculpt =
+    sign * (ridge * force + shoulder * force * 0.42 + bloom * force * 0.1) +
+    twist * force * 0.18 +
+    fold * force * 0.1 +
+    contour * force * 0.16 +
+    saddle * force * 0.18 +
+    pinch * force * 0.16 +
+    sign * (drift + wake) * force * MOTION.tailStrength;
+
+  return {
+    shift: Math.tanh(sculpt / MOTION.sculptClamp) * MOTION.sculptClamp,
+    energy,
+    phase: (twist * 0.52 + fold * 0.3 + contour * 0.38 + saddle * 0.3 + wake * 0.22) * MOTION.phaseWarp,
+    tangle: (twist * 0.62 + fold * 0.6 + contour * 0.38 + saddle * 0.72 + pinch * 0.6 + wake * 0.24) * MOTION.tangleAmount
+  };
+}
+
 function animate() {
-  t += 0.004;
+  t += MOTION.timeStep;
   ctx.clearRect(0, 0, W, H);
+  const gesture = getGestureState();
+  for (const key of FORM_KEYS) {
+    formBlend[key] += (formTarget[key] - formBlend[key]) * 0.12;
+  }
 
   // Spawn imprints from mouse movement
   if (mActive) {
-    imprintTimer += mSpeed * 0.4 + 0.02;
+    imprintTimer += mSpeed * MOTION.spawnRate.velocity + MOTION.spawnRate.base;
     if (imprintTimer > 1) {
       imprintTimer = 0;
       spawnImprint(mx, my, mSpeed);
@@ -561,6 +703,7 @@ function animate() {
     const normalY = (i + 1) / (LINE_COUNT + 1);
     const centerDist = Math.abs(normalY - 0.5) * 2;
     const centerAmp = 1 - centerDist * centerDist;
+    const profile = getLineProfile(i);
 
     ctx.beginPath();
 
@@ -568,15 +711,32 @@ function animate() {
 
     for (let x = 0; x <= W; x += STEP) {
       const nx = x / W;
+      let depthShift = 0;
+      let depthPhase = 0;
+      let depthTangle = 0;
+      let gestureShift = 0;
 
-      // Compound waveform
-      const w1 = Math.sin(nx * 6 + t * 2.5 + linePhase) * 0.6;
-      const w2 = Math.sin(nx * 14 + t * 1.8 - linePhase * 0.7) * 0.25;
-      const w3 = Math.sin(nx * 3.5 - t * 1.2 + linePhase * 1.3) * 0.35;
-      const w4 = Math.sin(nx * 22 + t * 3.2 + i * 0.4) * 0.1;
+      if (mActive) {
+        const depth = calcDepthPush(x, baseY, mx, my, MOTION.liveRadius, MOTION.liveShift);
+        depthShift = depth.shift;
+        depthPhase = depth.phase;
+        depthTangle = depth.tangle;
+        lineEnergy = Math.max(lineEnergy, depth.energy);
+        gestureShift = calcGestureForm(x, baseY, linePhase + profile.drift + depthPhase, gesture, depth.energy);
+      }
+
+      const wavePhase = linePhase + profile.drift + depthPhase;
+
+      // Mixed wave families give each line a slightly different sonic personality.
+      const w1 = Math.sin(nx * profile.slowFreq + t * 1.85 + wavePhase) * profile.slowWeight;
+      const w2 = Math.sin(nx * profile.midFreq + t * 1.35 - wavePhase * 0.72) * profile.midWeight;
+      const w3 = Math.sin(nx * 2.6 - t * 0.9 + wavePhase * 1.15 + profile.tilt) * 0.24;
+      const w4 = Math.sin(nx * profile.detailFreq + t * 2.35 + i * 0.31 + depthTangle * 0.02) * profile.detailWeight;
       const wave = w1 + w2 + w3 + w4;
 
-      const baseAmp = (8 + centerAmp * 14) * (0.7 + 0.3 * Math.sin(t * 0.5 + i * 0.3));
+      const baseAmp =
+        (MOTION.baseAmp.min + centerAmp * MOTION.baseAmp.maxBoost) *
+        (0.78 + 0.22 * Math.sin(t * 0.35 + i * 0.24));
 
       // Sum displacement from all active imprints
       let displacement = 0;
@@ -584,20 +744,10 @@ function animate() {
         displacement += calcImprint(imprints[k], x, baseY, linePhase);
       }
 
-      // Live mouse: gentle real-time push (subtle, the imprints do the heavy lifting)
-      let liveShift = 0;
-      if (mActive) {
-        const dx = x - mx;
-        const dy = baseY - my;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < 160) {
-          const f = (1 - dist / 160);
-          liveShift = (dy > 0 ? 1 : -1) * f * f * 12;
-          lineEnergy = Math.max(lineEnergy, f);
-        }
-      }
+      const braid = Math.sin(nx * 18 + wavePhase * 0.72 + depthTangle * 0.04) * depthTangle * 0.1;
+      const shear = Math.sin(nx * 6.5 - t * 1.35 + profile.tilt * 2.4) * depthTangle * 0.045;
 
-      const y = baseY + wave * baseAmp + displacement + liveShift;
+      const y = baseY + wave * baseAmp + displacement + depthShift + gestureShift + braid + shear;
 
       if (x === 0) ctx.moveTo(x, y);
       else ctx.lineTo(x, y);
@@ -615,37 +765,13 @@ function animate() {
     }
 
     // Live mouse proximity brightness
-    alpha += lineEnergy * 0.2;
+    alpha += lineEnergy * MOTION.lineLift.alpha;
 
-    alpha = Math.min(alpha, 0.6);
+    alpha = Math.min(alpha, 0.48);
 
     ctx.strokeStyle = `rgba(${AR},${AG},${AB},${alpha})`;
-    ctx.lineWidth = 1 + centerAmp * 0.5;
+    ctx.lineWidth = 1;
     ctx.stroke();
-  }
-
-  // Glow per active imprint
-  for (let k = 0; k < imprints.length; k++) {
-    const imp = imprints[k];
-    if (imp.life < 0.1) continue;
-    const g = ctx.createRadialGradient(imp.x, imp.y, 0, imp.x, imp.y, imp.radius * 0.6);
-    g.addColorStop(0, `rgba(${AR},${AG},${AB},${0.03 * imp.life})`);
-    g.addColorStop(1, 'transparent');
-    ctx.fillStyle = g;
-    ctx.beginPath();
-    ctx.arc(imp.x, imp.y, imp.radius * 0.6, 0, Math.PI * 2);
-    ctx.fill();
-  }
-
-  // Live cursor glow
-  if (mActive) {
-    const g = ctx.createRadialGradient(mx, my, 0, mx, my, 140);
-    g.addColorStop(0, `rgba(${AR},${AG},${AB},0.05)`);
-    g.addColorStop(1, 'transparent');
-    ctx.fillStyle = g;
-    ctx.beginPath();
-    ctx.arc(mx, my, 140, 0, Math.PI * 2);
-    ctx.fill();
   }
 
   requestAnimationFrame(animate);
