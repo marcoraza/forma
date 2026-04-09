@@ -13,6 +13,10 @@
     {
       "source": "/floraoasis/",
       "destination": "/city-of-arabia/coa-pitch-deck"
+    },
+    {
+      "source": "/admin",
+      "destination": "/city-of-arabia/coa-admin"
     }
   ]
 }
