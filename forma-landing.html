@@ -424,6 +424,32 @@ const canvas = document.getElementById('c');
 const ctx = canvas.getContext('2d');
 let W, H, t = 0;
 let mx = -9999, my = -9999, mActive = false;
+let mVx = 0, mVy = 0, prevMx = -9999, prevMy = -9999;
+let mSpeed = 0;
+
+// Imprints: traces the mouse leaves behind, each with unique behavior
+const imprints = [];
+const MAX_IMPRINTS = 40;
+let imprintTimer = 0;
+
+// Effect types for variety
+const EFFECTS = ['ripple', 'vortex', 'fracture', 'gravity', 'static'];
+
+function spawnImprint(x, y, speed) {
+  const type = EFFECTS[Math.floor(Math.random() * EFFECTS.length)];
+  imprints.push({
+    x, y, type,
+    birth: t,
+    life: 1,
+    decay: 0.003 + Math.random() * 0.004,
+    radius: 120 + Math.random() * 140,
+    strength: 15 + speed * 25 + Math.random() * 15,
+    phase: Math.random() * Math.PI * 2,
+    spin: (Math.random() - 0.5) * 0.06,
+    freq: 8 + Math.random() * 30
+  });
+  if (imprints.length > MAX_IMPRINTS) imprints.shift();
+}
 
 function resize() {
   const dpr = window.devicePixelRatio || 1;
@@ -432,9 +458,19 @@ function resize() {
   ctx.scale(dpr, dpr);
 }
 
-document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; mActive = true; });
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY; mActive = true;
+  mVx = mx - prevMx; mVy = my - prevMy;
+  mSpeed = Math.min(Math.sqrt(mVx * mVx + mVy * mVy) / 20, 1);
+  prevMx = mx; prevMy = my;
+});
 document.addEventListener('mouseleave', () => { mActive = false; });
-document.addEventListener('touchmove', e => { mx = e.touches[0].clientX; my = e.touches[0].clientY; mActive = true; }, { passive: true });
+document.addEventListener('touchmove', e => {
+  mx = e.touches[0].clientX; my = e.touches[0].clientY; mActive = true;
+  mVx = mx - prevMx; mVy = my - prevMy;
+  mSpeed = Math.min(Math.sqrt(mVx * mVx + mVy * mVy) / 20, 1);
+  prevMx = mx; prevMy = my;
+}, { passive: true });
 document.addEventListener('touchend', () => { mActive = false; });
 
 resize();
@@ -443,88 +479,166 @@ window.addEventListener('resize', resize);
 const LINE_COUNT = 55;
 const STEP = 3;
 
+// Simple hash for pseudo-random per-point variation
+function hash(a, b) {
+  return Math.sin(a * 12.9898 + b * 78.233) * 43758.5453 % 1;
+}
+
+function calcImprint(imp, x, baseY, linePhase) {
+  const dx = x - imp.x;
+  const dy = baseY - imp.y;
+  const dist = Math.sqrt(dx * dx + dy * dy);
+  if (dist > imp.radius) return 0;
+
+  const norm = dist / imp.radius;
+  const fade = (1 - norm);
+  const age = t - imp.birth;
+  const str = imp.strength * imp.life;
+
+  switch (imp.type) {
+    case 'ripple': {
+      // Expanding concentric rings
+      const ring = Math.sin(dist * 0.08 - age * 8 + imp.phase) * fade * str * 0.7;
+      return ring;
+    }
+    case 'vortex': {
+      // Swirling displacement
+      const angle = Math.atan2(dy, dx) + age * imp.spin * 20;
+      const swirl = Math.sin(angle * 3 + dist * 0.05) * fade * fade * str;
+      return swirl;
+    }
+    case 'fracture': {
+      // Sharp, jagged distortion
+      const jagged = Math.sin(x * imp.freq * 0.01 + imp.phase) *
+                     Math.sin(baseY * 0.03 + imp.phase * 2);
+      return jagged * fade * fade * str * 1.2;
+    }
+    case 'gravity': {
+      // Pull toward center, warps space
+      const pull = (dy > 0 ? 1 : -1) * fade * fade * fade * str * 1.5;
+      const wobble = Math.sin(age * 6 + dist * 0.04 + linePhase) * fade * str * 0.3;
+      return pull + wobble;
+    }
+    case 'static': {
+      // Noise burst, TV static feel
+      const n = hash(Math.floor(x * 0.15), Math.floor(baseY * 0.15) + age * 100);
+      return (n - 0.5) * fade * str * 1.8;
+    }
+    default: return 0;
+  }
+}
+
 function animate() {
   t += 0.004;
   ctx.clearRect(0, 0, W, H);
+
+  // Spawn imprints from mouse movement
+  if (mActive) {
+    imprintTimer += mSpeed * 0.4 + 0.02;
+    if (imprintTimer > 1) {
+      imprintTimer = 0;
+      spawnImprint(mx, my, mSpeed);
+    }
+  }
+
+  // Decay imprints
+  for (let k = imprints.length - 1; k >= 0; k--) {
+    imprints[k].life -= imprints[k].decay;
+    if (imprints[k].life <= 0) imprints.splice(k, 1);
+  }
 
   const lineGap = H / (LINE_COUNT + 1);
 
   for (let i = 0; i < LINE_COUNT; i++) {
     const baseY = lineGap * (i + 1);
     const linePhase = i * 0.18;
-    // Vertical position in 0-1 range
     const normalY = (i + 1) / (LINE_COUNT + 1);
-    // Center emphasis: lines near vertical center have more amplitude
     const centerDist = Math.abs(normalY - 0.5) * 2;
     const centerAmp = 1 - centerDist * centerDist;
 
     ctx.beginPath();
 
+    let lineEnergy = 0;
+
     for (let x = 0; x <= W; x += STEP) {
       const nx = x / W;
 
-      // Compound waveform: multiple frequencies for organic feel
+      // Compound waveform
       const w1 = Math.sin(nx * 6 + t * 2.5 + linePhase) * 0.6;
       const w2 = Math.sin(nx * 14 + t * 1.8 - linePhase * 0.7) * 0.25;
       const w3 = Math.sin(nx * 3.5 - t * 1.2 + linePhase * 1.3) * 0.35;
       const w4 = Math.sin(nx * 22 + t * 3.2 + i * 0.4) * 0.1;
-      const wave = (w1 + w2 + w3 + w4);
+      const wave = w1 + w2 + w3 + w4;
 
-      // Base amplitude: varies by line position, creates "terrain" shape
       const baseAmp = (8 + centerAmp * 14) * (0.7 + 0.3 * Math.sin(t * 0.5 + i * 0.3));
 
-      let amp = baseAmp;
-      let verticalShift = 0;
+      // Sum displacement from all active imprints
+      let displacement = 0;
+      for (let k = 0; k < imprints.length; k++) {
+        displacement += calcImprint(imprints[k], x, baseY, linePhase);
+      }
 
-      // Mouse interaction: displacement field
+      // Live mouse: gentle real-time push (subtle, the imprints do the heavy lifting)
+      let liveShift = 0;
       if (mActive) {
         const dx = x - mx;
         const dy = baseY - my;
         const dist = Math.sqrt(dx * dx + dy * dy);
-        const radius = 220;
-        if (dist < radius) {
-          const force = (1 - dist / radius);
-          const f2 = force * force;
-          // Amplify the waveform near cursor
-          amp += f2 * 35;
-          // Push lines away from cursor vertically
-          verticalShift = (dy > 0 ? 1 : -1) * f2 * 30;
-          // Add high-frequency detail near cursor
-          const detail = Math.sin(nx * 40 + t * 5 + linePhase) * f2 * 8;
-          verticalShift += detail;
+        if (dist < 160) {
+          const f = (1 - dist / 160);
+          liveShift = (dy > 0 ? 1 : -1) * f * f * 12;
+          lineEnergy = Math.max(lineEnergy, f);
         }
       }
 
-      const y = baseY + wave * amp + verticalShift;
+      const y = baseY + wave * baseAmp + displacement + liveShift;
 
       if (x === 0) ctx.moveTo(x, y);
       else ctx.lineTo(x, y);
     }
 
-    // Opacity: brighter near center and where mouse is
+    // Opacity
     let alpha = 0.06 + centerAmp * 0.1;
 
-    if (mActive) {
-      const dy = Math.abs(baseY - my);
-      if (dy < 200) {
-        alpha += (1 - dy / 200) * 0.25;
+    // Brighten from nearby imprints
+    for (let k = 0; k < imprints.length; k++) {
+      const dy = Math.abs(baseY - imprints[k].y);
+      if (dy < imprints[k].radius) {
+        alpha += (1 - dy / imprints[k].radius) * 0.15 * imprints[k].life;
       }
     }
+
+    // Live mouse proximity brightness
+    alpha += lineEnergy * 0.2;
+
+    alpha = Math.min(alpha, 0.6);
 
     ctx.strokeStyle = `rgba(${AR},${AG},${AB},${alpha})`;
     ctx.lineWidth = 1 + centerAmp * 0.5;
     ctx.stroke();
   }
 
-  // Mouse glow
-  if (mActive) {
-    const g = ctx.createRadialGradient(mx, my, 0, mx, my, 200);
-    g.addColorStop(0, `rgba(${AR},${AG},${AB},0.06)`);
-    g.addColorStop(0.5, `rgba(${AR},${AG},${AB},0.02)`);
+  // Glow per active imprint
+  for (let k = 0; k < imprints.length; k++) {
+    const imp = imprints[k];
+    if (imp.life < 0.1) continue;
+    const g = ctx.createRadialGradient(imp.x, imp.y, 0, imp.x, imp.y, imp.radius * 0.6);
+    g.addColorStop(0, `rgba(${AR},${AG},${AB},${0.03 * imp.life})`);
     g.addColorStop(1, 'transparent');
     ctx.fillStyle = g;
     ctx.beginPath();
-    ctx.arc(mx, my, 200, 0, Math.PI * 2);
+    ctx.arc(imp.x, imp.y, imp.radius * 0.6, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  // Live cursor glow
+  if (mActive) {
+    const g = ctx.createRadialGradient(mx, my, 0, mx, my, 140);
+    g.addColorStop(0, `rgba(${AR},${AG},${AB},0.05)`);
+    g.addColorStop(1, 'transparent');
+    ctx.fillStyle = g;
+    ctx.beginPath();
+    ctx.arc(mx, my, 140, 0, Math.PI * 2);
     ctx.fill();
   }
 
