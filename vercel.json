@@ -15,6 +15,14 @@
       "destination": "/city-of-arabia/coa-pitch-deck"
     },
     {
+      "source": "/floraoasis/invoice",
+      "destination": "/city-of-arabia/floraoasis-invoice"
+    },
+    {
+      "source": "/floraoasis/invoice/",
+      "destination": "/city-of-arabia/floraoasis-invoice"
+    },
+    {
       "source": "/admin",
       "destination": "/city-of-arabia/coa-admin"
     }
