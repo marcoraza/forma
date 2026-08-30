@@ -85,6 +85,14 @@ footer h2{margin:0 0 10px;font:500 10px var(--mono);letter-spacing:.28em;text-tr
 #letters,#shapeList{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
 #letters button{font-family:var(--serif);font-size:18px;min-width:34px;padding:4px 8px}
 textarea{width:100%;height:80px;background:var(--panel-2);border:1px solid var(--line);color:var(--mute);font:10px/1.5 var(--mono);padding:8px;resize:vertical}
+.dirs{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.dir{border:1px solid var(--line);padding:8px;cursor:pointer;background:transparent;color:var(--bone);text-align:left;transition:transform .08s}
+.dir:active{transform:scale(.98)}
+.dir svg{display:block;width:100%;height:56px}
+.dir b{display:block;font:500 10px var(--mono);letter-spacing:.2em;text-transform:uppercase;margin-top:6px}
+.dir span{display:block;color:var(--mute);font-size:9px;letter-spacing:.04em;line-height:1.45;margin-top:2px}
+.dir[aria-pressed=true]{border-color:var(--bone)}
+[data-om][hidden]{display:none}
 .note{color:var(--mute-2);font-size:10px;line-height:1.6;letter-spacing:.04em;margin:8px 0 0}
 dialog{background:var(--panel);color:var(--bone);border:1px solid var(--line);padding:20px;width:min(720px,92vw)}
 dialog::backdrop{background:rgba(0,0,0,.6)}
@@ -95,7 +103,7 @@ dialog::backdrop{background:rgba(0,0,0,.6)}
 
 <div class="app">
   <header>
-    <div class="brand">Forma <small>Wordmark Lab · Newsreader · variable</small></div>
+    <div class="brand">Forma <small>Wordmark Lab · Newsreader · variable · v3</small></div>
     <div class="hbtns">
       <button class="btn" id="undo" title="Undo (⌘Z)">Undo</button>
       <button class="btn" id="redo" title="Redo (⇧⌘Z)">Redo</button>
@@ -125,9 +133,7 @@ dialog::backdrop{background:rgba(0,0,0,.6)}
         <button data-p="small">Small · .30em</button>
         <button data-p="touch">Touching</button>
         <button data-p="overlap">Overlap</button>
-        <button data-p="ringO">Ring O</button>
-        <button data-p="duneO">Dune in O</button>
-        <button data-p="crest">Crest</button>
+                <button data-p="crest">Crest</button>
       </div>
     </section>
 
@@ -152,35 +158,62 @@ dialog::backdrop{background:rgba(0,0,0,.6)}
     </section>
 
     <section>
+      <h2>Directions <span class="tag">five</span></h2>
+      <div id="dirs" class="dirs"></div>
+      <p class="note">Each one is a full setting. Click to apply, then refine below. Undo brings the previous state back.</p>
+    </section>
+
+    <section id="oSec">
       <h2>The O <span class="tag" id="oTag"></span></h2>
-      <div class="row" style="grid-template-columns:96px 1fr"><label>Letters</label><input type="text" class="mono" id="oChars" value="O" aria-label="Letters to treat as O"></div>
+      <div class="row" style="grid-template-columns:96px 1fr"><label>Letters</label><input type="text" class="mono" id="oChars" value="O" aria-label="Letters treated as O"></div>
       <div class="seg" id="oMode" style="margin-top:8px">
-        <button data-v="type" aria-pressed="true">Type</button>
-        <button data-v="ring" aria-pressed="false">Ring</button>
-        <button data-v="disc" aria-pressed="false">Disc</button>
-        <button data-v="eclipse" aria-pressed="false">Eclipse</button>
+        <button data-v="type">Type</button><button data-v="wave">Oscillo</button><button data-v="ripples">Halo</button><button data-v="horizon">Horizon</button><button data-v="spectrum">Spectrum</button><button data-v="lens">Lens</button><button data-v="field">Field</button>
       </div>
-      <div class="row"><label>Ring stroke</label><input type="range" id="oStroke" min="2" max="140" step="0.5" value="30"><output>30</output></div>
-      <div class="row"><label>Overshoot</label><input type="range" id="oOver" min="0.8" max="1.25" step="0.005" value="1.02"><output>1.020</output></div>
-      <div class="row"><label>Squash</label><input type="range" id="oSq" min="0.6" max="1.4" step="0.005" value="1"><output>1.000</output></div>
-      <div class="row"><label>Eclipse X</label><input type="range" id="oEx" min="-1" max="1" step="0.01" value="0.35"><output>0.35</output></div>
-      <div class="row"><label>Eclipse Y</label><input type="range" id="oEy" min="-1" max="1" step="0.01" value="-0.2"><output>-0.20</output></div>
-      <div class="seg" id="oInner" style="margin-top:8px">
-        <button data-v="none" aria-pressed="true">Empty</button>
-        <button data-v="dot" aria-pressed="false">Sun</button>
-        <button data-v="line" aria-pressed="false">Horizon</button>
-        <button data-v="wave" aria-pressed="false">Dune</button>
-        <button data-v="sine" aria-pressed="false">Sine</button>
+      <div class="row"><label>Size</label><input type="range" data-o="size" min="0.5" max="1.6" step="0.005"><output></output></div>
+      <div class="row"><label>Stroke</label><input type="range" data-o="stroke" min="0.2" max="3" step="0.01"><output></output></div>
+      <div class="row"><label>Shift X</label><input type="range" data-o="dx" min="-1" max="1" step="0.01"><output></output></div>
+      <div class="row"><label>Shift Y</label><input type="range" data-o="dy" min="-1" max="1" step="0.01"><output></output></div>
+      <div class="row"><label>Rotate</label><input type="range" data-o="rot" min="-180" max="180" step="1"><output></output></div>
+      <label class="toggle"><span>Perfect circle</span><input type="checkbox" data-ot="circle"><i></i></label>
+      <div data-om="wave">
+        <div class="row"><label>Cycles</label><input type="range" data-o="cycles" min="3" max="64" step="1"><output></output></div>
+        <div class="row"><label>Amplitude</label><input type="range" data-o="amp" min="0" max="0.4" step="0.005"><output></output></div>
+        <div class="row"><label>Phase</label><input type="range" data-o="phase" min="0" max="360" step="1"><output></output></div>
+        <div class="row"><label>Inner ring</label><input type="range" data-o="inner" min="0" max="0.9" step="0.01"><output></output></div>
       </div>
-      <div class="row"><label>Inner size</label><input type="range" id="oIs" min="0.05" max="1" step="0.01" value="0.35"><output>0.35</output></div>
-      <div class="row"><label>Inner stroke</label><input type="range" id="oIw" min="0.5" max="60" step="0.5" value="4"><output>4</output></div>
-      <div class="row"><label>Inner X</label><input type="range" id="oIx" min="-1" max="1" step="0.01" value="0"><output>0.00</output></div>
-      <div class="row"><label>Inner Y</label><input type="range" id="oIy" min="-1" max="1" step="0.01" value="0"><output>0.00</output></div>
-      <div class="row"><label>Wave cycles</label><input type="range" id="oCy" min="0.25" max="4" step="0.25" value="1"><output>1.00</output></div>
-      <div class="row"><label>Wave phase</label><input type="range" id="oPh" min="0" max="360" step="5" value="0"><output>0</output></div>
-      <div class="row"><label>Counter clip</label><input type="range" id="oClip" min="0.3" max="1" step="0.01" value="0.66"><output>0.66</output></div>
-      <label class="toggle"><span>Perfect circle</span><input type="checkbox" id="oCircle"><i></i></label>
-      <label class="toggle"><span>Inner in ground colour</span><input type="checkbox" id="oInv"><i></i></label>
+      <div data-om="ripples">
+        <div class="row"><label>Rings</label><input type="range" data-o="rings" min="1" max="6" step="1"><output></output></div>
+        <div class="row"><label>Spacing</label><input type="range" data-o="spacing" min="0.08" max="0.5" step="0.005"><output></output></div>
+        <div class="row"><label>Falloff</label><input type="range" data-o="falloff" min="0.3" max="1" step="0.01"><output></output></div>
+        <div class="row"><label>Core</label><input type="range" data-o="core" min="0" max="0.6" step="0.005"><output></output></div>
+      </div>
+      <div data-om="horizon">
+        <div class="row"><label>Gap</label><input type="range" data-o="gap" min="0" max="0.25" step="0.005"><output></output></div>
+        <div class="row"><label>Line Y</label><input type="range" data-o="lineY" min="-0.9" max="0.9" step="0.01"><output></output></div>
+        <div class="row"><label>Lower shift</label><input type="range" data-o="shift" min="-0.6" max="0.6" step="0.01"><output></output></div>
+        <div class="row"><label>Lower drop</label><input type="range" data-o="drop" min="0" max="0.4" step="0.005"><output></output></div>
+        <div class="row"><label>Line weight</label><input type="range" data-o="lineW" min="0" max="8" step="0.25"><output></output></div>
+        <label class="toggle"><span>Line through the word</span><input type="checkbox" data-ot="extend"><i></i></label>
+      </div>
+      <div data-om="spectrum">
+        <div class="row"><label>Bars</label><input type="range" data-o="bars" min="5" max="41" step="2"><output></output></div>
+        <div class="row"><label>Bar gap</label><input type="range" data-o="barGap" min="0" max="0.8" step="0.01"><output></output></div>
+        <div class="row"><label>Min height</label><input type="range" data-o="minH" min="0" max="0.6" step="0.01"><output></output></div>
+        <div class="seg" id="oProfile"><button data-v="sine">Sine</button><button data-v="dune">Dune</button><button data-v="flat">Flat</button><button data-v="seed">Signal</button></div>
+        <label class="toggle"><span>Rounded bars</span><input type="checkbox" data-ot="round"><i></i></label>
+      </div>
+      <div data-om="lens">
+        <div class="row"><label>Lens</label><input type="range" data-o="lens" min="0.15" max="1" step="0.005"><output></output></div>
+        <div class="row"><label>Core</label><input type="range" data-o="lcore" min="0" max="0.5" step="0.005"><output></output></div>
+        <label class="toggle"><span>Vertical</span><input type="checkbox" data-ot="vertical"><i></i></label>
+      </div>
+      <div data-om="field">
+        <div class="seg" id="oRamp"><button data-v="atmosphere">Atmosphere</button><button data-v="dusk">Dusk</button><button data-v="eucalypt">Eucalypt</button><button data-v="ink">Ink</button></div>
+        <div class="row"><label>Angle</label><input type="range" data-o="angle" min="0" max="360" step="1"><output></output></div>
+        <label class="toggle"><span>Grain</span><input type="checkbox" data-ot="fgrain"><i></i></label>
+        <label class="toggle"><span>Keep the letter outline</span><input type="checkbox" data-ot="foutline"><i></i></label>
+      </div>
+      <div class="btns" style="margin-top:8px"><button class="btn" id="oRefit">Refit pairs around the O</button></div>
     </section>
 
     <section>
@@ -328,7 +361,7 @@ const GROUNDS = {ink:"#000000",porcelain:"#FFFFFF",sand:"#E4DCD4",bone:"#E8E5DE"
 const DEF = {
   word:"FORMA", caseMode:"upper", size:420, wght:500, opsz:72, track:0.03, sx:1, sy:1, skew:0, spread:0, italic:false,
   arc:0, arcRot:1,
-  oChars:"O", oMode:"type", oStroke:30, oOver:1.02, oSq:1, oEx:0.35, oEy:-0.2, oInner:"none", oIs:0.35, oIw:4, oIx:0, oIy:0, oCy:1, oPh:0, oClip:0.66, oInv:false, oCircle:false,
+  o:{chars:"O", mode:"type", size:1, stroke:1, dx:0, dy:0, rot:0, circle:true, cycles:36, amp:0.022, phase:0, inner:0, rings:3, spacing:0.2, falloff:0.62, core:0.16, gap:0.035, lineY:0, shift:0, drop:0, lineW:1, extend:true, bars:19, barGap:0.42, minH:0.12, profile:"dune", round:false, lens:0.36, lcore:0, vertical:true, ramp:"atmosphere", angle:90, fgrain:true, foutline:true},
   cutN:0, cutY:-0.5, cutT:3, cutS:18, cutA:0, cutScope:"word",
   shapes:[], selShape:null,
   tagOn:false, tagText:"AUDIO SOLUTIONS", tagFont:"mono", tagSize:22, tagTrack:0.34, tagGap:48, tagAlign:"center", tagRule:false,
@@ -350,7 +383,8 @@ const el = (tag, attrs={}, parent) => { const n=document.createElementNS(NS,tag)
 
 function chars(){ let w = S.word || ""; if(S.caseMode==="upper") w = w.toUpperCase(); return [...w]; }
 function letterState(i){ return S.letters[i] || {dx:0,dy:0,sx:1,sy:1,rot:0,wght:0,opsz:0,op:1}; }
-function isO(i){ return S.oChars && [...S.oChars.toUpperCase()].includes(chars()[i].toUpperCase()); }
+function isO(i){ return S.o.chars && [...S.o.chars.toUpperCase()].includes(chars()[i].toUpperCase()); }
+function stemPx(){ return S.size*0.075*Math.pow(S.wght/400,1.1); }
 function ground(){ return GROUNDS[S.ground]; }
 function fvs(i){ const L = letterState(i); return `font-variation-settings:'wght' ${L.wght||S.wght},'opsz' ${L.opsz||S.opsz}`; }
 function textEl(ch, i, parent){
@@ -359,7 +393,9 @@ function textEl(ch, i, parent){
   t.setAttribute("style",(S.caseMode==="smallcaps"?"font-variant-caps:small-caps;":"")+fvs(i));
   return t;
 }
-function measure(word, ch, i){ const t=textEl(ch,i,word); t.setAttribute("visibility","hidden"); const adv=t.getComputedTextLength(), bb=t.getBBox(); word.removeChild(t); return {adv,bb}; }
+const mctx = document.createElement("canvas").getContext("2d");
+function inkBox(ch, fs, wght, italic){ mctx.font = `${italic?"italic ":""}${wght} ${fs}px NewsreaderLab`; const m=mctx.measureText(ch); return {x:-m.actualBoundingBoxLeft, y:-m.actualBoundingBoxAscent, width:m.actualBoundingBoxLeft+m.actualBoundingBoxRight, height:m.actualBoundingBoxAscent+m.actualBoundingBoxDescent, adv:m.width}; }
+function measure(word, ch, i){ const t=textEl(ch,i,word); t.setAttribute("visibility","hidden"); const adv=t.getComputedTextLength(); word.removeChild(t); const L=letterState(i); const bb=inkBox(ch, S.size, L.wght||S.wght, S.italic); return {adv, bb}; }
 
 let layout = [], total = 0, capH = 0, wordBB = null;
 let uid = 0;
@@ -379,7 +415,7 @@ function render(){
   layout = []; let x = 0;
   cs.forEach((ch,i)=>{ const L=letterState(i); layout.push({x, adv:meas[i].adv*S.sx*L.sx, bb:meas[i].bb, ch}); x += meas[i].adv*S.sx*L.sx + S.track*fs + (S.pairs[i]||0); });
   total = x - (S.track*fs + (S.pairs[cs.length-1]||0));
-  capH = -measure(word,"H",-1).bb.y;
+  capH = -inkBox("H",S.size,S.wght,S.italic).y;
   // arc
   const arcOf = (cx)=>{ if(!S.arc) return {dy:0,rot:0}; const s=Math.abs(S.arc), half=Math.max(total/2,1), R=(half*half+s*s)/(2*s), t=cx-total/2, inside=Math.max(0,R*R-t*t); const d=R-Math.sqrt(inside); const sign=S.arc>0?1:-1; return {dy:sign*d, rot:sign*Math.asin(Math.max(-1,Math.min(1,t/R)))*180/Math.PI*S.arcRot}; };
   const ox = (W - total*S.zoom)/2, oy = H/2 + capH*S.sy*S.zoom/2 - (S.tagOn ? (S.tagGap+S.tagSize)*S.zoom/2 : 0);
@@ -395,28 +431,28 @@ function render(){
   if(S.mark==="sun"||S.mark==="both") el("circle",{cx:total/2+S.sunx,cy:S.mky,r:S.sunr,fill:S.ink},art);
   // glyphs
   const strokeAttrs = t => { if(S.outline){ t.setAttribute("fill","none"); t.setAttribute("stroke",S.ink); t.setAttribute("stroke-width",S.stroke); } else { t.setAttribute("fill",S.ink); if(S.spread){ t.setAttribute("stroke", S.spread>0?S.ink:ground()); t.setAttribute("stroke-width",Math.abs(S.spread)); t.setAttribute("stroke-linejoin","round"); t.setAttribute("paint-order","stroke"); } } };
+  const horizonLines = []; const inkB={x0:Infinity,x1:-Infinity,y0:Infinity,y1:-Infinity};
   cs.forEach((ch,i)=>{
     const L=letterState(i), P=layout[i], cx=P.adv/2, A=arcOf(P.x+L.dx+cx);
     const g = el("g",{class:"glyph","data-i":i, transform:`translate(${P.x+L.dx} ${L.dy+A.dy}) skewX(${-S.skew}) translate(${cx} 0) rotate(${L.rot+A.rot}) scale(${S.sx*L.sx} ${S.sy*L.sy}) translate(${-cx/(S.sx*L.sx)} 0)`}, word);
     const bb=P.bb;
-    if(isO(i) && S.oMode!=="type"){
-      // geometric O built on the glyph box
-      const ccx=bb.x+bb.width/2, ccy=bb.y+bb.height/2, r=Math.min(bb.width,bb.height)/2*S.oOver, rx=r*(S.oSq>=1?S.oSq:1), ry=r*(S.oSq<1?1/S.oSq:1)*(S.oSq<1?S.oSq*S.oSq:1);
-      const RY = bb.height/2*S.oOver/Math.sqrt(S.oSq), RX = S.oCircle ? RY : bb.width/2*S.oOver*Math.sqrt(S.oSq);
+    if(isO(i) && S.o.mode!=="type"){
       const og = el("g",{opacity:L.op},g);
-      if(S.oMode==="ring"){ el("ellipse",{cx:ccx,cy:ccy,rx:RX-S.oStroke/2,ry:RY-S.oStroke/2,fill:"none",stroke:S.ink,"stroke-width":S.oStroke},og); }
-      if(S.oMode==="disc"){ el("ellipse",{cx:ccx,cy:ccy,rx:RX,ry:RY,fill:S.ink},og); }
-      if(S.oMode==="eclipse"){ const id="m"+(uid++); const m=el("mask",{id},defs); el("ellipse",{cx:ccx,cy:ccy,rx:RX,ry:RY,fill:"#fff"},m); el("ellipse",{cx:ccx+S.oEx*RX,cy:ccy+S.oEy*RY,rx:RX,ry:RY,fill:"#000"},m); el("ellipse",{cx:ccx,cy:ccy,rx:RX,ry:RY,fill:S.ink,mask:`url(#${id})`},og); }
-      innerEl(og, defs, ccx, ccy, (S.oMode==="ring"?RX-S.oStroke:RX)*S.oClip/0.66, (S.oMode==="ring"?RY-S.oStroke:RY)*S.oClip/0.66, S.oMode==="disc"||S.oMode==="eclipse");
+      const R = bb.height/2*S.o.size, RX = S.o.circle ? R : bb.width/2*S.o.size;
+      const ctx = {cx:bb.x+bb.width/2 + S.o.dx*R, cy:bb.y+bb.height/2 + S.o.dy*R, R, RX, ink:S.ink, ground:ground(), stem:stemPx(), o:S.o, glyph:(parent)=>{ const tt=textEl(ch,i,parent); strokeAttrs(tt); return tt; }};
+      const ext = buildO(og, defs, ctx);
+      if(ext){ horizonLines.push({i, y:ext.y, w:ext.w}); }
     } else {
       const t = textEl(ch,i,g); t.style.opacity=L.op; strokeAttrs(t);
-      if(isO(i) && S.oInner!=="none"){ const ccx=bb.x+bb.width/2, ccy=bb.y+bb.height/2; innerEl(g, defs, ccx, ccy, bb.width/2*S.oClip, bb.height/2*S.oClip, false); }
     }
+    P.rbb = (isO(i) && S.o.mode!=="type") ? g.getBBox() : bb;
+    const ib=P.rbb, sxx=S.sx*L.sx, syy=S.sy*L.sy; inkB.x0=Math.min(inkB.x0, P.x+L.dx+ib.x*sxx); inkB.x1=Math.max(inkB.x1, P.x+L.dx+(ib.x+ib.width)*sxx); inkB.y1=Math.max(inkB.y1, L.dy+A.dy+(ib.y+ib.height)*syy); inkB.y0=Math.min(inkB.y0, L.dy+A.dy+ib.y*syy);
     if(S.gBox || S.sel===i){
       el("rect",{x:bb.x,y:bb.y,width:bb.width,height:bb.height,fill:S.sel===i?(S.ground==="ink"?"rgba(232,229,222,.06)":"rgba(0,0,0,.05)"):"none",stroke:S.ground==="ink"?"rgba(232,229,222,.5)":"rgba(0,0,0,.45)","stroke-width":1/S.zoom,"stroke-dasharray":S.sel===i?"":`${3/S.zoom} ${3/S.zoom}`,"pointer-events":"none","data-guide":1},g);
     }
   });
-  wordBB = word.getBBox();
+  horizonLines.forEach(h=>{ const L=letterState(h.i), A=arcOf(layout[h.i].x+L.dx+layout[h.i].adv/2); const y=L.dy+A.dy+h.y*S.sy*L.sy; el("rect",{x:-total*0.6,y:y-h.w/2,width:total*2.2,height:h.w,fill:S.ink},art); });
+  wordBB = isFinite(inkB.x0) ? {x:inkB.x0, y:inkB.y0, width:inkB.x1-inkB.x0, height:inkB.y1-inkB.y0} : word.getBBox();
   // cuts
   if(S.cutN>0){
     let box = {x:wordBB.x, w:wordBB.width};
@@ -439,7 +475,7 @@ function render(){
   // tagline
   if(S.tagOn && S.tagText){
     const tg = el("g",{id:"tag"},art);
-    const y = S.tagGap + S.tagSize;
+    const y = Math.max(0, wordBB.y+wordBB.height) + S.tagGap + S.tagSize;
     const fam = S.tagFont==="mono" ? "'IBM Plex Mono',ui-monospace,Menlo,monospace" : "NewsreaderLab";
     const t = el("text",{"font-family":fam,"font-size":S.tagSize,"letter-spacing":S.tagTrack*S.tagSize,fill:S.ink,y},tg);
     if(S.tagFont==="serifi") t.setAttribute("font-style","italic");
@@ -450,27 +486,105 @@ function render(){
     else if(S.tagAlign==="left") t.setAttribute("x",wordBB.x);
     else if(S.tagAlign==="right"){ t.setAttribute("x",wordBB.x+wordBB.width); t.setAttribute("text-anchor","end"); t.setAttribute("dx",S.tagTrack*S.tagSize); }
     else { t.setAttribute("x",wordBB.x+wordBB.width/2 + S.tagTrack*S.tagSize/2); t.setAttribute("text-anchor","middle"); }
-    if(S.tagRule) el("line",{x1:wordBB.x,x2:wordBB.x+wordBB.width,y1:S.tagGap/2,y2:S.tagGap/2,stroke:S.ink,"stroke-width":1},tg);
+    if(S.tagRule) el("line",{x1:wordBB.x,x2:wordBB.x+wordBB.width,y1:y-S.tagSize-S.tagGap/2,y2:y-S.tagSize-S.tagGap/2,stroke:S.ink,"stroke-width":1},tg);
   }
-  $("#hud").innerHTML = `<b>${cs.join("")}</b> · Newsreader ${S.italic?"italic ":""}<b>${S.wght}</b> · opsz <b>${S.opsz}</b> · tracking <b>${S.track.toFixed(3)}em</b>${S.arc?` · arc <b>${S.arc}</b>`:""}${S.oMode!=="type"?` · O <b>${S.oMode}</b>`:""} · ${Math.round(total)}px · zoom ${Math.round(S.zoom*100)}%`;
-  renderPairs(); renderLetters(); renderShapes(); syncInputs(); save();
+  $("#hud").innerHTML = `<b>${cs.join("")}</b> · Newsreader ${S.italic?"italic ":""}<b>${S.wght}</b> · opsz <b>${S.opsz}</b> · tracking <b>${S.track.toFixed(3)}em</b>${S.arc?` · arc <b>${S.arc}</b>`:""}${S.o.mode!=="type"?` · O <b>${S.o.mode}</b>`:""} · ${Math.round(total)}px · zoom ${Math.round(S.zoom*100)}%`;
+  renderPairs(); renderLetters(); renderShapes(); renderDirs(); syncInputs(); save();
 }
 function wavePath(x0, w, amp, cycles, phaseDeg, dune){
   // dune: 0 = pure sine, 1 = asymmetric dune (slow rise, quick fall)
   const N=96; let d=""; for(let k=0;k<=N;k++){ const u=k/N; let ph=u*cycles*Math.PI*2 + phaseDeg*Math.PI/180; let y; if(dune>0){ const sk = Math.sin(ph + dune*Math.sin(ph)); y=-amp*sk; } else y=-amp*Math.sin(ph); d += (k?"L":"M")+(x0+u*w).toFixed(2)+" "+y.toFixed(2)+" "; } return d;
 }
-function innerEl(g, defs, cx, cy, rx, ry, onInk){
-  if(S.oInner==="none") return;
-  const col = S.oInv ? ground() : (onInk ? ground() : S.ink);
-  const id="c"+(uid++); const cp=el("clipPath",{id},defs); el("ellipse",{cx,cy,rx,ry},cp);
-  const ig = el("g",{"clip-path":`url(#${id})`},g);
-  const ix=cx+S.oIx*rx, iy=cy+S.oIy*ry;
-  if(S.oInner==="dot") el("circle",{cx:ix,cy:iy,r:Math.min(rx,ry)*S.oIs,fill:col},ig);
-  if(S.oInner==="line") el("rect",{x:cx-rx*1.2,y:iy-S.oIw/2,width:rx*2.4,height:S.oIw,fill:col},ig);
-  if(S.oInner==="wave"||S.oInner==="sine"){ const p=el("path",{d:wavePath(cx-rx*1.2, rx*2.4, ry*S.oIs, S.oCy, S.oPh, S.oInner==="wave"?0.6:0),fill:"none",stroke:col,"stroke-width":S.oIw,"stroke-linecap":"round", transform:`translate(${S.oIx*rx} ${iy})`},ig); }
+const RAMPS = {atmosphere:["#AEBBCB","#DDD6CE","#E4DCD4","#9E8B77"], dusk:["#0B0B0A","#3A2A22","#8C6A52","#D9B79A"], eucalypt:["#000000","#12261E","#2E5A45","#93AE97"], ink:["#000000","#000000"]};
+function profileAt(u, k, mode){
+  if(mode==="flat") return 1;
+  if(mode==="sine") return Math.sin(Math.PI*u);
+  if(mode==="dune") return Math.pow(Math.sin(Math.PI*Math.pow(u,0.62)),1.1);
+  const r = Math.abs(Math.sin(k*12.9898+78.233)*43758.5453)%1; return 0.3+0.7*r;
 }
-
-function gapBetween(i){ const a=layout[i], b=layout[i+1]; if(!a||!b) return 0; const La=letterState(i), Lb=letterState(i+1); return (b.x+Lb.dx+b.bb.x*S.sx*Lb.sx) - (a.x+La.dx+(a.bb.x+a.bb.width)*S.sx*La.sx); }
+// Builds the O treatment inside `parent`. ctx: {cx,cy,R,RX,ink,ground,stem,o,glyph(parent)->text}
+// Returns {y,w} when a line must continue through the word (horizon), else null.
+function buildO(parent, defs, c){
+  const o=c.o, sw=c.stem*o.stroke, kx=c.RX/c.R, rot=`rotate(${o.rot} ${c.cx} ${c.cy})`;
+  const gg = el("g",{transform:rot},parent);
+  if(o.mode==="wave"){
+    const N=Math.max(240, o.cycles*24); let d="";
+    for(let k=0;k<=N;k++){ const th=k/N*Math.PI*2; const r=(c.R-sw/2)+o.amp*c.R*Math.sin(o.cycles*th+o.phase*Math.PI/180); d+=(k?"L":"M")+(c.cx+r*Math.cos(th)*kx).toFixed(2)+" "+(c.cy+r*Math.sin(th)).toFixed(2)+" "; }
+    el("path",{d:d+"Z",fill:"none",stroke:c.ink,"stroke-width":sw,"stroke-linejoin":"round"},gg);
+    if(o.inner>0) el("ellipse",{cx:c.cx,cy:c.cy,rx:c.R*o.inner*kx,ry:c.R*o.inner,fill:"none",stroke:c.ink,"stroke-width":sw*0.6},gg);
+    return null;
+  }
+  if(o.mode==="ripples"){
+    for(let k=0;k<o.rings;k++){ const w=sw*Math.pow(o.falloff,k); const rr=c.R-w/2-k*o.spacing*c.R; if(rr<=w) break; el("ellipse",{cx:c.cx,cy:c.cy,rx:rr*kx,ry:rr,fill:"none",stroke:c.ink,"stroke-width":w},gg); }
+    if(o.core>0) el("ellipse",{cx:c.cx,cy:c.cy,rx:o.core*c.R*kx,ry:o.core*c.R,fill:c.ink},gg);
+    return null;
+  }
+  if(o.mode==="horizon"){
+    const yl=c.cy+o.lineY*c.R, half=o.gap*c.R/2, big=c.R*20;
+    const idT="ct"+(uid++), idB="cb"+(uid++);
+    const cpT=el("clipPath",{id:idT},defs); el("rect",{x:c.cx-big,y:c.cy-big,width:big*2,height:(yl-half)-(c.cy-big)},cpT);
+    const cpB=el("clipPath",{id:idB},defs); el("rect",{x:c.cx-big,y:yl+half,width:big*2,height:big},cpB);
+    const top=el("g",{"clip-path":`url(#${idT})`},gg); c.glyph(top);
+    const bot=el("g",{"clip-path":`url(#${idB})`,transform:`translate(${o.shift*c.R} ${o.drop*c.R})`},gg); c.glyph(bot);
+    if(o.lineW>0 && !o.extend) el("rect",{x:c.cx-c.RX*1.15,y:yl-o.lineW/2,width:c.RX*2.3,height:o.lineW,fill:c.ink},gg);
+    return (o.lineW>0 && o.extend) ? {y:yl, w:o.lineW} : null;
+  }
+  if(o.mode==="spectrum"){
+    const N=o.bars, step=2*c.RX/N, w=step*(1-o.barGap);
+    for(let k=0;k<N;k++){ const u=(k+0.5)/N, x=c.cx-c.RX+u*2*c.RX, chord=2*c.R*Math.sqrt(Math.max(0,1-Math.pow(2*u-1,2))); const h=Math.max(o.minH,profileAt(u,k,o.profile))*chord; if(h<=0) continue; el("rect",{x:x-w/2,y:c.cy-h/2,width:w,height:h,rx:o.round?w/2:0,fill:c.ink},gg); }
+    return null;
+  }
+  if(o.mode==="lens"){
+    const R=c.R-sw/2, hw=o.lens*R, r=(R*R+hw*hw)/(2*hw);
+    const d=`M ${c.cx} ${c.cy-R} A ${r} ${r} 0 0 1 ${c.cx} ${c.cy+R} A ${r} ${r} 0 0 1 ${c.cx} ${c.cy-R} Z`;
+    el("path",{d,fill:"none",stroke:c.ink,"stroke-width":sw,"stroke-linejoin":"round",transform:o.vertical?"":`rotate(90 ${c.cx} ${c.cy})`},gg);
+    if(o.lcore>0) el("circle",{cx:c.cx,cy:c.cy,r:o.lcore*R,fill:c.ink},gg);
+    return null;
+  }
+  if(o.mode==="field"){
+    const id="lg"+(uid++); const lg=el("linearGradient",{id,x1:0,y1:0,x2:1,y2:0,gradientTransform:`rotate(${o.angle} .5 .5)`},defs);
+    const cols=RAMPS[o.ramp]||RAMPS.atmosphere; cols.forEach((col,k)=>el("stop",{offset:(k/(cols.length-1)*100)+"%","stop-color":col},lg));
+    let filt=""; if(o.fgrain){ const fid="gr"+(uid++); const f=el("filter",{id:fid,x:"-5%",y:"-5%",width:"110%",height:"110%"},defs); el("feTurbulence",{type:"fractalNoise",baseFrequency:"0.9",numOctaves:"2",result:"n"},f); const cm=el("feColorMatrix",{type:"saturate",values:"0",in:"n",result:"g"},f); const ct=el("feComponentTransfer",{in:"g",result:"g2"},f); el("feFuncR",{type:"linear",slope:"0.35",intercept:"0.72"},ct); el("feFuncG",{type:"linear",slope:"0.35",intercept:"0.72"},ct); el("feFuncB",{type:"linear",slope:"0.35",intercept:"0.72"},ct); el("feBlend",{in:"SourceGraphic",in2:"g2",mode:"multiply",result:"b"},f); el("feComposite",{in:"b",in2:"SourceGraphic",operator:"in"},f); filt=`url(#${fid})`; }
+    const disc=el("ellipse",{cx:c.cx,cy:c.cy,rx:c.RX,ry:c.R,fill:`url(#${id})`},gg); if(filt) disc.setAttribute("filter",filt);
+    if(o.foutline) c.glyph(gg);
+    return null;
+  }
+  return null;
+}
+const DIRS = [
+  {key:"oscillo", name:"Oscillo", blurb:"The O is a circular trace: one sine wrapped 28 times. Sound drawn as a ring.", o:{mode:"wave",cycles:36,amp:0.022,phase:0,inner:0,stroke:0.85,circle:true,size:1}},
+  {key:"halo", name:"Halo", blurb:"Three rings thinning outward around a small sun. Ripples of a signal, the dune's sun.", o:{mode:"ripples",rings:3,spacing:0.2,falloff:0.62,core:0.16,stroke:0.9,circle:true,size:1}},
+  {key:"horizon", name:"Horizon", blurb:"The letter O, split at the equator by a hairline that runs through the whole word. The long line.", o:{mode:"horizon",gap:0.035,lineY:0,shift:0,drop:0,lineW:1,extend:true,size:1,circle:false}},
+  {key:"spectrum", name:"Spectrum", blurb:"Nineteen bars in a circle with a dune profile: slow rise, quick fall. Sound made visible.", o:{mode:"spectrum",bars:19,barGap:0.42,minH:0.12,profile:"dune",round:false,circle:true,size:1}},
+  {key:"field", name:"Field", blurb:"The letter keeps its outline; the counter holds the Atmosphere ramp with grain. The only colour in the mark.", o:{mode:"field",ramp:"atmosphere",angle:90,fgrain:true,foutline:true,size:0.985,circle:false}},
+];
+function renderDirs(){
+  const host=$("#dirs"); host.innerHTML="";
+  const ink = S.ground==="ink"?"#E8E5DE":"#000000", gnd = ground();
+  DIRS.forEach(d=>{
+    const b=document.createElement("button"); b.className="dir"; b.setAttribute("aria-pressed", S.o.mode===d.o.mode);
+    const svg=document.createElementNS(NS,"svg"); svg.setAttribute("viewBox","0 0 120 56"); b.appendChild(svg);
+    el("rect",{x:0,y:0,width:120,height:56,fill:gnd},svg);
+    const defs=el("defs",{},svg); const cx=60, cy=28, R=21;
+    const o=Object.assign({},DEF.o,S.o,d.o);
+    const F=44; const pb=inkBox("O",F,S.wght,S.italic);
+    const sc=(2*R)/Math.max(1,pb.height);
+    const glyph=(parent)=>{ const tt=el("text",{"font-family":"NewsreaderLab","font-size":F,"font-weight":S.wght,fill:ink,style:`font-variation-settings:'wght' ${S.wght},'opsz' ${S.opsz}`,transform:`translate(${cx} ${cy}) scale(${sc}) translate(${-(pb.x+pb.width/2)} ${-(pb.y+pb.height/2)})`},parent); tt.textContent="O"; return tt; };
+    const RX = o.circle ? R : pb.width/2*sc*o.size;
+    const ext = buildO(svg, defs, {cx,cy,R:R*o.size,RX,ink,ground:gnd,stem:R*0.16,o,glyph});
+    if(ext) el("rect",{x:0,y:cy+ext.y-cy-0.5,width:120,height:1,fill:ink},svg);
+    const nb=document.createElement("b"); nb.textContent=d.name; const sp=document.createElement("span"); sp.textContent=d.blurb; b.appendChild(nb); b.appendChild(sp);
+    b.addEventListener("click",()=>{ push(); Object.assign(S.o, d.o); render(); refitO(); toast(d.name); });
+    host.appendChild(b);
+  });
+}
+function refitO(){
+  const cs=chars(); const oi=cs.findIndex((c,i)=>isO(i)); if(oi<0) return;
+  const others=[]; for(let i=0;i<cs.length-1;i++){ if(i!==oi && i!==oi-1) others.push(gapBetween(i)); }
+  const target = others.length ? others.reduce((a,b)=>a+b,0)/others.length : S.track*S.size;
+  for(const i of [oi-1, oi]){ if(i<0 || i>=cs.length-1) continue; S.pairs[i]=(S.pairs[i]||0)+(target-gapBetween(i)); render(); }
+}
+function gapBetween(i){ const a=layout[i], b=layout[i+1]; if(!a||!b) return 0; const La=letterState(i), Lb=letterState(i+1); const ab=a.rbb||a.bb, bbx=b.rbb||b.bb; return (b.x+Lb.dx+bbx.x*S.sx*Lb.sx) - (a.x+La.dx+(ab.x+ab.width)*S.sx*La.sx); }
 function renderPairs(){
   const cs=chars(), host=$("#pairs"); host.innerHTML="";
   for(let i=0;i<cs.length-1;i++){
@@ -483,7 +597,7 @@ function renderLetters(){
   const cs=chars(), host=$("#letters"); host.innerHTML="";
   cs.forEach((ch,i)=>{ const b=document.createElement("button"); b.className="btn"; b.textContent=ch; b.setAttribute("aria-pressed",S.sel===i); b.addEventListener("click",()=>{ S.sel=S.sel===i?null:i; S.selShape=null; render(); }); host.appendChild(b); });
   $("#selName").textContent = S.sel==null ? "—" : `${cs[S.sel]} · ${S.sel+1}`;
-  $("#oTag").textContent = S.oMode==="type" ? "" : S.oMode;
+  $("#oTag").textContent = S.o.mode==="type" ? "" : S.o.mode;
 }
 function renderShapes(){
   const host=$("#shapeList"); host.innerHTML="";
@@ -492,17 +606,23 @@ function renderShapes(){
 }
 const fmt3=v=>(+v).toFixed(3), fmt2=v=>(+v).toFixed(2), raw=v=>v;
 const fmt = {size:raw,wght:raw,opsz:raw,track:v=>(+v).toFixed(3).replace(/^-?0/,m=>m.replace("0","")),sx:fmt3,sy:fmt3,skew:raw,spread:raw,stroke:raw,mky:raw,mkw:raw,sunx:raw,sunr:raw,
-  arc:raw,arcRot:fmt2,oStroke:raw,oOver:fmt3,oSq:fmt3,oEx:fmt2,oEy:fmt2,oIs:fmt2,oIw:raw,oIx:fmt2,oIy:fmt2,oCy:fmt2,oPh:raw,oClip:fmt2,
+  arc:raw,arcRot:fmt2,
   cutN:raw,cutY:fmt2,cutT:raw,cutS:raw,cutA:raw, tagSize:raw,tagTrack:v=>(+v).toFixed(2).replace(/^0/,""),tagGap:raw,
   ldx:raw,ldy:raw,lsx:fmt3,lsy:fmt3,lrot:raw,lwght:v=>+v?v:"inherit",lopsz:v=>+v?v:"inherit",lop:fmt2, shx:raw,shy:raw,shw:raw,shh:raw,shr:raw,sho:fmt2};
 function setRange(id,v){ const e=$("#"+id); e.value=v; e.nextElementSibling.textContent=fmt[id](v); }
-const GLOBAL = ["size","wght","opsz","track","sx","sy","skew","spread","stroke","mky","mkw","sunx","sunr","arc","arcRot","oStroke","oOver","oSq","oEx","oEy","oIs","oIw","oIx","oIy","oCy","oPh","oClip","cutN","cutY","cutT","cutS","cutA","tagSize","tagTrack","tagGap"];
+const GLOBAL = ["size","wght","opsz","track","sx","sy","skew","spread","stroke","mky","mkw","sunx","sunr","arc","arcRot","cutN","cutY","cutT","cutS","cutA","tagSize","tagTrack","tagGap"];
 function syncInputs(){
   for(const k of GLOBAL) setRange(k,S[k]);
-  $("#word").value=S.word; $("#oChars").value=S.oChars; $("#tagText").value=S.tagText;
-  for(const id of ["italic","grain","outline","gBase","gBox","gCenter","oInv","oCircle","tagOn","tagRule"]) $("#"+id).checked=!!S[id];
+  $("#word").value=S.word; $("#oChars").value=S.o.chars; $("#tagText").value=S.tagText;
+  $$("[data-o]").forEach(e=>{ const k=e.dataset.o, v=S.o[k]; e.value=v; const st=+e.step; e.nextElementSibling.textContent = st>=1 ? v : (+v).toFixed(st<0.01?3:2); });
+  $$("[data-ot]").forEach(e=>{ e.checked=!!S.o[e.dataset.ot]; });
+  $$("#oMode button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.v===S.o.mode));
+  $$("#oProfile button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.v===S.o.profile));
+  $$("#oRamp button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.v===S.o.ramp));
+  $$("[data-om]").forEach(e=>{ e.hidden = e.dataset.om!==S.o.mode; });
+  for(const id of ["italic","grain","outline","gBase","gBox","gCenter","tagOn","tagRule"]) $("#"+id).checked=!!S[id];
   const seg=(sel,key)=>$$(sel+" button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.v===S[key]));
-  seg("#case","caseMode"); seg("#mark","mark"); seg("#oMode","oMode"); seg("#oInner","oInner"); seg("#cutScope","cutScope"); seg("#tagFont","tagFont"); seg("#tagAlign","tagAlign");
+  seg("#case","caseMode"); seg("#mark","mark"); seg("#cutScope","cutScope"); seg("#tagFont","tagFont"); seg("#tagAlign","tagAlign");
   $$("#ground .sw").forEach(b=>b.setAttribute("aria-pressed",b.dataset.g===S.ground));
   $$("#inkc .sw").forEach(b=>b.setAttribute("aria-pressed",b.dataset.c.toLowerCase()===S.ink.toLowerCase()));
   const L=letterState(S.sel==null?-1:S.sel);
@@ -519,14 +639,20 @@ for(const id in lmap){ const e=$("#"+id); e.addEventListener("pointerdown",push)
 const smap={shx:"x",shy:"y",shw:"w",shh:"h",shr:"rot",sho:"op"};
 for(const id in smap){ const e=$("#"+id); e.addEventListener("pointerdown",push); e.addEventListener("input",()=>{ if(S.selShape==null) return; S.shapes[S.selShape][smap[id]]=+e.value; render(); }); }
 $("#word").addEventListener("input",e=>{ push(); S.word=e.target.value; S.pairs={}; S.letters={}; S.sel=null; render(); });
-$("#oChars").addEventListener("input",e=>{ S.oChars=e.target.value; render(); });
+$("#oChars").addEventListener("input",e=>{ S.o.chars=e.target.value; render(); });
+$$("[data-o]").forEach(e=>{ e.addEventListener("pointerdown",push); e.addEventListener("input",()=>{ S.o[e.dataset.o]=+e.value; render(); }); });
+$$("[data-ot]").forEach(e=>e.addEventListener("change",()=>{ push(); S.o[e.dataset.ot]=e.checked; render(); }));
+$$("#oMode button").forEach(b=>b.addEventListener("click",()=>{ push(); S.o.mode=b.dataset.v; render(); }));
+$$("#oProfile button").forEach(b=>b.addEventListener("click",()=>{ push(); S.o.profile=b.dataset.v; render(); }));
+$$("#oRamp button").forEach(b=>b.addEventListener("click",()=>{ push(); S.o.ramp=b.dataset.v; render(); }));
+$("#oRefit").addEventListener("click",()=>{ push(); refitO(); toast("Pairs refitted"); });
 $("#tagText").addEventListener("input",e=>{ S.tagText=e.target.value; render(); });
 const segBind=(sel,key)=>$$(sel+" button").forEach(b=>b.addEventListener("click",()=>{ push(); S[key]=b.dataset.v; render(); }));
-segBind("#case","caseMode"); segBind("#mark","mark"); segBind("#oMode","oMode"); segBind("#oInner","oInner"); segBind("#cutScope","cutScope"); segBind("#tagFont","tagFont"); segBind("#tagAlign","tagAlign");
+segBind("#case","caseMode"); segBind("#mark","mark"); segBind("#cutScope","cutScope"); segBind("#tagFont","tagFont"); segBind("#tagAlign","tagAlign");
 $$("#shapeFill button").forEach(b=>b.addEventListener("click",()=>{ if(S.selShape==null) return; push(); S.shapes[S.selShape].fill=b.dataset.v; render(); }));
 $$("#ground .sw").forEach(b=>b.addEventListener("click",()=>{ push(); S.ground=b.dataset.g; if(S.ground==="ink"&&S.ink==="#000000") S.ink="#E8E5DE"; if(S.ground!=="ink"&&S.ink!=="#000000") S.ink="#000000"; render(); }));
 $$("#inkc .sw").forEach(b=>b.addEventListener("click",()=>{ push(); S.ink=b.dataset.c; render(); }));
-for(const id of ["italic","grain","outline","gBase","gBox","gCenter","oInv","oCircle","tagOn","tagRule"]) $("#"+id).addEventListener("change",e=>{ push(); S[id]=e.target.checked; render(); });
+for(const id of ["italic","grain","outline","gBase","gBox","gCenter","tagOn","tagRule"]) $("#"+id).addEventListener("change",e=>{ push(); S[id]=e.target.checked; render(); });
 $("#lreset").addEventListener("click",()=>{ if(S.sel==null) return; push(); delete S.letters[S.sel]; render(); });
 $("#lresetAll").addEventListener("click",()=>{ push(); S.letters={}; render(); });
 $("#resetAll").addEventListener("click",()=>{ push(); S=structuredClone(DEF); render(); toast("Reset"); });
@@ -547,8 +673,6 @@ $$("#presets button").forEach(b=>b.addEventListener("click",()=>{
   if(p==="small"){ Object.assign(S,{wght:500,track:0.30,sx:1,sy:1,skew:0,italic:false,pairs:{},letters:{}}); }
   if(p==="touch"){ Object.assign(S,{track:0,pairs:{}}); render(); touchAll(0); }
   if(p==="overlap"){ Object.assign(S,{track:0,pairs:{}}); render(); touchAll(S.size*0.02); }
-  if(p==="ringO"){ Object.assign(S,{oMode:"ring",oStroke:Math.round(S.size*0.072*(S.wght/500)),oOver:1.03,oSq:1,oInner:"none"}); }
-  if(p==="duneO"){ Object.assign(S,{oMode:"type",oInner:"wave",oIs:0.28,oIw:Math.max(1,Math.round(S.size*0.012)),oCy:1,oPh:180,oClip:0.62,oIx:0,oIy:0.05}); }
   if(p==="crest"){ Object.assign(S,{arc:Math.round(S.size*0.12),arcRot:1}); }
   render();
 }));
