@@ -7,7 +7,7 @@
 :root{
   --ink:#000000;--porcelain:#FFFFFF;--sand:#E4DCD4;--bone:#E8E5DE;
   --panel:#0B0B0A;--panel-2:#121210;--line:rgba(232,229,222,.14);--line-2:rgba(232,229,222,.06);
-  --mute:#8A857D;--mute-2:#5C5852;--accent:#E8E5DE;
+  --mute:#8A857D;--mute-2:#5C5852;
   --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;--serif:"NewsreaderLab",Georgia,"Times New Roman",serif;
 }
 *{box-sizing:border-box}
@@ -22,18 +22,21 @@ header .brand small{font-family:var(--mono);font-weight:400;font-size:10px;lette
 aside{border-right:1px solid var(--line);overflow-y:auto;padding:16px 20px 32px;scrollbar-width:thin}
 aside::-webkit-scrollbar{width:6px}aside::-webkit-scrollbar-thumb{background:var(--line)}
 section{padding:14px 0;border-bottom:1px solid var(--line-2)}
-section h2{margin:0 0 12px;font:500 10px var(--mono);letter-spacing:.28em;text-transform:uppercase;color:var(--mute)}
+section h2{margin:0 0 12px;font:500 10px var(--mono);letter-spacing:.28em;text-transform:uppercase;color:var(--mute);display:flex;justify-content:space-between;align-items:center}
+section h2 .tag{color:var(--bone);letter-spacing:.18em}
 .row{display:grid;grid-template-columns:96px 1fr 52px;align-items:center;gap:10px;margin:7px 0}
 .row label{color:var(--bone);text-transform:uppercase;font-size:10px;letter-spacing:.18em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .row output{text-align:right;color:var(--mute);font-variant-numeric:tabular-nums;font-size:10px}
 input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:18px;background:transparent;margin:0;cursor:pointer}
 input[type=range]::-webkit-slider-runnable-track{height:1px;background:var(--line)}
 input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:10px;height:10px;border-radius:50%;background:var(--bone);margin-top:-4.5px;border:0}
+input[type=range]:disabled::-webkit-slider-thumb{background:var(--mute-2)}
 input[type=range]:focus-visible{outline:1px solid var(--bone);outline-offset:4px}
-input[type=text]{width:100%;background:transparent;border:0;border-bottom:1px solid var(--line);padding:8px 0;font-family:var(--serif);font-size:22px;letter-spacing:.08em;text-transform:none}
+input[type=text]{width:100%;background:transparent;border:0;border-bottom:1px solid var(--line);padding:8px 0;font-family:var(--serif);font-size:22px;letter-spacing:.08em}
+input[type=text].mono{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;padding:6px 0}
 input[type=text]:focus{outline:0;border-bottom-color:var(--bone)}
-.seg{display:flex;border:1px solid var(--line)}
-.seg button{flex:1;background:transparent;border:0;border-right:1px solid var(--line);padding:8px 0;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--mute);cursor:pointer;transition:transform .08s ease}
+.seg{display:flex;border:1px solid var(--line);flex-wrap:wrap}
+.seg button{flex:1;background:transparent;border:0;border-right:1px solid var(--line);padding:8px 0;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--mute);cursor:pointer;transition:transform .08s ease;min-width:0}
 .seg button:last-child{border-right:0}
 .seg button[aria-pressed=true]{background:var(--bone);color:var(--ink)}
 .seg button:active{transform:scale(.97)}
@@ -41,6 +44,7 @@ input[type=text]:focus{outline:0;border-bottom-color:var(--bone)}
 .btn:hover{background:var(--panel-2)}
 .btn:active{transform:scale(.97)}
 .btn.primary{background:var(--bone);color:var(--ink);border-color:var(--bone)}
+.btn[aria-pressed=true]{background:var(--bone);color:var(--ink);border-color:var(--bone)}
 .btn:focus-visible{outline:1px solid var(--bone);outline-offset:3px}
 .btns{display:flex;flex-wrap:wrap;gap:6px}
 .chips{display:flex;flex-wrap:wrap;gap:6px}
@@ -63,8 +67,7 @@ main.g-ink{background:var(--ink)}main.g-porcelain{background:var(--porcelain)}ma
 main.grain::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.10;mix-blend-mode:multiply;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");z-index:1}
 main.g-ink.grain::before{mix-blend-mode:screen;opacity:.06}
 #stage{position:absolute;inset:0;width:100%;height:100%;display:block;z-index:2}
-#stage text{cursor:pointer}
-#stage .glyph.sel text{outline:0}
+#stage .glyph, #stage .shape{cursor:grab}
 .hud{position:absolute;left:20px;top:16px;z-index:3;color:var(--mute);font-size:10px;letter-spacing:.22em;text-transform:uppercase;pointer-events:none}
 .hud b{color:var(--bone);font-weight:500}
 main.g-porcelain .hud,main.g-sand .hud,main.g-bone .hud{color:#6E6963}
@@ -79,9 +82,8 @@ footer h2{margin:0 0 10px;font:500 10px var(--mono);letter-spacing:.28em;text-tr
 .pair .name{font-family:var(--serif);font-size:22px;letter-spacing:.04em;color:var(--bone);display:flex;justify-content:space-between;align-items:baseline}
 .pair .name output{font-family:var(--mono);font-size:10px;color:var(--mute);font-variant-numeric:tabular-nums}
 .pair .gap{font-size:9px;color:var(--mute-2);letter-spacing:.2em;text-transform:uppercase;margin-top:2px}
-#letters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+#letters,#shapeList{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
 #letters button{font-family:var(--serif);font-size:18px;min-width:34px;padding:4px 8px}
-.hist{display:flex;gap:6px}
 textarea{width:100%;height:80px;background:var(--panel-2);border:1px solid var(--line);color:var(--mute);font:10px/1.5 var(--mono);padding:8px;resize:vertical}
 .note{color:var(--mute-2);font-size:10px;line-height:1.6;letter-spacing:.04em;margin:8px 0 0}
 dialog{background:var(--panel);color:var(--bone);border:1px solid var(--line);padding:20px;width:min(720px,92vw)}
@@ -94,7 +96,7 @@ dialog::backdrop{background:rgba(0,0,0,.6)}
 <div class="app">
   <header>
     <div class="brand">Forma <small>Wordmark Lab · Newsreader · variable</small></div>
-    <div class="hbtns hist">
+    <div class="hbtns">
       <button class="btn" id="undo" title="Undo (⌘Z)">Undo</button>
       <button class="btn" id="redo" title="Redo (⇧⌘Z)">Redo</button>
       <button class="btn" id="snapA">Save A</button>
@@ -118,13 +120,14 @@ dialog::backdrop{background:rgba(0,0,0,.6)}
     <section>
       <h2>Presets</h2>
       <div class="chips" id="presets">
+        <button data-p="locked">Locked · 297 · .10em</button>
         <button data-p="canon">Canon · 500 · .03em</button>
         <button data-p="small">Small · .30em</button>
-        <button data-p="tight">Tight</button>
         <button data-p="touch">Touching</button>
         <button data-p="overlap">Overlap</button>
-        <button data-p="light">Light · 300</button>
-        <button data-p="heavy">Heavy · 700</button>
+        <button data-p="ringO">Ring O</button>
+        <button data-p="duneO">Dune in O</button>
+        <button data-p="crest">Crest</button>
       </div>
     </section>
 
@@ -137,11 +140,76 @@ dialog::backdrop{background:rgba(0,0,0,.6)}
       <div class="row"><label>Width</label><input type="range" id="sx" min="0.7" max="1.4" step="0.005" value="1"><output>1.000</output></div>
       <div class="row"><label>Height</label><input type="range" id="sy" min="0.7" max="1.4" step="0.005" value="1"><output>1.000</output></div>
       <div class="row"><label>Slant</label><input type="range" id="skew" min="-15" max="15" step="0.5" value="0"><output>0</output></div>
+      <div class="row"><label>Ink spread</label><input type="range" id="spread" min="-12" max="24" step="0.5" value="0"><output>0</output></div>
       <label class="toggle"><span>Italic face</span><input type="checkbox" id="italic"><i></i></label>
     </section>
 
     <section>
-      <h2>Letter <span id="selName" style="color:var(--bone)">—</span></h2>
+      <h2>Curve</h2>
+      <div class="row"><label>Arc</label><input type="range" id="arc" min="-300" max="300" step="1" value="0"><output>0</output></div>
+      <div class="row"><label>Rotate along</label><input type="range" id="arcRot" min="0" max="1" step="0.05" value="1"><output>1.00</output></div>
+      <p class="note">Positive = dune crest (middle rises). Negative = bowl. Rotate along makes letters follow the tangent.</p>
+    </section>
+
+    <section>
+      <h2>The O <span class="tag" id="oTag"></span></h2>
+      <div class="row" style="grid-template-columns:96px 1fr"><label>Letters</label><input type="text" class="mono" id="oChars" value="O" aria-label="Letters to treat as O"></div>
+      <div class="seg" id="oMode" style="margin-top:8px">
+        <button data-v="type" aria-pressed="true">Type</button>
+        <button data-v="ring" aria-pressed="false">Ring</button>
+        <button data-v="disc" aria-pressed="false">Disc</button>
+        <button data-v="eclipse" aria-pressed="false">Eclipse</button>
+      </div>
+      <div class="row"><label>Ring stroke</label><input type="range" id="oStroke" min="2" max="140" step="0.5" value="30"><output>30</output></div>
+      <div class="row"><label>Overshoot</label><input type="range" id="oOver" min="0.8" max="1.25" step="0.005" value="1.02"><output>1.020</output></div>
+      <div class="row"><label>Squash</label><input type="range" id="oSq" min="0.6" max="1.4" step="0.005" value="1"><output>1.000</output></div>
+      <div class="row"><label>Eclipse X</label><input type="range" id="oEx" min="-1" max="1" step="0.01" value="0.35"><output>0.35</output></div>
+      <div class="row"><label>Eclipse Y</label><input type="range" id="oEy" min="-1" max="1" step="0.01" value="-0.2"><output>-0.20</output></div>
+      <div class="seg" id="oInner" style="margin-top:8px">
+        <button data-v="none" aria-pressed="true">Empty</button>
+        <button data-v="dot" aria-pressed="false">Sun</button>
+        <button data-v="line" aria-pressed="false">Horizon</button>
+        <button data-v="wave" aria-pressed="false">Dune</button>
+        <button data-v="sine" aria-pressed="false">Sine</button>
+      </div>
+      <div class="row"><label>Inner size</label><input type="range" id="oIs" min="0.05" max="1" step="0.01" value="0.35"><output>0.35</output></div>
+      <div class="row"><label>Inner stroke</label><input type="range" id="oIw" min="0.5" max="60" step="0.5" value="4"><output>4</output></div>
+      <div class="row"><label>Inner X</label><input type="range" id="oIx" min="-1" max="1" step="0.01" value="0"><output>0.00</output></div>
+      <div class="row"><label>Inner Y</label><input type="range" id="oIy" min="-1" max="1" step="0.01" value="0"><output>0.00</output></div>
+      <div class="row"><label>Wave cycles</label><input type="range" id="oCy" min="0.25" max="4" step="0.25" value="1"><output>1.00</output></div>
+      <div class="row"><label>Wave phase</label><input type="range" id="oPh" min="0" max="360" step="5" value="0"><output>0</output></div>
+      <div class="row"><label>Counter clip</label><input type="range" id="oClip" min="0.3" max="1" step="0.01" value="0.66"><output>0.66</output></div>
+      <label class="toggle"><span>Perfect circle</span><input type="checkbox" id="oCircle"><i></i></label>
+      <label class="toggle"><span>Inner in ground colour</span><input type="checkbox" id="oInv"><i></i></label>
+    </section>
+
+    <section>
+      <h2>Cuts</h2>
+      <div class="row"><label>Cuts</label><input type="range" id="cutN" min="0" max="3" step="1" value="0"><output>0</output></div>
+      <div class="row"><label>Y</label><input type="range" id="cutY" min="-1" max="0.2" step="0.005" value="-0.5"><output>-0.50</output></div>
+      <div class="row"><label>Thickness</label><input type="range" id="cutT" min="0.5" max="40" step="0.5" value="3"><output>3</output></div>
+      <div class="row"><label>Spacing</label><input type="range" id="cutS" min="2" max="120" step="1" value="18"><output>18</output></div>
+      <div class="row"><label>Angle</label><input type="range" id="cutA" min="-45" max="45" step="0.5" value="0"><output>0</output></div>
+      <div class="seg" id="cutScope"><button data-v="word" aria-pressed="true">Whole word</button><button data-v="o" aria-pressed="false">O only</button><button data-v="sel" aria-pressed="false">Selected letter</button></div>
+    </section>
+
+    <section>
+      <h2>Shapes <span class="tag" id="shapeTag"></span></h2>
+      <div class="btns"><button class="btn" data-add="rect">+ Rect</button><button class="btn" data-add="ellipse">+ Ellipse</button><button class="btn" data-add="line">+ Bar</button><button class="btn" data-add="wave">+ Wave</button></div>
+      <div id="shapeList" style="margin-top:8px"></div>
+      <div class="seg" id="shapeFill"><button data-v="ink" aria-pressed="true">Ink · add</button><button data-v="ground" aria-pressed="false">Ground · erase</button></div>
+      <div class="row"><label>X</label><input type="range" id="shx" min="-800" max="1800" step="1" value="0"><output>0</output></div>
+      <div class="row"><label>Y</label><input type="range" id="shy" min="-600" max="400" step="1" value="0"><output>0</output></div>
+      <div class="row"><label>Width</label><input type="range" id="shw" min="1" max="1600" step="1" value="120"><output>120</output></div>
+      <div class="row"><label>Height</label><input type="range" id="shh" min="1" max="800" step="1" value="12"><output>12</output></div>
+      <div class="row"><label>Rotate</label><input type="range" id="shr" min="-90" max="90" step="0.5" value="0"><output>0</output></div>
+      <div class="row"><label>Opacity</label><input type="range" id="sho" min="0.05" max="1" step="0.01" value="1"><output>1.00</output></div>
+      <div class="btns"><button class="btn" id="shDup">Duplicate</button><button class="btn" id="shDel">Delete</button></div>
+      <p class="note">Ground shapes erase: knock out a crossbar, open a counter, cut a serif. Ink shapes add: bridge two letters, extend a stem. Drag them on the stage.</p>
+    </section>
+
+    <section>
+      <h2>Letter <span class="tag" id="selName">—</span></h2>
       <div id="letters"></div>
       <div class="row"><label>Shift X</label><input type="range" id="ldx" min="-200" max="200" step="1" value="0"><output>0</output></div>
       <div class="row"><label>Baseline</label><input type="range" id="ldy" min="-200" max="200" step="1" value="0"><output>0</output></div>
@@ -149,8 +217,21 @@ dialog::backdrop{background:rgba(0,0,0,.6)}
       <div class="row"><label>Height</label><input type="range" id="lsy" min="0.6" max="1.6" step="0.005" value="1"><output>1.000</output></div>
       <div class="row"><label>Rotate</label><input type="range" id="lrot" min="-20" max="20" step="0.25" value="0"><output>0</output></div>
       <div class="row"><label>Weight</label><input type="range" id="lwght" min="0" max="800" step="1" value="0"><output>inherit</output></div>
+      <div class="row"><label>Optical</label><input type="range" id="lopsz" min="0" max="72" step="1" value="0"><output>inherit</output></div>
       <div class="row"><label>Opacity</label><input type="range" id="lop" min="0.1" max="1" step="0.01" value="1"><output>1.00</output></div>
       <div class="btns"><button class="btn" id="lreset">Reset letter</button><button class="btn" id="lresetAll">Reset all letters</button></div>
+    </section>
+
+    <section>
+      <h2>Lockup</h2>
+      <label class="toggle"><span>Tagline</span><input type="checkbox" id="tagOn"><i></i></label>
+      <input type="text" class="mono" id="tagText" value="AUDIO SOLUTIONS" aria-label="Tagline">
+      <div class="seg" id="tagFont" style="margin-top:8px"><button data-v="mono" aria-pressed="true">Mono</button><button data-v="serif" aria-pressed="false">Serif</button><button data-v="serifi" aria-pressed="false">Serif italic</button></div>
+      <div class="row"><label>Size</label><input type="range" id="tagSize" min="6" max="120" step="0.5" value="22"><output>22</output></div>
+      <div class="row"><label>Tracking</label><input type="range" id="tagTrack" min="0" max="1.2" step="0.01" value="0.34"><output>.34</output></div>
+      <div class="row"><label>Gap</label><input type="range" id="tagGap" min="0" max="300" step="1" value="48"><output>48</output></div>
+      <div class="seg" id="tagAlign"><button data-v="left" aria-pressed="false">Left</button><button data-v="center" aria-pressed="true">Centre</button><button data-v="right" aria-pressed="false">Right</button><button data-v="justify" aria-pressed="false">Justify</button></div>
+      <label class="toggle"><span>Rule between</span><input type="checkbox" id="tagRule"><i></i></label>
     </section>
 
     <section>
@@ -194,7 +275,7 @@ dialog::backdrop{background:rgba(0,0,0,.6)}
       <label class="toggle"><span>Glyph boxes</span><input type="checkbox" id="gBox"><i></i></label>
       <label class="toggle"><span>Optical centre</span><input type="checkbox" id="gCenter"><i></i></label>
       <div class="btns" style="margin-top:8px"><button class="btn" id="resetAll">Reset everything</button></div>
-      <p class="note">Click a letter on the stage to select it. Drag it to move. Arrow keys nudge (⇧ = 10px). Kerning pairs live in the strip below.</p>
+      <p class="note">Click a letter or shape on the stage to select it. Drag to move. Arrow keys nudge (⇧ = 10px). Kerning pairs live in the strip below.</p>
     </section>
   </aside>
 
@@ -231,9 +312,10 @@ dialog::backdrop{background:rgba(0,0,0,.6)}
     <button class="btn" id="cpSvg">Copy SVG</button>
     <button class="btn" id="cpCss">Copy CSS</button>
     <button class="btn" id="cpJson">Copy settings</button>
+    <button class="btn" id="pasteJson">Load settings</button>
   </div>
-  <textarea id="exportBox" readonly></textarea>
-  <p class="note">SVG embeds the Newsreader font, so it opens anywhere. If downloads are blocked in this viewer, use Copy and paste into a file.</p>
+  <textarea id="exportBox"></textarea>
+  <p class="note">SVG embeds the Newsreader font, so it opens anywhere. The mono tagline falls back to the viewer's monospace if IBM Plex Mono is not installed. If downloads are blocked in this viewer, use Copy and paste into a file.</p>
   <div class="btns" style="margin-top:12px;justify-content:flex-end"><button class="btn" id="dlgClose">Close</button></div>
 </dialog>
 <div class="toast" id="toast"></div>
@@ -242,248 +324,289 @@ dialog::backdrop{background:rgba(0,0,0,.6)}
 (() => {
 const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
 const NS = "http://www.w3.org/2000/svg";
+const GROUNDS = {ink:"#000000",porcelain:"#FFFFFF",sand:"#E4DCD4",bone:"#E8E5DE"};
 const DEF = {
-  word:"FORMA", caseMode:"upper", size:420, wght:500, opsz:72, track:0.03, sx:1, sy:1, skew:0, italic:false,
+  word:"FORMA", caseMode:"upper", size:420, wght:500, opsz:72, track:0.03, sx:1, sy:1, skew:0, spread:0, italic:false,
+  arc:0, arcRot:1,
+  oChars:"O", oMode:"type", oStroke:30, oOver:1.02, oSq:1, oEx:0.35, oEy:-0.2, oInner:"none", oIs:0.35, oIw:4, oIx:0, oIy:0, oCy:1, oPh:0, oClip:0.66, oInv:false, oCircle:false,
+  cutN:0, cutY:-0.5, cutT:3, cutS:18, cutA:0, cutScope:"word",
+  shapes:[], selShape:null,
+  tagOn:false, tagText:"AUDIO SOLUTIONS", tagFont:"mono", tagSize:22, tagTrack:0.34, tagGap:48, tagAlign:"center", tagRule:false,
   ground:"ink", ink:"#E8E5DE", grain:false, outline:false, stroke:1.5,
   mark:"none", mky:60, mkw:1, sunx:-200, sunr:8,
   gBase:true, gBox:false, gCenter:false,
   pairs:{}, letters:{}, zoom:1, sel:null
 };
-let S = load() || structuredClone(DEF);
-let hist = [], fut = [];
-let snaps = {A:null,B:null}; let cmpOn = false;
+const LOCKED = {size:803,wght:297,opsz:46,track:0.1,ground:"sand",ink:"#000000",pairs:{"0":-9.65,"1":-9.65,"2":-9.66,"3":-9.66}};
+let S = load() || Object.assign(structuredClone(DEF), structuredClone(LOCKED));
+let hist = [], fut = [], snaps = {A:null,B:null}, cmpOn = false;
 const stage = $("#stage"), main = $("#main");
 
-function load(){ try{ const j = localStorage.getItem("forma-wordmark-lab-v1"); return j ? Object.assign(structuredClone(DEF), JSON.parse(j)) : null; }catch(e){ return null; } }
-function save(){ try{ localStorage.setItem("forma-wordmark-lab-v1", JSON.stringify(S)); }catch(e){} }
-function push(){ hist.push(JSON.stringify(S)); if(hist.length>80) hist.shift(); fut = []; }
+function load(){ try{ const j = localStorage.getItem("forma-wordmark-lab-v2") || localStorage.getItem("forma-wordmark-lab-v1"); return j ? Object.assign(structuredClone(DEF), JSON.parse(j)) : null; }catch(e){ return null; } }
+function save(){ try{ localStorage.setItem("forma-wordmark-lab-v2", JSON.stringify(S)); }catch(e){} }
+function push(){ hist.push(JSON.stringify(S)); if(hist.length>100) hist.shift(); fut = []; }
 function toast(t){ const el=$("#toast"); el.textContent=t; el.classList.add("on"); clearTimeout(el._t); el._t=setTimeout(()=>el.classList.remove("on"),1400); }
+const el = (tag, attrs={}, parent) => { const n=document.createElementNS(NS,tag); for(const k in attrs) n.setAttribute(k, attrs[k]); if(parent) parent.appendChild(n); return n; };
 
 function chars(){ let w = S.word || ""; if(S.caseMode==="upper") w = w.toUpperCase(); return [...w]; }
-function letterState(i){ return S.letters[i] || {dx:0,dy:0,sx:1,sy:1,rot:0,wght:0,op:1}; }
-function fontStyleFor(i){ const L = letterState(i); const w = L.wght || S.wght; return `font-variation-settings:'wght' ${w},'opsz' ${S.opsz}`; }
+function letterState(i){ return S.letters[i] || {dx:0,dy:0,sx:1,sy:1,rot:0,wght:0,opsz:0,op:1}; }
+function isO(i){ return S.oChars && [...S.oChars.toUpperCase()].includes(chars()[i].toUpperCase()); }
+function ground(){ return GROUNDS[S.ground]; }
+function fvs(i){ const L = letterState(i); return `font-variation-settings:'wght' ${L.wght||S.wght},'opsz' ${L.opsz||S.opsz}`; }
+function textEl(ch, i, parent){
+  const t = el("text",{"font-family":"NewsreaderLab","font-size":S.size,"font-weight":letterState(i).wght||S.wght, x:0, y:0}, parent);
+  t.textContent = ch; if(S.italic) t.setAttribute("font-style","italic");
+  t.setAttribute("style",(S.caseMode==="smallcaps"?"font-variant-caps:small-caps;":"")+fvs(i));
+  return t;
+}
+function measure(word, ch, i){ const t=textEl(ch,i,word); t.setAttribute("visibility","hidden"); const adv=t.getComputedTextLength(), bb=t.getBBox(); word.removeChild(t); return {adv,bb}; }
 
-let layout = []; // per glyph: {x, adv, bb}
+let layout = [], total = 0, capH = 0, wordBB = null;
+let uid = 0;
+
 function render(){
   const cs = chars();
   main.className = `g-${S.ground}${S.grain?" grain":""}`;
   while(stage.firstChild) stage.removeChild(stage.firstChild);
   const W = main.clientWidth, H = main.clientHeight;
   stage.setAttribute("viewBox", `0 0 ${W} ${H}`);
-  const defs = document.createElementNS(NS,"defs"); stage.appendChild(defs);
-  const root = document.createElementNS(NS,"g"); root.id="root"; stage.appendChild(root);
-  const word = document.createElementNS(NS,"g"); word.id="word"; root.appendChild(word);
-  // measure pass
+  const defs = el("defs",{},stage);
+  const root = el("g",{id:"root"},stage);
+  const art = el("g",{id:"art"},root);        // exported content
+  const word = el("g",{id:"word"},art);
   const fs = S.size;
-  const meas = cs.map((ch,i)=>{
-    const t = document.createElementNS(NS,"text");
-    t.textContent = ch; t.setAttribute("font-family","NewsreaderLab"); t.setAttribute("font-size",fs);
-    t.setAttribute("font-weight", letterState(i).wght || S.wght);
-    if(S.italic) t.setAttribute("font-style","italic");
-    if(S.caseMode==="smallcaps") t.setAttribute("style","font-variant-caps:small-caps;"+fontStyleFor(i)); else t.setAttribute("style",fontStyleFor(i));
-    t.setAttribute("x",0); t.setAttribute("y",0); t.setAttribute("visibility","hidden");
-    word.appendChild(t);
-    const adv = t.getComputedTextLength(); const bb = t.getBBox();
-    word.removeChild(t);
-    return {adv,bb};
-  });
-  // positions
+  const meas = cs.map((ch,i)=>measure(word,ch,i));
   layout = []; let x = 0;
-  cs.forEach((ch,i)=>{
-    const L = letterState(i);
-    layout.push({x, adv:meas[i].adv*S.sx*L.sx, bb:meas[i].bb, ch});
-    x += meas[i].adv*S.sx*L.sx + S.track*fs + (S.pairs[i]||0);
-  });
-  const total = x - (S.track*fs + (S.pairs[cs.length-1]||0));
-  // cap height approx via bbox of "H"
-  const capBB = (()=>{ const t=document.createElementNS(NS,"text"); t.textContent="H"; t.setAttribute("font-family","NewsreaderLab"); t.setAttribute("font-size",fs); t.setAttribute("style",fontStyleFor(-1)); t.setAttribute("visibility","hidden"); word.appendChild(t); const b=t.getBBox(); word.removeChild(t); return b; })();
-  const capH = -capBB.y;
-  const ox = (W - total*S.zoom)/2, oy = H/2 + capH*S.sy*S.zoom/2;
+  cs.forEach((ch,i)=>{ const L=letterState(i); layout.push({x, adv:meas[i].adv*S.sx*L.sx, bb:meas[i].bb, ch}); x += meas[i].adv*S.sx*L.sx + S.track*fs + (S.pairs[i]||0); });
+  total = x - (S.track*fs + (S.pairs[cs.length-1]||0));
+  capH = -measure(word,"H",-1).bb.y;
+  // arc
+  const arcOf = (cx)=>{ if(!S.arc) return {dy:0,rot:0}; const s=Math.abs(S.arc), half=Math.max(total/2,1), R=(half*half+s*s)/(2*s), t=cx-total/2, inside=Math.max(0,R*R-t*t); const d=R-Math.sqrt(inside); const sign=S.arc>0?1:-1; return {dy:sign*d, rot:sign*Math.asin(Math.max(-1,Math.min(1,t/R)))*180/Math.PI*S.arcRot}; };
+  const ox = (W - total*S.zoom)/2, oy = H/2 + capH*S.sy*S.zoom/2 - (S.tagOn ? (S.tagGap+S.tagSize)*S.zoom/2 : 0);
   root.setAttribute("transform", `translate(${ox} ${oy}) scale(${S.zoom})`);
-  // guides
-  if(S.gBase || S.gCenter){
-    const g = document.createElementNS(NS,"g"); g.setAttribute("opacity",".5"); root.appendChild(g);
-    const gc = S.ground==="ink" ? "rgba(232,229,222,.35)" : "rgba(0,0,0,.35)";
-    if(S.gBase){
-      for(const y of [0, -capH*S.sy]){ const l=document.createElementNS(NS,"line"); l.setAttribute("x1",-W); l.setAttribute("x2",W*2); l.setAttribute("y1",y); l.setAttribute("y2",y); l.setAttribute("stroke",gc); l.setAttribute("stroke-width",1/S.zoom); l.setAttribute("stroke-dasharray",`${4/S.zoom} ${4/S.zoom}`); g.appendChild(l); }
-    }
-    if(S.gCenter){ const l=document.createElementNS(NS,"line"); l.setAttribute("x1",total/2); l.setAttribute("x2",total/2); l.setAttribute("y1",-H); l.setAttribute("y2",H); l.setAttribute("stroke",gc); l.setAttribute("stroke-width",1/S.zoom); l.setAttribute("stroke-dasharray",`${4/S.zoom} ${4/S.zoom}`); g.appendChild(l); }
-  }
+  // guides (not exported)
+  const guides = el("g",{id:"guides",opacity:".5"},root);
+  const gc = S.ground==="ink" ? "rgba(232,229,222,.35)" : "rgba(0,0,0,.35)";
+  const dash = `${4/S.zoom} ${4/S.zoom}`;
+  if(S.gBase) for(const y of [0,-capH*S.sy]) el("line",{x1:-W,x2:W*2,y1:y,y2:y,stroke:gc,"stroke-width":1/S.zoom,"stroke-dasharray":dash},guides);
+  if(S.gCenter) el("line",{x1:total/2,x2:total/2,y1:-H,y2:H,stroke:gc,"stroke-width":1/S.zoom,"stroke-dasharray":dash},guides);
   // mark
-  const markG = document.createElementNS(NS,"g"); root.appendChild(markG);
-  if(S.mark==="line"||S.mark==="both"){ const l=document.createElementNS(NS,"line"); l.setAttribute("x1",-W); l.setAttribute("x2",W*2); l.setAttribute("y1",S.mky); l.setAttribute("y2",S.mky); l.setAttribute("stroke",S.ink); l.setAttribute("stroke-width",S.mkw); markG.appendChild(l); }
-  if(S.mark==="sun"||S.mark==="both"){ const c=document.createElementNS(NS,"circle"); c.setAttribute("cx",total/2+S.sunx); c.setAttribute("cy",S.mky); c.setAttribute("r",S.sunr); c.setAttribute("fill",S.ink); markG.appendChild(c); }
+  if(S.mark==="line"||S.mark==="both") el("line",{x1:-total*0.5,x2:total*1.5,y1:S.mky,y2:S.mky,stroke:S.ink,"stroke-width":S.mkw},art);
+  if(S.mark==="sun"||S.mark==="both") el("circle",{cx:total/2+S.sunx,cy:S.mky,r:S.sunr,fill:S.ink},art);
   // glyphs
+  const strokeAttrs = t => { if(S.outline){ t.setAttribute("fill","none"); t.setAttribute("stroke",S.ink); t.setAttribute("stroke-width",S.stroke); } else { t.setAttribute("fill",S.ink); if(S.spread){ t.setAttribute("stroke", S.spread>0?S.ink:ground()); t.setAttribute("stroke-width",Math.abs(S.spread)); t.setAttribute("stroke-linejoin","round"); t.setAttribute("paint-order","stroke"); } } };
   cs.forEach((ch,i)=>{
-    const L = letterState(i), P = layout[i];
-    const g = document.createElementNS(NS,"g"); g.classList.add("glyph"); g.dataset.i = i;
-    const cx = P.adv/2;
-    g.setAttribute("transform", `translate(${P.x + L.dx} ${L.dy}) skewX(${-S.skew}) translate(${cx} 0) rotate(${L.rot}) scale(${S.sx*L.sx} ${S.sy*L.sy}) translate(${-cx/(S.sx*L.sx)} 0)`);
-    const t = document.createElementNS(NS,"text");
-    t.textContent = ch; t.setAttribute("font-family","NewsreaderLab"); t.setAttribute("font-size",fs);
-    t.setAttribute("font-weight", L.wght || S.wght); if(S.italic) t.setAttribute("font-style","italic");
-    t.setAttribute("style",(S.caseMode==="smallcaps"?"font-variant-caps:small-caps;":"")+fontStyleFor(i)+`;opacity:${L.op}`);
-    if(S.outline){ t.setAttribute("fill","none"); t.setAttribute("stroke",S.ink); t.setAttribute("stroke-width",S.stroke); } else t.setAttribute("fill",S.ink);
-    g.appendChild(t);
-    if(S.gBox || S.sel===i){
-      const r=document.createElementNS(NS,"rect"); r.setAttribute("x",P.bb.x); r.setAttribute("y",P.bb.y); r.setAttribute("width",P.bb.width); r.setAttribute("height",P.bb.height);
-      r.setAttribute("fill", S.sel===i ? (S.ground==="ink"?"rgba(232,229,222,.06)":"rgba(0,0,0,.05)") : "none");
-      r.setAttribute("stroke", S.ground==="ink"?"rgba(232,229,222,.5)":"rgba(0,0,0,.45)"); r.setAttribute("stroke-width",1/S.zoom); r.setAttribute("stroke-dasharray", S.sel===i?"":`${3/S.zoom} ${3/S.zoom}`); r.setAttribute("pointer-events","none");
-      g.appendChild(r);
+    const L=letterState(i), P=layout[i], cx=P.adv/2, A=arcOf(P.x+L.dx+cx);
+    const g = el("g",{class:"glyph","data-i":i, transform:`translate(${P.x+L.dx} ${L.dy+A.dy}) skewX(${-S.skew}) translate(${cx} 0) rotate(${L.rot+A.rot}) scale(${S.sx*L.sx} ${S.sy*L.sy}) translate(${-cx/(S.sx*L.sx)} 0)`}, word);
+    const bb=P.bb;
+    if(isO(i) && S.oMode!=="type"){
+      // geometric O built on the glyph box
+      const ccx=bb.x+bb.width/2, ccy=bb.y+bb.height/2, r=Math.min(bb.width,bb.height)/2*S.oOver, rx=r*(S.oSq>=1?S.oSq:1), ry=r*(S.oSq<1?1/S.oSq:1)*(S.oSq<1?S.oSq*S.oSq:1);
+      const RY = bb.height/2*S.oOver/Math.sqrt(S.oSq), RX = S.oCircle ? RY : bb.width/2*S.oOver*Math.sqrt(S.oSq);
+      const og = el("g",{opacity:L.op},g);
+      if(S.oMode==="ring"){ el("ellipse",{cx:ccx,cy:ccy,rx:RX-S.oStroke/2,ry:RY-S.oStroke/2,fill:"none",stroke:S.ink,"stroke-width":S.oStroke},og); }
+      if(S.oMode==="disc"){ el("ellipse",{cx:ccx,cy:ccy,rx:RX,ry:RY,fill:S.ink},og); }
+      if(S.oMode==="eclipse"){ const id="m"+(uid++); const m=el("mask",{id},defs); el("ellipse",{cx:ccx,cy:ccy,rx:RX,ry:RY,fill:"#fff"},m); el("ellipse",{cx:ccx+S.oEx*RX,cy:ccy+S.oEy*RY,rx:RX,ry:RY,fill:"#000"},m); el("ellipse",{cx:ccx,cy:ccy,rx:RX,ry:RY,fill:S.ink,mask:`url(#${id})`},og); }
+      innerEl(og, defs, ccx, ccy, (S.oMode==="ring"?RX-S.oStroke:RX)*S.oClip/0.66, (S.oMode==="ring"?RY-S.oStroke:RY)*S.oClip/0.66, S.oMode==="disc"||S.oMode==="eclipse");
+    } else {
+      const t = textEl(ch,i,g); t.style.opacity=L.op; strokeAttrs(t);
+      if(isO(i) && S.oInner!=="none"){ const ccx=bb.x+bb.width/2, ccy=bb.y+bb.height/2; innerEl(g, defs, ccx, ccy, bb.width/2*S.oClip, bb.height/2*S.oClip, false); }
     }
-    word.appendChild(g);
+    if(S.gBox || S.sel===i){
+      el("rect",{x:bb.x,y:bb.y,width:bb.width,height:bb.height,fill:S.sel===i?(S.ground==="ink"?"rgba(232,229,222,.06)":"rgba(0,0,0,.05)"):"none",stroke:S.ground==="ink"?"rgba(232,229,222,.5)":"rgba(0,0,0,.45)","stroke-width":1/S.zoom,"stroke-dasharray":S.sel===i?"":`${3/S.zoom} ${3/S.zoom}`,"pointer-events":"none","data-guide":1},g);
+    }
   });
-  // hud
-  $("#hud").innerHTML = `<b>${cs.join("")}</b> · Newsreader ${S.italic?"italic ":""}<b>${S.wght}</b> · opsz <b>${S.opsz}</b> · tracking <b>${S.track.toFixed(3)}em</b> · ${Math.round(total)}px wide · zoom ${Math.round(S.zoom*100)}%`;
-  renderPairs(); renderLetters(); syncInputs(); save();
+  wordBB = word.getBBox();
+  // cuts
+  if(S.cutN>0){
+    let box = {x:wordBB.x, w:wordBB.width};
+    if(S.cutScope==="o"){ const i=cs.findIndex((c,i)=>isO(i)); if(i>=0){ const P=layout[i], L=letterState(i); box={x:P.x+L.dx+P.bb.x*S.sx*L.sx, w:P.bb.width*S.sx*L.sx}; } }
+    if(S.cutScope==="sel" && S.sel!=null){ const P=layout[S.sel], L=letterState(S.sel); box={x:P.x+L.dx+P.bb.x*S.sx*L.sx, w:P.bb.width*S.sx*L.sx}; }
+    const cg = el("g",{transform:`rotate(${S.cutA} ${box.x+box.w/2} ${S.cutY*capH*S.sy})`},art);
+    for(let k=0;k<S.cutN;k++){ const y=S.cutY*capH*S.sy + (k-(S.cutN-1)/2)*S.cutS; el("rect",{x:box.x-box.w*0.6,y:y-S.cutT/2,width:box.w*2.2,height:S.cutT,fill:ground()},cg); }
+  }
+  // shapes
+  const shg = el("g",{id:"shapes"},art);
+  S.shapes.forEach((sh,k)=>{
+    const g = el("g",{class:"shape","data-s":k, transform:`translate(${sh.x} ${sh.y}) rotate(${sh.rot})`, opacity:sh.op},shg);
+    const col = sh.fill==="ink"?S.ink:ground();
+    if(sh.type==="rect") el("rect",{x:-sh.w/2,y:-sh.h/2,width:sh.w,height:sh.h,fill:col},g);
+    if(sh.type==="ellipse") el("ellipse",{cx:0,cy:0,rx:sh.w/2,ry:sh.h/2,fill:col},g);
+    if(sh.type==="line") el("rect",{x:-sh.w/2,y:-sh.h/2,width:sh.w,height:sh.h,fill:col},g);
+    if(sh.type==="wave"){ el("path",{d:wavePath(-sh.w/2,sh.w,sh.h/2,1.5,0,0.45),fill:"none",stroke:col,"stroke-width":Math.max(1,sh.h*0.08),"stroke-linecap":"round"},g); el("rect",{x:-sh.w/2,y:-sh.h/2,width:sh.w,height:sh.h,fill:"transparent"},g); }
+    if(S.selShape===k) el("rect",{x:-sh.w/2-4/S.zoom,y:-sh.h/2-4/S.zoom,width:sh.w+8/S.zoom,height:sh.h+8/S.zoom,fill:"none",stroke:S.ground==="ink"?"rgba(232,229,222,.7)":"rgba(0,0,0,.6)","stroke-width":1/S.zoom,"data-guide":1},g);
+  });
+  // tagline
+  if(S.tagOn && S.tagText){
+    const tg = el("g",{id:"tag"},art);
+    const y = S.tagGap + S.tagSize;
+    const fam = S.tagFont==="mono" ? "'IBM Plex Mono',ui-monospace,Menlo,monospace" : "NewsreaderLab";
+    const t = el("text",{"font-family":fam,"font-size":S.tagSize,"letter-spacing":S.tagTrack*S.tagSize,fill:S.ink,y},tg);
+    if(S.tagFont==="serifi") t.setAttribute("font-style","italic");
+    if(S.tagFont!=="mono") t.setAttribute("style","font-variation-settings:'wght' 400,'opsz' 16");
+    t.textContent = S.tagText;
+    let len = t.getComputedTextLength();
+    if(S.tagAlign==="justify"){ const n=[...S.tagText].length; const extra=(wordBB.width - (len - S.tagTrack*S.tagSize))/Math.max(1,n-1); t.setAttribute("letter-spacing",extra); t.setAttribute("x",wordBB.x); }
+    else if(S.tagAlign==="left") t.setAttribute("x",wordBB.x);
+    else if(S.tagAlign==="right"){ t.setAttribute("x",wordBB.x+wordBB.width); t.setAttribute("text-anchor","end"); t.setAttribute("dx",S.tagTrack*S.tagSize); }
+    else { t.setAttribute("x",wordBB.x+wordBB.width/2 + S.tagTrack*S.tagSize/2); t.setAttribute("text-anchor","middle"); }
+    if(S.tagRule) el("line",{x1:wordBB.x,x2:wordBB.x+wordBB.width,y1:S.tagGap/2,y2:S.tagGap/2,stroke:S.ink,"stroke-width":1},tg);
+  }
+  $("#hud").innerHTML = `<b>${cs.join("")}</b> · Newsreader ${S.italic?"italic ":""}<b>${S.wght}</b> · opsz <b>${S.opsz}</b> · tracking <b>${S.track.toFixed(3)}em</b>${S.arc?` · arc <b>${S.arc}</b>`:""}${S.oMode!=="type"?` · O <b>${S.oMode}</b>`:""} · ${Math.round(total)}px · zoom ${Math.round(S.zoom*100)}%`;
+  renderPairs(); renderLetters(); renderShapes(); syncInputs(); save();
+}
+function wavePath(x0, w, amp, cycles, phaseDeg, dune){
+  // dune: 0 = pure sine, 1 = asymmetric dune (slow rise, quick fall)
+  const N=96; let d=""; for(let k=0;k<=N;k++){ const u=k/N; let ph=u*cycles*Math.PI*2 + phaseDeg*Math.PI/180; let y; if(dune>0){ const sk = Math.sin(ph + dune*Math.sin(ph)); y=-amp*sk; } else y=-amp*Math.sin(ph); d += (k?"L":"M")+(x0+u*w).toFixed(2)+" "+y.toFixed(2)+" "; } return d;
+}
+function innerEl(g, defs, cx, cy, rx, ry, onInk){
+  if(S.oInner==="none") return;
+  const col = S.oInv ? ground() : (onInk ? ground() : S.ink);
+  const id="c"+(uid++); const cp=el("clipPath",{id},defs); el("ellipse",{cx,cy,rx,ry},cp);
+  const ig = el("g",{"clip-path":`url(#${id})`},g);
+  const ix=cx+S.oIx*rx, iy=cy+S.oIy*ry;
+  if(S.oInner==="dot") el("circle",{cx:ix,cy:iy,r:Math.min(rx,ry)*S.oIs,fill:col},ig);
+  if(S.oInner==="line") el("rect",{x:cx-rx*1.2,y:iy-S.oIw/2,width:rx*2.4,height:S.oIw,fill:col},ig);
+  if(S.oInner==="wave"||S.oInner==="sine"){ const p=el("path",{d:wavePath(cx-rx*1.2, rx*2.4, ry*S.oIs, S.oCy, S.oPh, S.oInner==="wave"?0.6:0),fill:"none",stroke:col,"stroke-width":S.oIw,"stroke-linecap":"round", transform:`translate(${S.oIx*rx} ${iy})`},ig); }
 }
 
-function gapBetween(i){ // visual gap between glyph i right edge and i+1 left edge (in layout units)
-  const a = layout[i], b = layout[i+1]; if(!a||!b) return 0;
-  const La = letterState(i), Lb = letterState(i+1);
-  const aRight = a.x + La.dx + (a.bb.x + a.bb.width)*S.sx*La.sx;
-  const bLeft = b.x + Lb.dx + b.bb.x*S.sx*Lb.sx;
-  return bLeft - aRight;
-}
+function gapBetween(i){ const a=layout[i], b=layout[i+1]; if(!a||!b) return 0; const La=letterState(i), Lb=letterState(i+1); return (b.x+Lb.dx+b.bb.x*S.sx*Lb.sx) - (a.x+La.dx+(a.bb.x+a.bb.width)*S.sx*La.sx); }
 function renderPairs(){
-  const cs = chars(), host = $("#pairs"); host.innerHTML = "";
+  const cs=chars(), host=$("#pairs"); host.innerHTML="";
   for(let i=0;i<cs.length-1;i++){
-    const d = document.createElement("div"); d.className="pair";
-    const v = S.pairs[i]||0;
-    d.innerHTML = `<div class="name"><span>${cs[i]}<span style="color:var(--mute);font-size:14px"> · </span>${cs[i+1]}</span><output>${v>0?"+":""}${Math.round(v)}</output></div>
-      <input type="range" min="-300" max="300" step="1" value="${v}" aria-label="Kerning ${cs[i]} ${cs[i+1]}">
-      <div class="gap">gap ${Math.round(gapBetween(i))}px</div>`;
-    const r = d.querySelector("input");
-    r.addEventListener("pointerdown",push);
-    r.addEventListener("input",()=>{ S.pairs[i]=+r.value; render(); });
-    host.appendChild(d);
+    const d=document.createElement("div"); d.className="pair"; const v=S.pairs[i]||0;
+    d.innerHTML=`<div class="name"><span>${cs[i]}<span style="color:var(--mute);font-size:14px"> · </span>${cs[i+1]}</span><output>${v>0?"+":""}${Math.round(v)}</output></div><input type="range" min="-300" max="300" step="1" value="${v}" aria-label="Kerning ${cs[i]} ${cs[i+1]}"><div class="gap">gap ${Math.round(gapBetween(i))}px</div>`;
+    const r=d.querySelector("input"); r.addEventListener("pointerdown",push); r.addEventListener("input",()=>{ S.pairs[i]=+r.value; render(); }); host.appendChild(d);
   }
 }
 function renderLetters(){
-  const cs = chars(), host=$("#letters"); host.innerHTML="";
-  cs.forEach((ch,i)=>{ const b=document.createElement("button"); b.className="btn"; b.textContent=ch; b.setAttribute("aria-pressed", S.sel===i); b.addEventListener("click",()=>{ S.sel = S.sel===i?null:i; render(); }); host.appendChild(b); });
+  const cs=chars(), host=$("#letters"); host.innerHTML="";
+  cs.forEach((ch,i)=>{ const b=document.createElement("button"); b.className="btn"; b.textContent=ch; b.setAttribute("aria-pressed",S.sel===i); b.addEventListener("click",()=>{ S.sel=S.sel===i?null:i; S.selShape=null; render(); }); host.appendChild(b); });
   $("#selName").textContent = S.sel==null ? "—" : `${cs[S.sel]} · ${S.sel+1}`;
+  $("#oTag").textContent = S.oMode==="type" ? "" : S.oMode;
 }
-const fmt = {size:v=>v, wght:v=>v, opsz:v=>v, track:v=>(+v).toFixed(3).replace(/^0/,""), sx:v=>(+v).toFixed(3), sy:v=>(+v).toFixed(3), skew:v=>v, stroke:v=>v, mky:v=>v, mkw:v=>v, sunx:v=>v, sunr:v=>v,
-  ldx:v=>v, ldy:v=>v, lsx:v=>(+v).toFixed(3), lsy:v=>(+v).toFixed(3), lrot:v=>v, lwght:v=>+v?v:"inherit", lop:v=>(+v).toFixed(2)};
-function setRange(id, v){ const el=$("#"+id); el.value=v; el.nextElementSibling.textContent = fmt[id](v); }
+function renderShapes(){
+  const host=$("#shapeList"); host.innerHTML="";
+  S.shapes.forEach((sh,k)=>{ const b=document.createElement("button"); b.className="btn"; b.textContent=`${sh.type} ${k+1}`; b.setAttribute("aria-pressed",S.selShape===k); b.addEventListener("click",()=>{ S.selShape=S.selShape===k?null:k; S.sel=null; render(); }); host.appendChild(b); });
+  $("#shapeTag").textContent = S.shapes.length ? `${S.shapes.length}` : "";
+}
+const fmt3=v=>(+v).toFixed(3), fmt2=v=>(+v).toFixed(2), raw=v=>v;
+const fmt = {size:raw,wght:raw,opsz:raw,track:v=>(+v).toFixed(3).replace(/^-?0/,m=>m.replace("0","")),sx:fmt3,sy:fmt3,skew:raw,spread:raw,stroke:raw,mky:raw,mkw:raw,sunx:raw,sunr:raw,
+  arc:raw,arcRot:fmt2,oStroke:raw,oOver:fmt3,oSq:fmt3,oEx:fmt2,oEy:fmt2,oIs:fmt2,oIw:raw,oIx:fmt2,oIy:fmt2,oCy:fmt2,oPh:raw,oClip:fmt2,
+  cutN:raw,cutY:fmt2,cutT:raw,cutS:raw,cutA:raw, tagSize:raw,tagTrack:v=>(+v).toFixed(2).replace(/^0/,""),tagGap:raw,
+  ldx:raw,ldy:raw,lsx:fmt3,lsy:fmt3,lrot:raw,lwght:v=>+v?v:"inherit",lopsz:v=>+v?v:"inherit",lop:fmt2, shx:raw,shy:raw,shw:raw,shh:raw,shr:raw,sho:fmt2};
+function setRange(id,v){ const e=$("#"+id); e.value=v; e.nextElementSibling.textContent=fmt[id](v); }
+const GLOBAL = ["size","wght","opsz","track","sx","sy","skew","spread","stroke","mky","mkw","sunx","sunr","arc","arcRot","oStroke","oOver","oSq","oEx","oEy","oIs","oIw","oIx","oIy","oCy","oPh","oClip","cutN","cutY","cutT","cutS","cutA","tagSize","tagTrack","tagGap"];
 function syncInputs(){
-  for(const k of ["size","wght","opsz","track","sx","sy","skew","stroke","mky","mkw","sunx","sunr"]) setRange(k, S[k]);
-  $("#word").value = S.word; $("#italic").checked=S.italic; $("#grain").checked=S.grain; $("#outline").checked=S.outline;
-  $("#gBase").checked=S.gBase; $("#gBox").checked=S.gBox; $("#gCenter").checked=S.gCenter;
-  $$("#case button").forEach(b=>b.setAttribute("aria-pressed", b.dataset.v===S.caseMode));
-  $$("#mark button").forEach(b=>b.setAttribute("aria-pressed", b.dataset.v===S.mark));
-  $$("#ground .sw").forEach(b=>b.setAttribute("aria-pressed", b.dataset.g===S.ground));
-  $$("#inkc .sw").forEach(b=>b.setAttribute("aria-pressed", b.dataset.c.toLowerCase()===S.ink.toLowerCase()));
-  const L = letterState(S.sel==null?-1:S.sel);
-  setRange("ldx",L.dx); setRange("ldy",L.dy); setRange("lsx",L.sx); setRange("lsy",L.sy); setRange("lrot",L.rot); setRange("lwght",L.wght); setRange("lop",L.op);
-  const dis = S.sel==null; ["ldx","ldy","lsx","lsy","lrot","lwght","lop"].forEach(id=>$("#"+id).disabled=dis);
+  for(const k of GLOBAL) setRange(k,S[k]);
+  $("#word").value=S.word; $("#oChars").value=S.oChars; $("#tagText").value=S.tagText;
+  for(const id of ["italic","grain","outline","gBase","gBox","gCenter","oInv","oCircle","tagOn","tagRule"]) $("#"+id).checked=!!S[id];
+  const seg=(sel,key)=>$$(sel+" button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.v===S[key]));
+  seg("#case","caseMode"); seg("#mark","mark"); seg("#oMode","oMode"); seg("#oInner","oInner"); seg("#cutScope","cutScope"); seg("#tagFont","tagFont"); seg("#tagAlign","tagAlign");
+  $$("#ground .sw").forEach(b=>b.setAttribute("aria-pressed",b.dataset.g===S.ground));
+  $$("#inkc .sw").forEach(b=>b.setAttribute("aria-pressed",b.dataset.c.toLowerCase()===S.ink.toLowerCase()));
+  const L=letterState(S.sel==null?-1:S.sel);
+  setRange("ldx",L.dx); setRange("ldy",L.dy); setRange("lsx",L.sx); setRange("lsy",L.sy); setRange("lrot",L.rot); setRange("lwght",L.wght); setRange("lopsz",L.opsz||0); setRange("lop",L.op);
+  ["ldx","ldy","lsx","lsy","lrot","lwght","lopsz","lop"].forEach(id=>$("#"+id).disabled=S.sel==null);
+  const sh = S.selShape!=null ? S.shapes[S.selShape] : null;
+  ["shx","shy","shw","shh","shr","sho"].forEach(id=>$("#"+id).disabled=!sh);
+  if(sh){ setRange("shx",sh.x); setRange("shy",sh.y); setRange("shw",sh.w); setRange("shh",sh.h); setRange("shr",sh.rot); setRange("sho",sh.op); $$("#shapeFill button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.v===sh.fill)); }
 }
 
-// global ranges
-for(const k of ["size","wght","opsz","track","sx","sy","skew","stroke","mky","mkw","sunx","sunr"]){
-  const el=$("#"+k); el.addEventListener("pointerdown",push); el.addEventListener("input",()=>{ S[k]=+el.value; render(); });
-}
-const lmap = {ldx:"dx",ldy:"dy",lsx:"sx",lsy:"sy",lrot:"rot",lwght:"wght",lop:"op"};
-for(const id in lmap){ const el=$("#"+id); el.addEventListener("pointerdown",push); el.addEventListener("input",()=>{ if(S.sel==null) return; const L=letterState(S.sel); L[lmap[id]]=+el.value; S.letters[S.sel]=L; render(); }); }
+for(const k of GLOBAL){ const e=$("#"+k); e.addEventListener("pointerdown",push); e.addEventListener("input",()=>{ S[k]=+e.value; render(); }); }
+const lmap={ldx:"dx",ldy:"dy",lsx:"sx",lsy:"sy",lrot:"rot",lwght:"wght",lopsz:"opsz",lop:"op"};
+for(const id in lmap){ const e=$("#"+id); e.addEventListener("pointerdown",push); e.addEventListener("input",()=>{ if(S.sel==null) return; const L=letterState(S.sel); L[lmap[id]]=+e.value; S.letters[S.sel]=L; render(); }); }
+const smap={shx:"x",shy:"y",shw:"w",shh:"h",shr:"rot",sho:"op"};
+for(const id in smap){ const e=$("#"+id); e.addEventListener("pointerdown",push); e.addEventListener("input",()=>{ if(S.selShape==null) return; S.shapes[S.selShape][smap[id]]=+e.value; render(); }); }
 $("#word").addEventListener("input",e=>{ push(); S.word=e.target.value; S.pairs={}; S.letters={}; S.sel=null; render(); });
-$$("#case button").forEach(b=>b.addEventListener("click",()=>{ push(); S.caseMode=b.dataset.v; render(); }));
-$$("#mark button").forEach(b=>b.addEventListener("click",()=>{ push(); S.mark=b.dataset.v; render(); }));
-$$("#ground .sw").forEach(b=>b.addEventListener("click",()=>{ push(); S.ground=b.dataset.g; if(S.ground==="ink" && S.ink==="#000000") S.ink="#E8E5DE"; if(S.ground!=="ink" && S.ink!=="#000000") S.ink="#000000"; render(); }));
+$("#oChars").addEventListener("input",e=>{ S.oChars=e.target.value; render(); });
+$("#tagText").addEventListener("input",e=>{ S.tagText=e.target.value; render(); });
+const segBind=(sel,key)=>$$(sel+" button").forEach(b=>b.addEventListener("click",()=>{ push(); S[key]=b.dataset.v; render(); }));
+segBind("#case","caseMode"); segBind("#mark","mark"); segBind("#oMode","oMode"); segBind("#oInner","oInner"); segBind("#cutScope","cutScope"); segBind("#tagFont","tagFont"); segBind("#tagAlign","tagAlign");
+$$("#shapeFill button").forEach(b=>b.addEventListener("click",()=>{ if(S.selShape==null) return; push(); S.shapes[S.selShape].fill=b.dataset.v; render(); }));
+$$("#ground .sw").forEach(b=>b.addEventListener("click",()=>{ push(); S.ground=b.dataset.g; if(S.ground==="ink"&&S.ink==="#000000") S.ink="#E8E5DE"; if(S.ground!=="ink"&&S.ink!=="#000000") S.ink="#000000"; render(); }));
 $$("#inkc .sw").forEach(b=>b.addEventListener("click",()=>{ push(); S.ink=b.dataset.c; render(); }));
-for(const id of ["italic","grain","outline","gBase","gBox","gCenter"]) $("#"+id).addEventListener("change",e=>{ push(); S[id]=e.target.checked; render(); });
+for(const id of ["italic","grain","outline","gBase","gBox","gCenter","oInv","oCircle","tagOn","tagRule"]) $("#"+id).addEventListener("change",e=>{ push(); S[id]=e.target.checked; render(); });
 $("#lreset").addEventListener("click",()=>{ if(S.sel==null) return; push(); delete S.letters[S.sel]; render(); });
 $("#lresetAll").addEventListener("click",()=>{ push(); S.letters={}; render(); });
-$("#resetAll").addEventListener("click",()=>{ push(); S = structuredClone(DEF); render(); toast("Reset"); });
-
-// kerning helpers
-function touchAll(extra){ const cs=chars(); for(let i=0;i<cs.length-1;i++){ S.pairs[i]=(S.pairs[i]||0) - gapBetween(i) - extra; render(); } }
+$("#resetAll").addEventListener("click",()=>{ push(); S=structuredClone(DEF); render(); toast("Reset"); });
+// shapes
+$$("[data-add]").forEach(b=>b.addEventListener("click",()=>{ push(); const t=b.dataset.add; const base={type:t,x:total/2,y:-capH*S.sy/2,rot:0,op:1,fill:"ink"}; if(t==="rect") Object.assign(base,{w:S.size*0.3,h:S.size*0.06}); if(t==="ellipse") Object.assign(base,{w:S.size*0.18,h:S.size*0.18}); if(t==="line") Object.assign(base,{w:total*1.1,h:2}); if(t==="wave") Object.assign(base,{w:S.size*0.6,h:S.size*0.12}); S.shapes.push(base); S.selShape=S.shapes.length-1; S.sel=null; render(); }));
+$("#shDel").addEventListener("click",()=>{ if(S.selShape==null) return; push(); S.shapes.splice(S.selShape,1); S.selShape=null; render(); });
+$("#shDup").addEventListener("click",()=>{ if(S.selShape==null) return; push(); const c=structuredClone(S.shapes[S.selShape]); c.x+=20; c.y+=20; S.shapes.push(c); S.selShape=S.shapes.length-1; render(); });
+// kerning
+function touchAll(extra){ const cs=chars(); for(let i=0;i<cs.length-1;i++){ S.pairs[i]=(S.pairs[i]||0)-gapBetween(i)-extra; render(); } }
 $("#kernZero").addEventListener("click",()=>{ push(); S.pairs={}; render(); });
 $("#kernTouch").addEventListener("click",()=>{ push(); touchAll(0); toast("Touching"); });
 $("#kernEven").addEventListener("click",()=>{ push(); const cs=chars(); const gaps=[]; for(let i=0;i<cs.length-1;i++) gaps.push(gapBetween(i)); const avg=gaps.reduce((a,b)=>a+b,0)/gaps.length; for(let i=0;i<cs.length-1;i++){ S.pairs[i]=(S.pairs[i]||0)+(avg-gapBetween(i)); render(); } toast("Even optical gaps"); });
-
 // presets
 $$("#presets button").forEach(b=>b.addEventListener("click",()=>{
   push(); const p=b.dataset.p;
+  if(p==="locked"){ Object.assign(S,structuredClone(LOCKED),{sx:1,sy:1,skew:0,italic:false,letters:{}}); }
   if(p==="canon"){ Object.assign(S,{wght:500,track:0.03,sx:1,sy:1,skew:0,italic:false,pairs:{},letters:{}}); }
   if(p==="small"){ Object.assign(S,{wght:500,track:0.30,sx:1,sy:1,skew:0,italic:false,pairs:{},letters:{}}); }
-  if(p==="tight"){ Object.assign(S,{track:-0.02,pairs:{},letters:{}}); }
   if(p==="touch"){ Object.assign(S,{track:0,pairs:{}}); render(); touchAll(0); }
   if(p==="overlap"){ Object.assign(S,{track:0,pairs:{}}); render(); touchAll(S.size*0.02); }
-  if(p==="light"){ S.wght=300; }
-  if(p==="heavy"){ S.wght=700; }
+  if(p==="ringO"){ Object.assign(S,{oMode:"ring",oStroke:Math.round(S.size*0.072*(S.wght/500)),oOver:1.03,oSq:1,oInner:"none"}); }
+  if(p==="duneO"){ Object.assign(S,{oMode:"type",oInner:"wave",oIs:0.28,oIw:Math.max(1,Math.round(S.size*0.012)),oCy:1,oPh:180,oClip:0.62,oIx:0,oIy:0.05}); }
+  if(p==="crest"){ Object.assign(S,{arc:Math.round(S.size*0.12),arcRot:1}); }
   render();
 }));
-
 // selection, drag, keys
 let drag=null;
 stage.addEventListener("pointerdown",e=>{
-  const g = e.target.closest(".glyph"); if(!g){ S.sel=null; render(); return; }
-  const i=+g.dataset.i; S.sel=i; push();
-  const L=letterState(i); drag={i, x0:e.clientX, y0:e.clientY, dx:L.dx, dy:L.dy}; stage.setPointerCapture(e.pointerId); render();
+  const sh=e.target.closest(".shape"); const g=e.target.closest(".glyph");
+  if(sh){ const k=+sh.dataset.s; S.selShape=k; S.sel=null; push(); const o=S.shapes[k]; drag={kind:"shape",k,x0:e.clientX,y0:e.clientY,x:o.x,y:o.y}; stage.setPointerCapture(e.pointerId); render(); return; }
+  if(g){ const i=+g.dataset.i; S.sel=i; S.selShape=null; push(); const L=letterState(i); drag={kind:"glyph",i,x0:e.clientX,y0:e.clientY,dx:L.dx,dy:L.dy}; stage.setPointerCapture(e.pointerId); render(); return; }
+  S.sel=null; S.selShape=null; render();
 });
-stage.addEventListener("pointermove",e=>{ if(!drag) return; const L=letterState(drag.i); L.dx=drag.dx+(e.clientX-drag.x0)/S.zoom; L.dy=drag.dy+(e.clientY-drag.y0)/S.zoom; S.letters[drag.i]=L; render(); });
+stage.addEventListener("pointermove",e=>{ if(!drag) return; const mx=(e.clientX-drag.x0)/S.zoom, my=(e.clientY-drag.y0)/S.zoom; if(drag.kind==="glyph"){ const L=letterState(drag.i); L.dx=drag.dx+mx; L.dy=drag.dy+my; S.letters[drag.i]=L; } else { const o=S.shapes[drag.k]; o.x=drag.x+mx; o.y=drag.y+my; } render(); });
 stage.addEventListener("pointerup",()=>{ drag=null; });
 window.addEventListener("keydown",e=>{
   if(e.target.matches("input[type=text],textarea")) return;
-  if((e.metaKey||e.ctrlKey) && e.key.toLowerCase()==="z"){ e.preventDefault(); e.shiftKey?redo():undo(); return; }
-  if(S.sel==null) return;
-  const st=e.shiftKey?10:1; const L=letterState(S.sel); let h=true;
-  if(e.key==="ArrowLeft") L.dx-=st; else if(e.key==="ArrowRight") L.dx+=st; else if(e.key==="ArrowUp") L.dy-=st; else if(e.key==="ArrowDown") L.dy+=st; else if(e.key==="Escape"){ S.sel=null; } else h=false;
-  if(h){ e.preventDefault(); S.letters[S.sel]=L; render(); }
+  if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==="z"){ e.preventDefault(); e.shiftKey?redo():undo(); return; }
+  const st=e.shiftKey?10:1; let h=true;
+  if(e.key==="Escape"){ S.sel=null; S.selShape=null; render(); return; }
+  if(S.sel!=null){ const L=letterState(S.sel); if(e.key==="ArrowLeft") L.dx-=st; else if(e.key==="ArrowRight") L.dx+=st; else if(e.key==="ArrowUp") L.dy-=st; else if(e.key==="ArrowDown") L.dy+=st; else h=false; if(h){ e.preventDefault(); S.letters[S.sel]=L; render(); } }
+  else if(S.selShape!=null){ const o=S.shapes[S.selShape]; if(e.key==="ArrowLeft") o.x-=st; else if(e.key==="ArrowRight") o.x+=st; else if(e.key==="ArrowUp") o.y-=st; else if(e.key==="ArrowDown") o.y+=st; else if(e.key==="Backspace"||e.key==="Delete"){ push(); S.shapes.splice(S.selShape,1); S.selShape=null; } else h=false; if(h){ e.preventDefault(); render(); } }
 });
 function undo(){ if(!hist.length) return; fut.push(JSON.stringify(S)); S=JSON.parse(hist.pop()); render(); }
 function redo(){ if(!fut.length) return; hist.push(JSON.stringify(S)); S=JSON.parse(fut.pop()); render(); }
 $("#undo").addEventListener("click",undo); $("#redo").addEventListener("click",redo);
-
 // zoom
+function fit(){ const W=main.clientWidth; S.zoom=Math.min(1.5,Math.max(.2,(W*0.82)/Math.max(total,1))); render(); }
 $("#zoomIn").addEventListener("click",()=>{ S.zoom=Math.min(4,S.zoom*1.15); render(); });
 $("#zoomOut").addEventListener("click",()=>{ S.zoom=Math.max(.2,S.zoom/1.15); render(); });
-function fit(){ const W=main.clientWidth; const total=layout.length?layout[layout.length-1].x+layout[layout.length-1].adv:1; S.zoom=Math.min(1.5,Math.max(.2,(W*0.82)/total)); render(); }
 $("#zoomFit").addEventListener("click",fit);
 main.addEventListener("wheel",e=>{ if(!(e.metaKey||e.ctrlKey)) return; e.preventDefault(); S.zoom=Math.min(4,Math.max(.2,S.zoom*(e.deltaY<0?1.05:0.95))); render(); },{passive:false});
-
 // A/B
 $("#snapA").addEventListener("click",()=>{ snaps.A=JSON.stringify(S); toast("Saved A"); });
 $("#snapB").addEventListener("click",()=>{ snaps.B=JSON.stringify(S); toast("Saved B"); });
-$("#cmp").addEventListener("click",()=>{
-  if(!snaps.A||!snaps.B){ toast("Save A and B first"); return; }
-  cmpOn=!cmpOn; $("#cmp").setAttribute("aria-pressed",cmpOn);
-  if(cmpOn){ push(); S=JSON.parse(snaps.A); render(); $("#cmp").textContent="Showing A"; }
-  else { S=JSON.parse(snaps.B); render(); $("#cmp").textContent="Showing B"; }
-});
-
+$("#cmp").addEventListener("click",()=>{ if(!snaps.A||!snaps.B){ toast("Save A and B first"); return; } cmpOn=!cmpOn; $("#cmp").setAttribute("aria-pressed",cmpOn); push(); S=JSON.parse(cmpOn?snaps.A:snaps.B); render(); $("#cmp").textContent=cmpOn?"Showing A":"Showing B"; });
 // export
 function svgString(){
-  const cs=chars(); const root=$("#root"); const fs=S.size;
-  // compute bbox of word group in root coordinates
-  const wb = $("#word").getBBox(); const pad=fs*0.12;
-  const x0=wb.x-pad, y0=wb.y-pad, w=wb.width+pad*2, h=wb.height+pad*2;
-  const bg = {ink:"#000000",porcelain:"#FFFFFF",sand:"#E4DCD4",bone:"#E8E5DE"}[S.ground];
-  const fontCss = document.querySelector("style").textContent.split("\n").filter(l=>l.startsWith("@font-face")).join("\n");
-  let out = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${x0.toFixed(1)} ${y0.toFixed(1)} ${w.toFixed(1)} ${h.toFixed(1)}" width="${Math.round(w)}" height="${Math.round(h)}">\n<style>${fontCss}</style>\n<rect x="${x0.toFixed(1)}" y="${y0.toFixed(1)}" width="${w.toFixed(1)}" height="${h.toFixed(1)}" fill="${bg}"/>\n`;
-  if(S.mark==="line"||S.mark==="both") out += `<line x1="${x0.toFixed(1)}" x2="${(x0+w).toFixed(1)}" y1="${S.mky}" y2="${S.mky}" stroke="${S.ink}" stroke-width="${S.mkw}"/>\n`;
-  if(S.mark==="sun"||S.mark==="both"){ const total = layout.length? layout[layout.length-1].x+layout[layout.length-1].adv : 0; out += `<circle cx="${(total/2+S.sunx).toFixed(1)}" cy="${S.mky}" r="${S.sunr}" fill="${S.ink}"/>\n`; }
-  $$("#word .glyph").forEach(g=>{ const t=g.querySelector("text"); out += `<g transform="${g.getAttribute("transform")}"><text font-family="NewsreaderLab" font-size="${fs}" font-weight="${t.getAttribute("font-weight")}"${S.italic?' font-style="italic"':""} style="${t.getAttribute("style")}" ${S.outline?`fill="none" stroke="${S.ink}" stroke-width="${S.stroke}"`:`fill="${S.ink}"`}>${t.textContent}</text></g>\n`; });
-  out += `</svg>`; return out;
+  const art=$("#art"); const bb=art.getBBox(); const pad=S.size*0.12;
+  const x0=bb.x-pad, y0=bb.y-pad, w=bb.width+pad*2, h=bb.height+pad*2;
+  const clone=art.cloneNode(true); clone.querySelectorAll("[data-guide]").forEach(n=>n.remove()); clone.removeAttribute("id");
+  clone.querySelectorAll("[class]").forEach(n=>n.removeAttribute("class")); clone.querySelectorAll("[data-i],[data-s]").forEach(n=>{ n.removeAttribute("data-i"); n.removeAttribute("data-s"); });
+  const defs=$("#stage defs").cloneNode(true);
+  const fontCss=document.querySelector("style").textContent.split("\n").filter(l=>l.startsWith("@font-face")).join("\n");
+  const ser=new XMLSerializer();
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${x0.toFixed(1)} ${y0.toFixed(1)} ${w.toFixed(1)} ${h.toFixed(1)}" width="${Math.round(w)}" height="${Math.round(h)}">\n<style>${fontCss}</style>\n${ser.serializeToString(defs)}\n<rect x="${x0.toFixed(1)}" y="${y0.toFixed(1)}" width="${w.toFixed(1)}" height="${h.toFixed(1)}" fill="${ground()}"/>\n${ser.serializeToString(clone)}\n</svg>`;
 }
 function cssString(){ return `.forma-wordmark{font-family:"Newsreader",Georgia,serif;font-weight:${S.wght};font-optical-sizing:none;font-variation-settings:"opsz" ${S.opsz};letter-spacing:${S.track}em;text-transform:${S.caseMode==="upper"?"uppercase":"none"};${S.caseMode==="smallcaps"?"font-variant-caps:small-caps;":""}${S.italic?"font-style:italic;":""}color:${S.ink};}\n/* pairs (px at ${S.size}px): ${Object.entries(S.pairs).map(([i,v])=>`${chars()[i]}${chars()[+i+1]} ${Math.round(v)}`).join(", ")||"none"} */`; }
-function download(name, blob){ const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download=name; document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(a.href),2000); toast("Download started"); }
-async function png(scale){
-  const svg=svgString(); const img=new Image(); const url="data:image/svg+xml;charset=utf-8,"+encodeURIComponent(svg);
-  await new Promise((res,rej)=>{ img.onload=res; img.onerror=rej; img.src=url; });
-  const c=document.createElement("canvas"); c.width=img.width*scale; c.height=img.height*scale; const ctx=c.getContext("2d"); ctx.scale(scale,scale); ctx.drawImage(img,0,0);
-  return new Promise(res=>c.toBlob(res,"image/png"));
-}
+function download(name,blob){ const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download=name; document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(a.href),2000); toast("Download started"); }
+async function png(scale){ const svg=svgString(); const img=new Image(); await new Promise((res,rej)=>{ img.onload=res; img.onerror=rej; img.src="data:image/svg+xml;charset=utf-8,"+encodeURIComponent(svg); }); const c=document.createElement("canvas"); c.width=img.width*scale; c.height=img.height*scale; const ctx=c.getContext("2d"); ctx.scale(scale,scale); ctx.drawImage(img,0,0); return new Promise(res=>c.toBlob(res,"image/png")); }
 async function copy(t){ try{ await navigator.clipboard.writeText(t); toast("Copied"); }catch(e){ $("#exportBox").value=t; $("#exportBox").select(); toast("Select and copy from the box"); } }
 $("#export").addEventListener("click",()=>{ $("#exportBox").value=svgString(); $("#dlg").showModal(); });
 $("#dlgClose").addEventListener("click",()=>$("#dlg").close());
-$("#dlSvg").addEventListener("click",()=>download(`forma-wordmark-${S.wght}.svg`, new Blob([svgString()],{type:"image/svg+xml"})));
-$("#dlPng").addEventListener("click",async()=>download(`forma-wordmark-${S.wght}@2x.png`, await png(2)));
-$("#dlPng4").addEventListener("click",async()=>download(`forma-wordmark-${S.wght}@4x.png`, await png(4)));
+$("#dlSvg").addEventListener("click",()=>download(`forma-wordmark-${S.wght}.svg`,new Blob([svgString()],{type:"image/svg+xml"})));
+$("#dlPng").addEventListener("click",async()=>download(`forma-wordmark-${S.wght}@2x.png`,await png(2)));
+$("#dlPng4").addEventListener("click",async()=>download(`forma-wordmark-${S.wght}@4x.png`,await png(4)));
 $("#cpSvg").addEventListener("click",()=>copy(svgString()));
 $("#cpCss").addEventListener("click",()=>{ $("#exportBox").value=cssString(); copy(cssString()); });
 $("#cpJson").addEventListener("click",()=>{ const j=JSON.stringify(S,null,1); $("#exportBox").value=j; copy(j); });
+$("#pasteJson").addEventListener("click",()=>{ try{ const j=JSON.parse($("#exportBox").value); push(); S=Object.assign(structuredClone(DEF),j); render(); toast("Settings loaded"); $("#dlg").close(); }catch(e){ toast("Paste valid settings JSON in the box first"); } });
 
 window.addEventListener("resize",render);
 document.fonts.load("500 100px NewsreaderLab").then(()=>document.fonts.load("italic 500 100px NewsreaderLab")).finally(()=>{ render(); setTimeout(()=>{ render(); fit(); },300); });
