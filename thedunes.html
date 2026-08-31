@@ -394,7 +394,16 @@ document.addEventListener('DOMContentLoaded', async function() {
       'const endHold=()=>{clearTimeout(holdTimer);if(!holding)return;holding=false;clearInterval(ticker);seek(target);output.textContent=format(target);const {clock,soundtrack,toggle}=getMedia();setTimeout(()=>{try{soundtrack.currentTime=target;}catch(_){}if(wasPlaying){if(toggle&&!toggle.querySelector("rect"))toggle.click();if(clock?.paused){const p=clock.play();if(p)p.catch(()=>{});}soundtrack.muted=trackMuted;if(!trackMuted&&soundtrack.paused){const p=soundtrack.play();if(p)p.catch(()=>{});}}},90);setTimeout(()=>output.classList.remove("is-visible"),650);activeButton=null;};' +
       '[["dunes-previous-chapter",-1],["dunes-next-chapter",1]].forEach(([id,dir])=>{const button=document.getElementById(id);if(!button)return;button.addEventListener("pointerdown",event=>{if(event.button!==undefined&&event.button!==0)return;clearTimeout(holdTimer);holding=false;suppressClick=false;try{button.setPointerCapture(event.pointerId);}catch(_){}holdTimer=setTimeout(()=>beginHold(button,dir),320);});button.addEventListener("pointerup",endHold);button.addEventListener("pointercancel",endHold);button.addEventListener("click",event=>{if(!suppressClick)return;event.preventDefault();event.stopImmediatePropagation();suppressClick=false;},true);});' +
       '})();</' + 'script>';
-    template = template.replace(/<\/body>/i, fullscreenPlaybackGuard + controlClarity + '</body>');
+    const playbackReadiness = '<script id="dunes-playback-readiness">(() => {' +
+      'const start=document.getElementById("dunes-open-sound-choice");const status=document.getElementById("dunes-gate-status");if(!start)return;let pending=false;let timer=0;let loadedClock=null;let loadedSound=null;' +
+      'const media=()=>({clock:document.querySelector("video[data-om-exportable-video-play-start]"),sound:document.getElementById("dunes-soundtrack")});' +
+      'const ready=()=>{const {clock,sound}=media();return Boolean(clock&&sound&&clock.readyState>=2&&sound.readyState>=2);};' +
+      'const finish=()=>{clearTimeout(timer);start.removeAttribute("aria-busy");if(status?.textContent==="Loading film…")status.textContent="";if(pending){pending=false;setTimeout(()=>start.click(),0);}};' +
+      'const poll=()=>{const {clock,sound}=media();if(ready()){finish();return;}if(clock&&loadedClock!==clock){loadedClock=clock;clock.preload="auto";try{clock.load();}catch(_){}}if(sound&&loadedSound!==sound){loadedSound=sound;sound.preload="auto";try{sound.load();}catch(_){}}timer=setTimeout(poll,80);};' +
+      'start.addEventListener("click",event=>{if(ready())return;event.preventDefault();event.stopImmediatePropagation();pending=true;start.setAttribute("aria-busy","true");if(status)status.textContent="Loading film…";poll();},true);' +
+      'const style=document.createElement("style");style.textContent="#dunes-open-sound-choice[aria-busy=true]{opacity:.58!important;cursor:wait!important}";document.head.appendChild(style);poll();' +
+      '})();</' + 'script>';
+    template = template.replace(/<\/body>/i, fullscreenPlaybackGuard + controlClarity + playbackReadiness + '</body>');
 
     // Parse the template and swap the root element. Scripts inserted via
     // DOMParser/replaceWith are inert per spec — re-create each with
