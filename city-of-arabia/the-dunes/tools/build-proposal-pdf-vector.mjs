@@ -104,10 +104,13 @@ try {
         const active = deck.querySelector('section[data-deck-active]');
         const walker = document.createTreeWalker(deck, NodeFilter.SHOW_TEXT);
         while (walker.nextNode()) {
-          walker.currentNode.nodeValue = walker.currentNode.nodeValue
+          const value = walker.currentNode.nodeValue
             .replaceAll('🇬🇧 ', '')
             .replaceAll('🇧🇷 ', '')
             .replaceAll('🇦🇪 ', '');
+          walker.currentNode.nodeValue = /LONDON\s*·\s*BRAZIL\s*·\s*DUBAI/i.test(value)
+            ? ''
+            : value;
         }
 
         deck.querySelectorAll('.dunes-cinema-light, .dunes-cinema-vignette').forEach((element) => {
