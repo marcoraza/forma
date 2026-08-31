@@ -174,6 +174,16 @@ try {
         }
 
         deck.querySelectorAll('section:not([data-deck-active])').forEach((section) => section.remove());
+
+        if (active) {
+          const exportRoot = document.createElement('main');
+          exportRoot.setAttribute('data-dunes-pdf-export', '');
+          exportRoot.style.cssText = 'position: fixed; inset: 0; width: 1920px; height: 1080px; overflow: hidden; background: #fff;';
+          active.style.cssText += '; position: absolute !important; inset: 0 !important; width: 1920px !important; height: 1080px !important; display: block !important; opacity: 1 !important; visibility: visible !important; transform: none !important;';
+          active.remove();
+          exportRoot.append(active);
+          deck.replaceWith(exportRoot);
+        }
       });
       await page.waitForTimeout(120);
 
