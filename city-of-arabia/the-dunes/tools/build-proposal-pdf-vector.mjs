@@ -12,6 +12,7 @@ const outputPath = path.resolve(
   'downloads',
   'FORMA-x-OUI-The-Dunes-Sound-Proposal.pdf',
 );
+const rawOutputPath = outputPath.replace(/\.pdf$/i, '-raw.pdf');
 const sourceUrl = process.env.DUNES_PROPOSAL_URL
   || 'http://127.0.0.1:4194/city-of-arabia/the-dunes/delivery/the-dunes-sound-proposal-motion.html?motion=off';
 
@@ -100,6 +101,55 @@ try {
       }
 
       await page.locator('deck-stage').evaluate((deck) => {
+        const active = deck.querySelector('section[data-deck-active]');
+        const walker = document.createTreeWalker(deck, NodeFilter.SHOW_TEXT);
+        while (walker.nextNode()) {
+          walker.currentNode.nodeValue = walker.currentNode.nodeValue
+            .replaceAll('🇬🇧 ', '')
+            .replaceAll('🇧🇷 ', '')
+            .replaceAll('🇦🇪 ', '');
+        }
+
+        deck.querySelectorAll('.dunes-cinema-light, .dunes-cinema-vignette').forEach((element) => {
+          element.style.display = 'none';
+        });
+        active?.querySelectorAll('*').forEach((element) => {
+          if (getComputedStyle(element).mixBlendMode !== 'normal') element.style.display = 'none';
+        });
+
+        const label = active?.dataset.label;
+        if (label === 'Cover') {
+          const background = active.querySelector('.bg');
+          if (background) background.style.background = 'radial-gradient(ellipse at 55% 62%, #ffeecd 0%, #e8e5de 76%)';
+        }
+        if (label === 'Opening') {
+          const background = active.querySelector('.bg');
+          const light = active.querySelector('.bg2');
+          if (background) background.style.background = 'linear-gradient(180deg, #c9d2e0 0%, #e8e5de 58%, #d6ccbd 100%)';
+          if (light) light.style.display = 'none';
+        }
+        if (label === 'The work') {
+          const light = active.querySelector('.bg2');
+          if (light) light.style.display = 'none';
+        }
+        if (label === 'Four days') {
+          const light = active.querySelector('.bg2');
+          if (light) light.style.display = 'none';
+          active.querySelectorAll('.fxf').forEach((element) => {
+            if (getComputedStyle(element).backgroundImage !== 'none') {
+              element.style.background = '#e4dcd4';
+            }
+          });
+        }
+        if (label === 'Investment') {
+          const background = active.querySelector('.bg');
+          if (background) background.style.background = 'radial-gradient(ellipse at 42% 36%, #ffe7ba 0%, #e8e5de 76%)';
+        }
+        if (label === 'Close') {
+          const dawn = active.querySelector('.dawn2');
+          if (dawn) dawn.style.display = 'none';
+        }
+
         deck.querySelectorAll('section:not([data-deck-active])').forEach((section) => section.remove());
       });
       await page.waitForTimeout(120);
@@ -121,11 +171,33 @@ try {
     }
   }
 
-  await rm(outputPath, { force: true });
-  const merge = spawnSync('pdfunite', [...pagePaths, outputPath], { encoding: 'utf8' });
+  await rm(rawOutputPath, { force: true });
+  const merge = spawnSync('pdfunite', [...pagePaths, rawOutputPath], { encoding: 'utf8' });
   if (merge.status !== 0) {
     throw new Error(merge.stderr || merge.stdout || 'Could not merge proposal pages.');
   }
+
+  await rm(outputPath, { force: true });
+  const compatibility = spawnSync('gs', [
+    '-q',
+    '-dSAFER',
+    '-dBATCH',
+    '-dNOPAUSE',
+    '-sDEVICE=pdfwrite',
+    '-dCompatibilityLevel=1.7',
+    '-dPDFSETTINGS=/prepress',
+    '-dAutoRotatePages=/None',
+    '-dEmbedAllFonts=true',
+    '-dSubsetFonts=true',
+    '-dCompressFonts=true',
+    '-dDetectDuplicateImages=true',
+    `-sOutputFile=${outputPath}`,
+    rawOutputPath,
+  ], { encoding: 'utf8' });
+  if (compatibility.status !== 0) {
+    throw new Error(compatibility.stderr || compatibility.stdout || 'Could not finalize the compatible PDF.');
+  }
+  await rm(rawOutputPath, { force: true });
 
   process.stdout.write(`${JSON.stringify({ outputPath, pages: pagePaths.length })}\n`);
 } finally {
