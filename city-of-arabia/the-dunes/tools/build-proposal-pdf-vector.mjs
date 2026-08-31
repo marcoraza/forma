@@ -151,6 +151,26 @@ try {
         if (label === 'Close') {
           const dawn = active.querySelector('.dawn2');
           if (dawn) dawn.style.display = 'none';
+
+          const animatedO = active.querySelector('forma-lockup svg #sym');
+          if (animatedO) {
+            const normalO = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            normalO.setAttribute('font-family', "Newsreader, 'Times New Roman', serif");
+            normalO.setAttribute('font-size', '803');
+            normalO.setAttribute('font-weight', '359');
+            normalO.setAttribute('x', '414');
+            normalO.setAttribute('y', '0');
+            normalO.setAttribute('fill', '#000000');
+            normalO.style.fontVariationSettings = '"wght" 359, "opsz" 46';
+            normalO.textContent = 'O';
+            animatedO.replaceWith(normalO);
+          }
+
+          active.querySelectorAll('.fxf').forEach((element) => {
+            if (element.textContent.trim() === 'sound takes different forms') {
+              element.textContent = 'every film has a rhythm · every sound finds its form';
+            }
+          });
         }
 
         deck.querySelectorAll('section:not([data-deck-active])').forEach((section) => section.remove());
