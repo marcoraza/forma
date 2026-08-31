@@ -1,4 +1,24 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
-  <polygon points="40,36 216,36 188,107 40,107" fill="#1a1714"/>
-  <polygon points="40,149 188,149 216,220 40,220" fill="#1a1714"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 231 226" role="img" aria-label="FORMA spectrogram">
+  <rect width="231" height="226" rx="28" fill="#fff"/>
+  <g fill="#000">
+    <rect x="0" y="102" width="7" height="22"/>
+    <rect x="13" y="76" width="7" height="74"/>
+    <rect x="25" y="52" width="7" height="121"/>
+    <rect x="37" y="32" width="7" height="161"/>
+    <rect x="50" y="17" width="7" height="192"/>
+    <rect x="62" y="7" width="7" height="212"/>
+    <rect x="75" y="1" width="7" height="224"/>
+    <rect x="87" y="0" width="7" height="226"/>
+    <rect x="100" y="3" width="7" height="220"/>
+    <rect x="112" y="9" width="7" height="208"/>
+    <rect x="124" y="18" width="7" height="190"/>
+    <rect x="137" y="29" width="7" height="167"/>
+    <rect x="149" y="42" width="7" height="142"/>
+    <rect x="162" y="56" width="7" height="114"/>
+    <rect x="174" y="70" width="7" height="86"/>
+    <rect x="187" y="83" width="7" height="60"/>
+    <rect x="199" y="95" width="7" height="36"/>
+    <rect x="211" y="105" width="7" height="16"/>
+    <rect x="224" y="108" width="7" height="9"/>
+  </g>
 </svg>
