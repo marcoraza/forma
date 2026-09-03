@@ -1,4 +1,4 @@
-# CLAUDE.md — Forma
+# AGENTS.md — Forma
 
 ## Raza
 

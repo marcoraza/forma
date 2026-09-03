@@ -1,0 +1,76 @@
+{
+  "project": "the-dunes",
+  "page": "/thedunes/moods",
+  "naming": {
+    "pattern": "td-{nn}-{slug}.m4a",
+    "rules": [
+      "td is The Dunes",
+      "nn is listening order, zero-padded",
+      "slug is the title in lowercase hyphens",
+      "original WAV names stay in catalog.original"
+    ]
+  },
+  "film": {
+    "src": "/media/thedunes-previews/film/the-dunes-pitch-film.mp4",
+    "poster": "/media/thedunes-previews/film/poster.jpg",
+    "duration": 36.8,
+    "source": "Pitch slide 31"
+  },
+  "tracks": [
+    {
+      "id": "td-01-best-clima",
+      "number": "01",
+      "slug": "best-clima",
+      "title": "Bel Clima",
+      "original": "Best Clima - Mood 1.wav",
+      "src": "/media/thedunes-previews/audio/td-01-best-clima.m4a",
+      "peaks": "/media/thedunes-previews/peaks/td-01-best-clima.json",
+      "duration": 94.8,
+      "note": "The climate favourite."
+    },
+    {
+      "id": "td-02-fast-pace",
+      "number": "02",
+      "slug": "fast-pace",
+      "title": "Fast Pace",
+      "original": "Best 2 - Fast pace Solo Killer.wav",
+      "src": "/media/thedunes-previews/audio/td-02-fast-pace.m4a",
+      "peaks": "/media/thedunes-previews/peaks/td-02-fast-pace.json",
+      "duration": 148.8,
+      "note": "High-energy cut. Marked best 2."
+    },
+    {
+      "id": "td-04-ill-tempo",
+      "number": "04",
+      "slug": "ill-tempo",
+      "title": "Ill Tempo",
+      "original": "Ill tempo.wav",
+      "src": "/media/thedunes-previews/audio/td-04-ill-tempo.m4a",
+      "peaks": "/media/thedunes-previews/peaks/td-04-ill-tempo.json",
+      "duration": 64.0,
+      "note": null
+    },
+    {
+      "id": "td-05-sotto-il-gelsomino",
+      "number": "05",
+      "slug": "sotto-il-gelsomino",
+      "title": "Sotto il Gelsomino",
+      "original": "Sotto il gelsomino.wav",
+      "src": "/media/thedunes-previews/audio/td-05-sotto-il-gelsomino.m4a",
+      "peaks": "/media/thedunes-previews/peaks/td-05-sotto-il-gelsomino.json",
+      "duration": 80.16,
+      "note": null
+    },
+    {
+      "id": "td-09-italian-1960s",
+      "number": "09",
+      "slug": "italian-1960s",
+      "title": "Italian 1960s",
+      "original": "italian 1960s.wav",
+      "src": "/media/thedunes-previews/audio/td-09-italian-1960s.m4a",
+      "peaks": "/media/thedunes-previews/peaks/td-09-italian-1960s.json",
+      "duration": 180.36,
+      "note": "Long reference. Needs a window."
+    }
+  ]
+}

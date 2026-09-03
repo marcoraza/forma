@@ -1,21 +1,39 @@
 import http from 'node:http';
 import fs from 'node:fs';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const root = process.cwd();
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
 const port = Number(process.env.PORT || 4194);
 const mime = {
   '.html': 'text/html; charset=utf-8',
   '.wav': 'audio/wav',
   '.mp4': 'video/mp4',
+  '.m4a': 'audio/mp4',
+  '.json': 'application/json; charset=utf-8',
+  '.jpg': 'image/jpeg',
+  '.jpeg': 'image/jpeg',
   '.webp': 'image/webp',
   '.pdf': 'application/pdf',
   '.svg': 'image/svg+xml',
 };
 
+function mapPath(pathname) {
+  if (pathname === '/' || pathname === '/thedunes' || pathname === '/thedunes/') return '/thedunes.html';
+  if (
+    pathname === '/thedunes/moods' ||
+    pathname === '/thedunes/moods/' ||
+    pathname === '/moods' ||
+    pathname === '/moods/' ||
+    pathname === '/thedunes/previews' ||
+    pathname === '/thedunes/previews/'
+  ) return '/thedunes/moods.html';
+  return pathname;
+}
+
 http.createServer((request, response) => {
   const pathname = decodeURIComponent(new URL(request.url, 'http://localhost').pathname);
-  const requested = pathname === '/' ? '/thedunes.html' : pathname;
+  const requested = mapPath(pathname);
   const file = path.resolve(root, `.${requested}`);
   if (!file.startsWith(`${root}${path.sep}`) || !fs.existsSync(file) || !fs.statSync(file).isFile()) {
     response.writeHead(404).end('Not found');
@@ -48,4 +66,5 @@ http.createServer((request, response) => {
   else fs.createReadStream(file).pipe(response);
 }).listen(port, '127.0.0.1', () => {
   process.stdout.write(`Local preview: http://127.0.0.1:${port}/thedunes.html\n`);
+  process.stdout.write(`Moods:         http://127.0.0.1:${port}/thedunes/moods\n`);
 });

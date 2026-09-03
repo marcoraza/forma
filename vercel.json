@@ -23,6 +23,54 @@
           "value": "public, max-age=31536000, immutable"
         }
       ]
+    },
+    {
+      "source": "/media/thedunes-previews/audio/(.*).m4a",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "audio/mp4"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/media/thedunes-previews/film/the-dunes-pitch-film.mp4",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "video/mp4"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/moods",
+      "destination": "/thedunes/moods",
+      "permanent": false
+    },
+    {
+      "source": "/moods/",
+      "destination": "/thedunes/moods",
+      "permanent": false
+    },
+    {
+      "source": "/thedunes/previews",
+      "destination": "/thedunes/moods",
+      "permanent": false
+    },
+    {
+      "source": "/thedunes/previews/",
+      "destination": "/thedunes/moods",
+      "permanent": false
     }
   ],
   "rewrites": [
