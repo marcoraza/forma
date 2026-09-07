@@ -953,6 +953,7 @@
     let pollTimer = null;
     let bound = false;
     let freePlay = false;
+    let pendingSeek = null;
 
     function loadStore() {
       try {
@@ -1381,6 +1382,7 @@
       audio.src = track.src;
       const snip = snippetOf(track);
       freePlay = false;
+      pendingSeek = null;
       audio.currentTime = snip.start;
       film.currentTime = 0;
       renderNow();
@@ -1397,14 +1399,34 @@
       if (autoplay) playFrom(snip.start, true);
     }
 
-    function playFrom(time, countPlay) {
+    function setPlaybackTime(time) {
+      const track = current();
+      if (!track) return 0;
+      const t = clamp(time, 0, Math.max(0, track.duration - 0.05));
+      pendingSeek = t;
+      try {
+        if (typeof audio.fastSeek === "function") audio.fastSeek(t);
+        else audio.currentTime = t;
+      } catch {
+        audio.currentTime = t;
+      }
+      return t;
+    }
+
+    function stickSeek() {
+      if (pendingSeek == null) return;
+      if (Math.abs((audio.currentTime || 0) - pendingSeek) > 0.35) {
+        try { audio.currentTime = pendingSeek; } catch {}
+      } else {
+        pendingSeek = null;
+      }
+    }
+
+    function syncFilmTo(time) {
       const track = current();
       if (!track) return;
       const snip = snippetOf(track);
-      const start = clamp(time, 0, Math.max(0, track.duration - 0.05));
-      freePlay = start < snip.start - 0.02 || start > snip.end - 0.05;
-      const offset = start - snip.start;
-      audio.currentTime = start;
+      const offset = time - snip.start;
       const kickFilm = () => {
         if (Number.isFinite(film.duration) && film.duration > 0) {
           film.currentTime = clamp(offset, 0, Math.max(0, film.duration - 0.05));
@@ -1414,7 +1436,21 @@
       };
       if (film.readyState >= 1) kickFilm();
       else film.addEventListener("loadedmetadata", kickFilm, { once: true });
-      audio.play().catch(() => {});
+    }
+
+    function playFrom(time, countPlay, fromUser) {
+      const track = current();
+      if (!track) return;
+      const start = setPlaybackTime(time);
+      if (fromUser) freePlay = true;
+      else {
+        const snip = snippetOf(track);
+        freePlay = start < snip.start - 0.02 || start > snip.end - 0.05;
+      }
+      syncFilmTo(start);
+      const p = audio.play();
+      if (p && typeof p.then === "function") p.then(stickSeek).catch(() => {});
+      else stickSeek();
       if (countPlay) recordPlay(track);
       playing = true;
       $("play").classList.add("is-playing");
@@ -1424,20 +1460,13 @@
     function seekWhilePlaying(time) {
       const track = current();
       if (!track) return;
-      const snip = snippetOf(track);
-      const t = clamp(time, 0, Math.max(0, track.duration - 0.05));
-      freePlay = t < snip.start - 0.02 || t > snip.end - 0.05;
-      audio.currentTime = t;
-      const offset = t - snip.start;
-      if (Number.isFinite(film.duration) && film.duration > 0) {
-        film.currentTime = clamp(offset, 0, Math.max(0, film.duration - 0.05));
-      }
-      if (playing) {
-        if (offset >= 0 && offset < (film.duration || 0)) {
-          if (film.paused) film.play().catch(() => {});
-        } else {
-          film.pause();
-        }
+      freePlay = true;
+      const t = setPlaybackTime(time);
+      syncFilmTo(t);
+      if (!playing || audio.paused) {
+        playFrom(t, true, true);
+      } else {
+        stickSeek();
       }
       setMarkAt(t);
       renderNow();
@@ -1458,7 +1487,7 @@
       else {
         const snip = snippetOf(current());
         const t = Number.isFinite(audio.currentTime) ? audio.currentTime : snip.start;
-        playFrom(t, true);
+        playFrom(t, true, freePlay);
       }
     }
 
@@ -1809,6 +1838,8 @@
       $("leave").addEventListener("click", leave);
 
       audio.addEventListener("timeupdate", onTick);
+      audio.addEventListener("playing", stickSeek);
+      audio.addEventListener("seeked", stickSeek);
       audio.addEventListener("ended", onEnded);
       film.addEventListener("ended", () => {
         if (playing) {
@@ -1837,11 +1868,8 @@
     }
 
     function onEnded() {
-      if (loopOn) playFrom(snippetOf(current()).start);
-      else {
-        pauseAll();
-        loadTrack(index + 1, false);
-      }
+      if (loopOn && !freePlay) playFrom(snippetOf(current()).start);
+      else pauseAll();
     }
 
     function onPointerDown(event) {
@@ -1849,11 +1877,9 @@
       drag = { kind: "seek" };
       try { event.currentTarget.setPointerCapture(event.pointerId); } catch {}
       const t = timeFromClientX(event.clientX);
-      if (playing) seekWhilePlaying(t);
-      else {
-        playFrom(t, true);
-        setMarkAt(t);
-      }
+      freePlay = true;
+      playFrom(t, true, true);
+      setMarkAt(t);
       event.preventDefault();
     }
 
