@@ -200,6 +200,7 @@
 
     .ctrl:hover { background: #fff; }
     .ctrl:active { transform: scale(.96); }
+    a.ctrl { text-decoration: none; color: inherit; }
     .ctrl svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
     .ctrl-play { width: 52px; height: 52px; background: var(--ink); color: var(--paper-light); border-color: var(--ink); }
     .ctrl-play:hover { background: #000; }
@@ -263,6 +264,7 @@
       height: 100px;
       cursor: pointer;
       touch-action: none;
+      user-select: none;
     }
 
     .wave-cursor {
@@ -347,7 +349,7 @@
 
     .wave-rail {
       position: relative;
-      height: 28px;
+      height: 30px;
       margin-top: 2px;
     }
 
@@ -355,9 +357,9 @@
     .wave-ghost {
       position: absolute;
       bottom: 2px;
-      width: 40px;
-      height: 22px;
-      margin-left: -20px;
+      width: 24px;
+      height: 24px;
+      margin-left: -12px;
       padding: 0;
       border: 0;
       background: none;
@@ -366,45 +368,13 @@
 
     .wave-mark .avatar,
     .wave-ghost .avatar {
-      width: 40px;
-      height: 22px;
-      border-radius: 6px;
+      width: 24px;
+      height: 24px;
     }
 
     .wave-mark.is-on { z-index: 3; transform: scale(1.12); }
     .wave-ghost { z-index: 2; opacity: .42; pointer-events: none; }
     .wave-ghost[hidden] { display: none; }
-
-    .handle {
-      position: absolute;
-      top: 0;
-      width: 14px;
-      height: 100%;
-      margin-left: -7px;
-      cursor: ew-resize;
-    }
-
-    .handle::before {
-      content: "";
-      position: absolute;
-      left: 6px;
-      top: 0;
-      bottom: 0;
-      width: 2px;
-      background: var(--cobalt-deep);
-    }
-
-    .handle::after {
-      content: "";
-      position: absolute;
-      left: 3px;
-      top: 50%;
-      width: 8px;
-      height: 22px;
-      margin-top: -11px;
-      border-radius: 2px;
-      background: var(--cobalt-deep);
-    }
 
     .wave-composer {
       margin-top: 10px;
@@ -448,7 +418,7 @@
     .tracks { display: flex; flex-direction: column; }
     .track {
       display: grid;
-      grid-template-columns: 28px minmax(0, 1fr) 64px 28px;
+      grid-template-columns: 28px minmax(0, 1fr) 64px 28px 28px;
       align-items: center;
       gap: 8px;
       width: 100%;
@@ -466,7 +436,8 @@
     .track-title { font-size: 18px; letter-spacing: -.01em; }
     .track-sub { display: block; margin-top: 2px; font-family: var(--mono); font-size: 10px; color: var(--ink-soft); }
     .track-dur { font-family: var(--mono); font-size: 11px; color: var(--ink-soft); text-align: right; }
-    .heart {
+    .heart,
+    .dl {
       width: 28px;
       height: 28px;
       padding: 0;
@@ -474,8 +445,14 @@
       background: transparent;
       cursor: pointer;
       color: var(--ink-faint);
+      display: grid;
+      place-items: center;
+      text-decoration: none;
     }
-    .heart svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 1.6; }
+    .heart svg,
+    .dl svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+    .heart:hover,
+    .dl:hover { color: var(--ink); }
     .heart.is-on { color: var(--heart); }
     .heart.is-on svg { fill: currentColor; }
 
@@ -491,27 +468,30 @@
     .comment-list { margin: 0; padding: 0; list-style: none; overflow: auto; max-height: 360px; }
     .comment-item {
       display: grid;
-      grid-template-columns: 40px minmax(0, 1fr);
+      grid-template-columns: 32px minmax(0, 1fr) 28px;
       gap: 10px;
       padding: 10px 4px;
       border-radius: 8px;
     }
     .comment-item:hover { background: rgba(17, 16, 15, .03); }
     .avatar {
-      width: 40px;
+      width: 32px;
       height: 32px;
-      border-radius: 8px;
+      border-radius: 50%;
       display: grid;
       place-items: center;
       overflow: hidden;
-      background: var(--cobalt-soft);
-      color: var(--cobalt-deep);
+      background: #fff;
+      box-shadow: inset 0 0 0 1px rgba(17, 16, 15, .08);
     }
+    .avatar.is-oui,
+    .avatar.is-forma { background: #fff; }
     .avatar img {
       display: block;
       width: auto;
-      max-width: 32px;
-      height: 11px;
+      max-width: 70%;
+      max-height: 44%;
+      height: auto;
       object-fit: contain;
     }
     .avatar-logo-oui {
@@ -522,11 +502,8 @@
       line-height: 1;
       letter-spacing: -.02em;
     }
-    .avatar.is-oui { background: rgba(154, 59, 50, .12); color: var(--heart); }
     .wave-mark .avatar img,
-    .wave-ghost .avatar img { height: 8px; max-width: 30px; }
-    .wave-mark .avatar-logo-oui,
-    .wave-ghost .avatar-logo-oui { font-size: 13px; }
+    .wave-ghost .avatar img { max-width: 68%; max-height: 40%; }
     .comment-main { min-width: 0; }
     .comment-head {
       display: flex;
@@ -555,6 +532,29 @@
       padding: 0 4px;
     }
     .comment-item.is-oui .mention { color: var(--heart); background: rgba(154, 59, 50, .12); }
+    .comment-trash {
+      width: 28px;
+      height: 28px;
+      margin-top: -2px;
+      padding: 0;
+      border: 0;
+      border-radius: 50%;
+      background: none;
+      color: var(--ink-faint);
+      cursor: pointer;
+    }
+    .comment-trash svg {
+      display: block;
+      width: 15px;
+      height: 15px;
+      margin: 6px auto 0;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.6;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .comment-trash:hover { color: var(--heart); background: rgba(154, 59, 50, .08); }
     .comment-actions {
       display: none;
       gap: 10px;
@@ -589,7 +589,7 @@
     }
     .composer {
       display: grid;
-      grid-template-columns: 40px minmax(0, 1fr) auto;
+      grid-template-columns: 32px minmax(0, 1fr) auto;
       gap: 10px;
       align-items: start;
     }
@@ -858,6 +858,9 @@
           <button class="ctrl" id="fav" type="button" aria-label="Favourite">
             <svg viewBox="0 0 18 18"><path d="M9 14.2 3.8 9.4A3.1 3.1 0 0 1 8.1 4.8L9 5.7l.9-.9a3.1 3.1 0 0 1 4.3 4.6z"/></svg>
           </button>
+          <a class="ctrl" id="download" href="#" download aria-label="Download track" title="Download">
+            <svg viewBox="0 0 18 18"><path d="M9 3.5v8M6 8.5l3 3 3-3M4.5 14.5h9"/></svg>
+          </a>
         </div>
 
         <dl class="times">
@@ -880,8 +883,6 @@
             <span class="wave-cursor-time" id="wave-cursor-time">0:00</span>
           </div>
           <div class="wave-tip" id="wave-tip" hidden></div>
-          <div class="handle" id="handle-in" role="slider" aria-label="Snippet start"></div>
-          <div class="handle" id="handle-out" role="slider" aria-label="Snippet end"></div>
         </div>
         <div class="wave-rail" id="pins"></div>
       </div>
@@ -909,7 +910,7 @@
           <span class="play-meta" id="thread-plays" hidden></span>
         </div>
         <ul class="comment-list" id="comments"></ul>
-        <p class="hint">Click the waveform to pin a time. No click goes to the end. Type @ to mention.</p>
+        <p class="hint">Click the waveform to play from that time. Loop holds the picture window. Type @ to mention.</p>
       </div>
     </section>
   </div>
@@ -951,6 +952,7 @@
     let lastPlayTrack = null;
     let pollTimer = null;
     let bound = false;
+    let freePlay = false;
 
     function loadStore() {
       try {
@@ -1020,6 +1022,14 @@
       return !!(user && user.handle === "forma");
     }
 
+    function canDelete(note) {
+      return !!(user && (isHouse() || note.author === user.handle));
+    }
+
+    function trashIcon() {
+      return `<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 4h10M6 4V3h4v1M4.5 4l.5 9h6l.5-9"/><path d="M7 7v4M9 7v4"/></svg>`;
+    }
+
     function fmtWhen(ms) {
       const date = new Date(ms);
       const sameDay = date.toDateString() === new Date().toDateString();
@@ -1065,10 +1075,53 @@
       return escapeHtml(text).replace(/@(forma|oui)\b/gi, (match) => `<span class="mention">${match.toLowerCase()}</span>`);
     }
 
+    function downloadName(track) {
+      return `The Dunes - ${track.number} ${track.title}.m4a`;
+    }
+
+    function downloadIcon() {
+      return `<svg viewBox="0 0 18 18" aria-hidden="true"><path d="M9 3.5v8M6 8.5l3 3 3-3M4.5 14.5h9"/></svg>`;
+    }
+
+    function downloadTrack(track, event) {
+      if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+      if (!track) return;
+      const name = downloadName(track);
+      fetch(track.src)
+        .then((res) => {
+          if (!res.ok) throw new Error(res.statusText);
+          return res.blob();
+        })
+        .then((blob) => {
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = name;
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+          setTimeout(() => URL.revokeObjectURL(url), 2500);
+        })
+        .catch(() => {
+          const a = document.createElement("a");
+          a.href = track.src;
+          a.download = name;
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+        });
+    }
+
     function commentTime() {
       const track = current();
       if (!track) return 0;
-      if (markAt == null) return track.duration;
+      if (markAt == null) {
+        const t = audio.currentTime;
+        return Number.isFinite(t) ? clamp(t, 0, track.duration) : 0;
+      }
       return clamp(markAt, 0, track.duration);
     }
 
@@ -1083,7 +1136,7 @@
     function updateCommentAt() {
       const node = $("comment-at");
       const at = commentTime();
-      if (node) node.textContent = markAt == null ? `Comment at ${fmt(at)} · end` : `Comment at ${fmt(at)}`;
+      if (node) node.textContent = `Comment at ${fmt(at)}`;
     }
 
     function hideTip() {
@@ -1327,6 +1380,7 @@
       saveStore();
       audio.src = track.src;
       const snip = snippetOf(track);
+      freePlay = false;
       audio.currentTime = snip.start;
       film.currentTime = 0;
       renderNow();
@@ -1343,20 +1397,21 @@
       if (autoplay) playFrom(snip.start, true);
     }
 
-    function syncFilm(offset) {
-      if (Number.isFinite(film.duration) && film.duration > 0) {
-        film.currentTime = clamp(offset, 0, Math.max(0, film.duration - 0.05));
-      }
-      film.play().catch(() => {});
-    }
-
     function playFrom(time, countPlay) {
       const track = current();
+      if (!track) return;
       const snip = snippetOf(track);
-      const start = clamp(time, snip.start, Math.max(snip.start, snip.end - 0.05));
-      const offset = Math.max(0, start - snip.start);
+      const start = clamp(time, 0, Math.max(0, track.duration - 0.05));
+      freePlay = start < snip.start - 0.02 || start > snip.end - 0.05;
+      const offset = start - snip.start;
       audio.currentTime = start;
-      const kickFilm = () => syncFilm(offset);
+      const kickFilm = () => {
+        if (Number.isFinite(film.duration) && film.duration > 0) {
+          film.currentTime = clamp(offset, 0, Math.max(0, film.duration - 0.05));
+        }
+        if (offset >= 0 && offset < (film.duration || 0)) film.play().catch(() => {});
+        else film.pause();
+      };
       if (film.readyState >= 1) kickFilm();
       else film.addEventListener("loadedmetadata", kickFilm, { once: true });
       audio.play().catch(() => {});
@@ -1364,6 +1419,29 @@
       playing = true;
       $("play").classList.add("is-playing");
       $("play").setAttribute("aria-label", "Pause");
+    }
+
+    function seekWhilePlaying(time) {
+      const track = current();
+      if (!track) return;
+      const snip = snippetOf(track);
+      const t = clamp(time, 0, Math.max(0, track.duration - 0.05));
+      freePlay = t < snip.start - 0.02 || t > snip.end - 0.05;
+      audio.currentTime = t;
+      const offset = t - snip.start;
+      if (Number.isFinite(film.duration) && film.duration > 0) {
+        film.currentTime = clamp(offset, 0, Math.max(0, film.duration - 0.05));
+      }
+      if (playing) {
+        if (offset >= 0 && offset < (film.duration || 0)) {
+          if (film.paused) film.play().catch(() => {});
+        } else {
+          film.pause();
+        }
+      }
+      setMarkAt(t);
+      renderNow();
+      draw();
     }
 
     function pauseAll() {
@@ -1377,7 +1455,11 @@
     function togglePlay() {
       if (!user || !current()) return;
       if (playing) pauseAll();
-      else playFrom(audio.currentTime && audio.currentTime >= snippetOf(current()).start ? audio.currentTime : snippetOf(current()).start, true);
+      else {
+        const snip = snippetOf(current());
+        const t = Number.isFinite(audio.currentTime) ? audio.currentTime : snip.start;
+        playFrom(t, true);
+      }
     }
 
     function lockPicture() {
@@ -1391,6 +1473,7 @@
         start = Math.max(0, end - picture);
       }
       setSnippet(start, end, track);
+      freePlay = false;
       if (playing) playFrom(start);
       else audio.currentTime = start;
       renderNow();
@@ -1412,12 +1495,16 @@
       $("t-len").textContent = `${fmt(len)} / ${fmt(picture)}`;
       $("t-len-box").classList.toggle("is-fit", fit);
       $("wave-clock").textContent = `${fmt(audio.currentTime || snip.start)} / ${fmt(track.duration)}`;
-      $("wave-label").textContent = fit ? "Window matches picture" : "Drag the window to try a cut";
+      $("wave-label").textContent = fit ? "Window matches picture" : "Click anywhere to play";
       $("loop").classList.toggle("is-on", loopOn);
       $("lock").classList.toggle("is-on", fit);
       $("fav").classList.toggle("is-fav", isFav(track));
       $("play").classList.toggle("is-playing", playing);
-      placeHandles();
+      const dl = $("download");
+      if (dl) {
+        dl.href = track.src;
+        dl.setAttribute("download", downloadName(track));
+      }
       updateCommentAt();
       placeCursor();
     }
@@ -1434,6 +1521,7 @@
               ${isHouse() ? `<span class="track-sub play-meta">${playLabel(track.id)}</span>` : ""}
             </span>
             <span class="track-dur">${fmt(track.duration)}</span>
+            <a class="dl" href="${track.src}" download="${escapeHtml(downloadName(track))}" aria-label="Download ${escapeHtml(track.title)}" title="Download">${downloadIcon()}</a>
             <button class="heart ${isFav(track) ? "is-on" : ""}" data-fav="${track.id}" aria-label="Favourite ${track.title}">
               <svg viewBox="0 0 18 18"><path d="M9 14.2 3.8 9.4A3.1 3.1 0 0 1 8.1 4.8L9 5.7l.9-.9a3.1 3.1 0 0 1 4.3 4.6z"/></svg>
             </button>
@@ -1470,9 +1558,9 @@
             <p>${formatMentions(note.text)}</p>
             ${isHouse() ? `<div class="comment-actions">
               <button type="button" data-edit>Edit</button>
-              <button type="button" data-del>Delete</button>
             </div>` : ""}
           </div>
+          ${canDelete(note) ? `<button type="button" class="comment-trash" data-del aria-label="Delete comment">${trashIcon()}</button>` : `<span></span>`}
         </li>
       `).join("");
       refreshTip();
@@ -1494,16 +1582,6 @@
       canvas.width = Math.max(1, Math.floor(rect.width * ratio));
       canvas.height = Math.max(1, Math.floor(rect.height * ratio));
       draw();
-      placeHandles();
-    }
-
-    function placeHandles() {
-      const track = current();
-      if (!track) return;
-      const snip = snippetOf(track);
-      const width = canvas.getBoundingClientRect().width;
-      $("handle-in").style.left = `${(snip.start / track.duration) * width}px`;
-      $("handle-out").style.left = `${(snip.end / track.duration) * width}px`;
     }
 
     function draw() {
@@ -1558,8 +1636,16 @@
       });
       $("lock").addEventListener("click", lockPicture);
       $("fav").addEventListener("click", () => toggleFav(current()));
+      $("download").addEventListener("click", (event) => downloadTrack(current(), event));
 
       $("tracks").addEventListener("click", (event) => {
+        const file = event.target.closest("a.dl");
+        if (file) {
+          const row = event.target.closest("[data-index]");
+          const track = row ? tracks[Number(row.dataset.index)] : null;
+          downloadTrack(track, event);
+          return;
+        }
         const heart = event.target.closest("[data-fav]");
         if (heart) {
           const track = tracks.find((item) => item.id === heart.dataset.fav);
@@ -1580,8 +1666,8 @@
           seekToNote(note.id);
           return;
         }
-        if (!isHouse()) return;
         if (event.target.closest("[data-del]")) {
+          if (!canDelete(note)) return;
           if (!window.confirm("Delete this note?")) return;
           try {
             await sb(`forma_dunes_preview_comments?id=eq.${encodeURIComponent(note.id)}`, {
@@ -1596,6 +1682,7 @@
           }
           return;
         }
+        if (!isHouse()) return;
         if (event.target.closest("[data-save]")) {
           const next = item.querySelector("input").value.trim();
           if (!next) return;
@@ -1740,13 +1827,9 @@
     function onTick() {
       const track = current();
       const snip = snippetOf(track);
-      if (playing && film.paused) film.play().catch(() => {});
-      if (playing && audio.currentTime >= snip.end - 0.03) {
-        if (loopOn) playFrom(snip.start);
-        else {
-          audio.currentTime = snip.end;
-          pauseAll();
-        }
+      if (playing && !freePlay && film.paused) film.play().catch(() => {});
+      if (playing && loopOn && !freePlay && audio.currentTime >= snip.end - 0.03) {
+        playFrom(snip.start);
       }
       renderNow();
       draw();
@@ -1762,49 +1845,24 @@
     }
 
     function onPointerDown(event) {
-      const track = current();
-      const snip = snippetOf(track);
+      if (!current()) return;
+      drag = { kind: "seek" };
+      try { event.currentTarget.setPointerCapture(event.pointerId); } catch {}
       const t = timeFromClientX(event.clientX);
-      const handle = event.target.closest(".handle");
-      if (handle === $("handle-in")) drag = { kind: "in", start: snip.start, end: snip.end };
-      else if (handle === $("handle-out")) drag = { kind: "out", start: snip.start, end: snip.end };
+      if (playing) seekWhilePlaying(t);
       else {
-        drag = { kind: "place", originX: event.clientX, originT: t, start: snip.start, end: snip.end };
+        playFrom(t, true);
         setMarkAt(t);
       }
       event.preventDefault();
     }
 
     function onPointerMove(event) {
-      if (!drag) return;
-      const track = current();
-      const t = timeFromClientX(event.clientX);
-      if (drag.kind === "place") {
-        if (Math.abs(event.clientX - drag.originX) > 10 && drag.originT >= drag.start && drag.originT <= drag.end) {
-          drag.kind = "move";
-          drag.origin = drag.originT;
-        } else {
-          setMarkAt(t);
-          return;
-        }
-      }
-      if (drag.kind === "in") setSnippet(t, drag.end, track);
-      else if (drag.kind === "out") setSnippet(drag.start, t, track);
-      else if (drag.kind === "move") {
-        const len = drag.end - drag.start;
-        let start = drag.start + (t - drag.origin);
-        start = clamp(start, 0, track.duration - len);
-        setSnippet(start, start + len, track);
-      }
-      renderNow();
-      draw();
+      if (!drag || drag.kind !== "seek") return;
+      seekWhilePlaying(timeFromClientX(event.clientX));
     }
 
-    function onPointerUp(event) {
-      if (drag && drag.kind === "place") {
-        setMarkAt(timeFromClientX(event.clientX));
-        $("comment-input")?.focus();
-      }
+    function onPointerUp() {
       drag = null;
     }
 
