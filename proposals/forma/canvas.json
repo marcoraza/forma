@@ -1,0 +1,79 @@
+{
+  "artboards": [
+    {
+      "file": "Main.dc.html",
+      "x": 0,
+      "y": 0,
+      "w": 794,
+      "h": 1123,
+      "title": "01 Cover",
+      "print": "fixed"
+    },
+    {
+      "file": "Approach.dc.html",
+      "x": 874,
+      "y": 0,
+      "w": 794,
+      "h": 1123,
+      "title": "02 Approach",
+      "print": "fixed"
+    },
+    {
+      "file": "Scope.dc.html",
+      "x": 1748,
+      "y": 0,
+      "w": 794,
+      "h": 1123,
+      "title": "03 Scope",
+      "print": "fixed"
+    },
+    {
+      "file": "Timeline.dc.html",
+      "x": 2622,
+      "y": 0,
+      "w": 794,
+      "h": 1123,
+      "title": "04 Schedule",
+      "print": "fixed"
+    },
+    {
+      "file": "Investment.dc.html",
+      "x": 0,
+      "y": 1243,
+      "w": 794,
+      "h": 1123,
+      "title": "05 Investment",
+      "print": "fixed"
+    },
+    {
+      "file": "Terms.dc.html",
+      "x": 874,
+      "y": 1243,
+      "w": 794,
+      "h": 1123,
+      "title": "06 Terms",
+      "print": "fixed"
+    },
+    {
+      "file": "Close.dc.html",
+      "x": 1748,
+      "y": 1243,
+      "w": 794,
+      "h": 1123,
+      "title": "07 Acceptance",
+      "print": "fixed"
+    }
+  ],
+  "annotations": [
+    {
+      "id": "placeholders",
+      "x": -600,
+      "y": 0,
+      "w": 500,
+      "text": "Anything in [SQUARE BRACKETS] is a placeholder waiting on the real deal:\n\nclient and project name, usage (media / territory / term), dates, week ranges, day counts, day rate, totals, delivery formats and the proposal reference.\n\nThe week ranges on page 04 also set the width of the phase bar above them (flex-grow 2:3:3:2) — change both together or the bar stops matching the schedule.\n\nEverything else — approach, deliverables, terms, studio details — is Forma's own and can ship as written.\n\nPages are A4 (794 x 1123 at 96dpi). Export PDF gives one page per artboard, in canvas order."
+    }
+  ],
+  "launch": {
+    "view": "canvas"
+  }
+}
